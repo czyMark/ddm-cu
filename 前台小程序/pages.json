@@ -1,0 +1,230 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/home/notice",
+			"style": {
+				"navigationBarTitleText": "公告列表"
+			}
+		},
+		{
+			"path": "pages/home/noticeDetail",
+			"style": {
+				"navigationBarTitleText": "公告详情"
+			}
+		},
+		// {
+		// 	"path": "pages/yahoo/search",
+		// 	"style": {
+		// 		"navigationBarTitleText": "搜索",
+		// 		"navigationBarBackgroundColor": "#FFFFFF"
+		// 	}
+		// },
+		{
+			"path": "pages/yahoo/index",
+			"style": {
+				"navigationBarTitleText": "雅虎代购",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/yahoo/yahooResult",
+			"style": {
+				"navigationBarTitleText": "雅虎搜索",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/yahoo/detail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/yahoo/salerGoodsList",
+			"style": {
+				"navigationBarTitleText": "卖家",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/yahoo/pricelog",
+			"style": {
+				"navigationBarTitleText": "出价记录",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mercari/index",
+			"style": {
+				"navigationBarTitleText": "煤炉代购",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mercari/mercariResult",
+			"style": {
+				"navigationBarTitleText": "煤炉搜索",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mercari/detail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mercari/cart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mercari/requestSend",
+			"style": {
+				"navigationBarTitleText": "申请发货",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/mine/collect",
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/mine/viewlog",
+			"style": {
+				"navigationBarTitleText": "我的足迹",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/mine/orderList",
+			"style": {
+				"navigationBarTitleText": "我的订单",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/mine/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},
+		{
+			"path": "pages/mine/address",
+			"style": {
+				"navigationBarTitleText": "我的地址"
+			}
+		}, 
+		{
+			"path": "pages/mine/profile",
+			"style": {
+				"navigationBarTitleText": "资料修改"
+			}
+		}, 
+		{
+			"path": "pages/mine/account",
+			"style": {
+				"navigationBarTitleText": "我的钱包"
+			}
+		}, 
+		{
+			"path": "pages/mine/contact",
+			"style": {
+				"navigationBarTitleText": "联系客服"
+			}
+		},
+		{
+			"path": "pages/mine/questions",
+			"style": {
+				"navigationBarTitleText": "常见问题"
+			}
+		},
+		{
+			"path": "pages/mine/questionDetail",
+			"style": {
+				"navigationBarTitleText": "问题详情"
+			}
+		},
+		{
+			"path": "pages/mine/privacyPolicy",
+			"style": {
+				"navigationBarTitleText": "隐私政策"
+			}
+		},
+		{
+			"path": "pages/mine/rules",
+			"style": {
+				"navigationBarTitleText": "收费标准"
+			}
+		},
+		{
+			"path": "pages/mine/userAgreement",
+			"style": {
+				"navigationBarTitleText": "用户协议"
+			}
+		},
+		{
+			"path": "pages/mine/setting",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		}
+		
+	],
+	"tabBar": {
+		"selectedColor": "#f9bf3b",
+		"list": [
+			{
+				"pagePath": "pages/home/index",
+				"text": "首页",
+				"iconPath":"./static/home.png",
+				"selectedIconPath":"./static/home2.png"
+			}, 
+			{
+				"pagePath": "pages/yahoo/index",
+				"text": "雅虎",
+				"iconPath":"./static/yahoo.png",
+				"selectedIconPath":"./static/yahoo-fill.png"
+			}, 
+			{
+				"pagePath": "pages/mercari/index",
+				"text": "煤炉",
+				"iconPath":"./static/m.png",
+				"selectedIconPath":"./static/mm.png"
+			}, 
+			{
+				"pagePath": "pages/mine/index",
+				"text": "我的",
+				"iconPath":"./static/user.png",
+				"selectedIconPath":"./static/yonghu.png"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
