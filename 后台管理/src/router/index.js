@@ -89,6 +89,15 @@ export const constantRoutes = [
     component: () => import('../views/orderList/mercariList.vue'),
   },
   {
+    id: 77,
+    path: '/orderList/allOrderList',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: '订单列表', icon: 'el-icon-tickets'},
+    component: () => import('../views/orderList/allOrderList.vue'),
+  },
+  
+  {
     path: '/orderList/orderDetail',
     component: Layout,
     alwaysShow: false,

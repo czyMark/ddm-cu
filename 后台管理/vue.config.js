@@ -11,63 +11,63 @@ module.exports = defineConfig({
     https: false,
     proxy: {
       "/notice": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/question": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/setting": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/image": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/user": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/rate": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/cookie": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/yahooOrder": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/MerOrder": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/good": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/txRecord": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/account": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/contact": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/admin": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
       "/api": {
-        target: "https://107.151.206.75/",
+        target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
     }

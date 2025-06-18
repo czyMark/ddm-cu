@@ -1,5 +1,6 @@
 <template>
 	<view class="page">
+		<Title :type="1" title="常见问题"/>
 		<view class="list">
 			<view class="item between" @click="toPath(item.id)" v-for="(item, index) in list" :key="index">
 				<view class="itemTitle">{{item.title}}</view>
@@ -10,7 +11,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				list: []

@@ -1,2 +1,2 @@
-const base_url = 'https://107.151.206.75/'
+const base_url = 'https://ddm-cu.com'
 export default base_url

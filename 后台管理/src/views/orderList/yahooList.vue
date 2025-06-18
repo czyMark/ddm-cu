@@ -55,6 +55,7 @@
                     <el-radio-button :label="0">全部</el-radio-button>
                     <el-radio-button :label="1">出价中</el-radio-button>
                     <el-radio-button :label="2">竞拍成功</el-radio-button>
+                    <el-radio-button :label="2">支付</el-radio-button>
                     <el-radio-button :label="4">待入库</el-radio-button>
                     <el-radio-button :label="5">已入库</el-radio-button>
                     <el-radio-button :label="6">申请发货</el-radio-button>
@@ -118,6 +119,13 @@
                         <div v-if="!scope.row.parentid" class="around">
                             <el-button type="text" size="small" @click="changeStatus(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">竞拍成功</el-button>
                             <el-button type="text" size="small" @click="changeStatus(scope.row.id, 3, scope.row.userid)" v-if="scope.row.type === 1">竞拍失败</el-button>
+
+                            <!-- 测试 -->
+                            <el-button type="text" size="small" @click="changeStatus(scope.row.id, 4, scope.row.userid)" v-if="scope.row.type === 2">支付</el-button>
+
+                            <!-- 测试 -->
+                            <el-button type="text" size="small" @click="changeStatus(scope.row.id, 8, scope.row.userid)" v-if="scope.row.type === 7">支付</el-button>
+
                             <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row.type === 4">已入库</el-button>
                             <!-- <el-button type="text" size="small" @click="changeStatus(scope.row.id, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库</el-button> -->
                             

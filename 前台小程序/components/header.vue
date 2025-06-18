@@ -1,30 +1,38 @@
 <template>
 	<view class="header between">
-		<view class="logo center">
-			<image src="./../static/logo.png" mode="" v-if="logo === '日代拍'"></image>
-			<image src="./../static/mm.png" mode="" v-if="logo === 'mercari'"></image>
-			<image src="./../static/yahoo-fill.png" mode="" v-if="logo === 'YaHoo'"></image>
-		</view>
-		<view class="uniInput" @click="onFocus">
+		<!-- <view class="uniInput" @click="onFocus">
 			<uni-easyinput prefixIcon="search" v-model="value"
 				placeholder="点我开始入札吧" @iconClick="iconClick">
 			</uni-easyinput>
+		</view> -->
+		<view>
+			<Search
+				ref="search"
+				@onFocus="onFocus"
+				@onSearch="onSearch"
+				@keywordChange="keywordChange"
+				:keyword="keyword"
+				height="70rpx"
+				width="372rpx"
+			/>
 		</view>
-		<view class="right flex">
-			<view class="exchangeRate column">
-				<view class="title">平台汇率</view>
-				<view class="value">{{rate}}</view>
-			</view>
-			<view class="help column">
-				<uni-icons type="help" size="20"></uni-icons>
-				<view class="title" @click="toPath('/pages/mine/questions')">帮助</view>
-			</view>
-		</view>
+		<image
+			@click="onSearch"
+			class="icon"
+			src="@/static/icon/40.png"
+		>
+		<image
+			@click="onSearch"
+			class="icon"
+			src="@/static/icon/41.png"
+		>
 	</view>
 </template>
 
 <script>
+	import Search from "@/components/search.vue"
 	export default {
+		components: {Search},
 		props: {
 			logo: {
 				type: String,
@@ -32,7 +40,7 @@
 			},
 			page: {
 				type: String,
-				default:　"home"
+				default:　""
 			},
 			bigClass: {
 				type: [String, Number],
@@ -41,6 +49,7 @@
 		},
 		data() {
 			return {
+				keyword: '',
 				rate: '查询中',
 				rateTimer: null,
 			}
@@ -67,11 +76,18 @@
 			}, 1000)
 		},
 		methods: {
+			keywordChange(val){
+				this.keyword = val
+			},
 			iconClick(type) {
 				uni.showToast({
 					title: `点击了${type==='prefix'?'左侧':'右侧'}的图标`,
 					icon: 'none'
 				})
+			},
+			onSearch(){
+				console.log('onSearch', this.keyword)
+				this.$emit('onSearch', this.keyword)
 			},
 			onFocus(){
 				if(this.page === 'home'){
@@ -97,7 +113,11 @@
 <style lang="scss">
 	.header{
 		height: 85rpx;
-		padding-right: 10rpx;
+		padding: 10rpx 40rpx;
+		.icon{
+			width: 126rpx;
+			height: 62rpx;
+		}
 	}
 	.logo{
 		width: 160rpx;

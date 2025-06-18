@@ -1,59 +1,85 @@
 <template>
-	<view class="collect">
-		<view class="header column">
-			<!-- <view class="title">余额: {{balance || 0}}円 ( {{balance_rmb}} 元)</view> -->
-			<view class="title center" style="margin-top: 20rpx">押金: {{deposit || 0}}元</view>
-			<view class="value"> </view>
-			<view class="rate column">
-				<view class="title">平台汇率</view>
-				<view class="value">{{rate || ''}}</view>
+	<view class="page">
+		<Title :type="1" title="我的钱包"/>
+		
+		<view class="nav">
+			<view class="moneyNav column">
+				<view class="item between">
+					<view class="label">账户总余额(总的余额):</view>
+					<view class="value">
+						88888
+						<text>(JPY)</text>
+					</view>
+					<image
+						class="icon"
+						src="@/static/icon/74.png"
+					>
+				</view>
+				<view class="item between">
+					<view class="label">保证金(用于拍卖杠杆):</view>
+					<view class="value">
+						88888
+						<text>(JPY)</text>
+					</view>
+					<image
+						class="icon"
+						src="@/static/icon/74.png"
+					>
+				</view>
+				
+				<view class="item between">
+					<view class="label">可出价总金额:</view>
+					<view class="value">
+						88888
+						<text>(JPY)</text>
+					</view>
+					<view class="icon"></view>
+				</view>
+				<view class="item between">
+					<view class="label">剩余总出价金额:</view>
+					<view class="value">
+						88888
+						<text>(JPY)</text>
+					</view>
+					<view class="icon"></view>
+				</view>
+			</view>
+			
+			<view class="tips">
+				如需提现,联系XXXX,XXXX,如退回需要收取1%的手续费,7个工作内日到账。
+			</view>
+			
+			<view class="log">
+				<view class="subtitle">钱包明细</view>
+				<view class="item">2025年5月16日 11:11:11 充值余额 +10000</view>
+				<view class="item">2025年5月16日 11:11:11 充值余额 +10000</view>
+				<view class="item">2025年5月16日 11:11:11 充值余额 +10000</view>
+				<view class="item">2025年5月16日 11:11:11 充值余额 +10000</view>
+				<view class="item">2025年5月16日 11:11:11 充值余额 +10000</view>
+			</view>
+			
+			<view class="opt">
+				<image
+					class="icon"
+					src="@/static/icon/72.png"
+					@click="toPath(`/pages/mine/charge`)"
+				>
+				<image
+					class="icon"
+					src="@/static/icon/73.png"
+					@click="toPath(`/pages/mine/guaranteeCharge`)"
+				>
 			</view>
 		</view>
 		
-		<!-- <view class="tabs around">
-			<view :class="['tabItem', currentTab === item.id ? 'active' : '']"
-				v-for="(item, index) in tabList" :key="index" @click="choosetab(item.id)">
-				{{item.title}}
-			</view>
-		</view> -->
-		
-		<view class="list">
-			<view class="item between" v-for="(item, index) in list" :key="index">
-				<view class="type type1">押金</view>
-				<view class="money money1">{{item.balance}}元</view>
-				<view class="time">{{item.date}}</view>
-				<view class="btn btn2" @click="thaw(item)" v-if="item.type === 0">申请解冻</view>
-				<view class="money" v-if="item.type === 1">申请中</view>
-				<view class="money" v-if="item.type === 2">已解冻</view>
-				<view class="btn btn2" @click="thaw(item)" v-if="item.type === 3">重新申请</view>
-			</view>
-			<view class="tips" v-if="list.length === 0">空空如也</view>
-		</view>
-		
-		<view class="btns around">
-			<!-- <view class="btn" @click="showCharge">储值</view> -->
-			<view class="btn" @click="payDeposit">交押金</view>
-			<!-- <view class="btn" @click="thaw" v-if="deposit > 0"> 申请解冻</view>  -->
-			<!-- <view class="btn" @click="showWithdraw">提现</view> -->
-		</view>
-		
-		<uni-popup ref="inputDialog" type="dialog">
-			<uni-popup-dialog ref="inputClose"  mode="input" title="储值" :value="accountValue" :before-close="true"
-				inputType="number" placeholder="请输入金额" @close="dialogInputClose" @confirm="dialogInputConfirm">
-			</uni-popup-dialog>
-		</uni-popup>
-		
-		<uni-popup ref="withdrawDialog" type="dialog">
-			<uni-popup-dialog ref="withdrawClose"  mode="input" title="提现" value="" :before-close="true"
-				inputType="number" placeholder="请输入金额" @close="withdrawClose" @confirm="withdrawConfirm">
-			</uni-popup-dialog>
-		</uni-popup>
 		
 	</view>
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				
@@ -262,6 +288,11 @@
 				this.$refs.withdrawClose.value = ''
 				this.$refs.withdrawDialog.close()
 			},
+			toPath(url){
+				wx.navigateTo({
+					url,
+				})
+			},
 			forDate(timestamp){
 			    const date = new Date(timestamp);
 			    const y = date.getFullYear();
@@ -281,134 +312,73 @@
 	}
 </script>
 
-<style lang="scss">
-	page{
-		background: #f7f7f7;
-	}
-	.header{
-		position: relative;
-		width: 750rpx;
-		background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
-		height: 200rpx;
-		color: #FFF;
+<style lang="scss" scoped>
+.nav{
+	width: 700rpx;
+	margin: 30rpx auto 0;
+	padding-bottom: 300rpx
+}
+
+.moneyNav{
+	width: 100%;
+	height: 288rpx;
+	background: #FFBDBB;
+	justify-content: space-between;
+	padding: 24rpx 15rpx;
+	font-weight: 600;
+	font-size: 30rpx;
+	.item{
+		width: 100%;
+		.label{
+			width: 325rpx;
+		}
 		.value{
-			margin-top: 20rpx;
-		}
-	}
-	.tabs{
-		margin-top: 20rpx;
-		background: #FFF;
-		width: 100vw;
-		.tabItem{
-			box-sizing: border-box;
-			width: 25%;
-			text-align: center;
-			height: 70rpx;
-			line-height: 70rpx;
-			border: 1px solid #e5e5e5
-		}
-		.active{
-			background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
-			color: #FFF;
-		}
-	}
-	.list{
-		background-color: #FFF;
-		margin-top: 20rpx;
-		padding: 30rpx;
-		padding-bottom: 150rpx;
-		.item{
-			padding: 15rpx 0;
-			.type{
-				height: 100rpx;
-				line-height: 100rpx;
-				width: 100rpx;
-				text-align: center;
-				border-radius: 50%;
-				color: #FFF;
-				background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
-			}
-			.type2{
-				background: red;
-			}
-			.type3{
-				background: green;
-			}
-			.money{
-				width: 100rpx;
-				text-align: center;
-				color: #f9bf3b;
-				font-size: 28rpx;
-			}
-			.money2{
-				color: red;
-			}
-			.money3{
-				color: green;
-			}
-			.time{
-				width: 280rpx;
-				text-align: center;
-				font-size: 26rpx;
+			width: 180rpx;
+			text{
+				font-size: 24rpx;
 			}
 		}
+		.icon{
+			width: 80rpx;
+			height: 40rpx;
+		}
 	}
-	.btns{
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 750rpx;
-		height: 130rpx;
-		background: #fff;
-	}
-	.btn{
-		width: 150rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		text-align: center;
-		color: #FFF;
-		border-radius: 20rpx;
-		background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
-	
-	}
-	
-	.btn2{
-		font-size: 26rpx;
-		width: 140rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		text-align: center;
-		color: #FFF;
-		border-radius: 9rpx;
-	}
-	
-	.tips{
-		height: 80rpx;
-		line-height: 80rpx;
-		width: 100vw;
-		text-align: center;
-		font-size: 28rpx;
-		color: #9e9a9a;
-		margin-bottom: 30rpx;
-	}
-	.rate{
+}
+.tips{
+	width: 100%;
+	box-sizing: border-box;
+	background: #FFE1E1;
+	padding: 20rpx;
+	color: #191919;
+	font-size: 28rpx;
+	line-height: 48rpx;
+	margin: 20rpx 0;
+}
+.log{
+	width: 100%;
+	box-sizing: border-box;
+	background: #EFEFEF;
+	padding: 20rpx;
+	color: #A8A8A8;
+	.subtitle{
 		color: #000;
-		position: absolute;
-		right: 10rpx;
-		top: 10rpx;
-		font-size: 24rpx;
-		.value{
-			margin-top: 10rpx;
-		}
+		font-size: 36rpx;
+		font-weight: 600;
 	}
-	.rate2{
-		left: 10rpx;
-		width: 90rpx;
+	.item{
+		margin-top: 10rpx;
+		font-size: 26rpx;
 	}
-	// .thaw{
-	// 	font-size: 24rpx;
-	// 	border: 1px solid #000;
-	// 	padding: 2px 5px;
-	// 	margin-left: 20rpx
-	// }
+}
+.opt{
+	position: fixed;
+	bottom: 30rpx;
+	left: 25rpx;
+	width: 700rpx;
+	.icon{
+		width: 700rpx;
+		height: 72rpx;
+		margin: 10rpx 0;
+	}
+}
 </style>

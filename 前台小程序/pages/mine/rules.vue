@@ -1,6 +1,10 @@
 <template>
 	<view class="page">
-		<view class="popup-content charge">
+		<Title :type="1" title="收费标准"/>
+		<view class="content">
+			<rich-text :nodes="HtMLData"></rich-text>
+		</view>
+		<!-- <view class="popup-content charge">
 				<view class="content">
 					<view class="substite center">收费标准</view>
 					<view class="item">
@@ -123,12 +127,14 @@
 						</view>
 					</view>
 				</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				HtMLData: ``

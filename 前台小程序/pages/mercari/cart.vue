@@ -1,5 +1,7 @@
 <template>
-	<view class="collect">
+	<view class="collect page">
+		<Title :type="1" title="购物车"/>
+		
 		<view class="header between" v-if="list.length > 0">
 			<view class="clearAll" @click="clearAll">
 				<uni-icons type="trash" size="18"></uni-icons>
@@ -18,8 +20,9 @@
 					<image :src="item.imageurl"></image>
 					<view class="info column">
 						<view class="title">{{item.title}}</view>
-						<view class="price">现价：<text>{{item.price}}円</text></view>
-						<view class="price"><text>{{item.price_rmb}}元</text></view>
+						<view class="price"><text>{{item.price}}</text></view>
+						<!-- <view class="price">现价：<text>{{item.price}}円</text></view> -->
+						<!-- <view class="price"><text>{{item.price_rmb}}元</text></view> -->
 					</view>
 					<view class="opt flex" @click.stop="">
 						<button @click.stop="reduce(item)" :disabled="item.count<2">-</button>
@@ -34,9 +37,15 @@
 			<view class="selectAll">
 				<radio :checked="isSelectAll" @click.navtive="onSelectAllChange"/><text>全选</text>
 			</view>
-			<view class="total">合计: <text>{{totalPrce}}円({{totalRmb}}元)</text></view>
-			<!-- <view class="btn" @click="payOrder">结算</view> -->
-			<view class="btn" @click="showTotalDialog">结算</view>
+			<view class="between">
+				<view class="total">合计: <text>{{totalPrce}}日元</text></view>
+				<!-- <view class="btn" @click="payOrder">结算</view> -->
+				<image
+					class="icon"
+					src="@/static/icon/57.png"
+					 @click="showTotalDialog"
+				>
+			</view>
 		</view>
 		
 		<uni-popup ref="popupDialog3">
@@ -66,7 +75,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				hasClass: false, // 有无分类参数
@@ -265,12 +276,11 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	page{
 		background-color: #f7f7f7;
 	}
 	.header{
-		background-color: #fff;
 		width: 750rpx;
 		box-sizing: border-box;
 		padding: 20rpx;
@@ -294,13 +304,12 @@
 				width: 630rpx;
 			}
 			image{
-				height: 200rpx;
-				width: 200rpx;
-				border-radius: 20rpx;
+				height: 152rpx;
+				width: 192rpx;
 			}
 			.info{
-				height: 200rpx;
-				width: 480rpx;
+				height: 152rpx;
+				width: 410rpx;
 				margin-left: 30rpx;
 				font-size: 24rpx;
 				justify-content: space-around;
@@ -346,6 +355,8 @@
 					line-height: 46rpx;
 					padding: 0;
 					text-align: center;
+					background-color: #fff;
+					border-radius: 0;
 				}
 			}
 		}
@@ -355,7 +366,7 @@
 	}
 	.footer{
 		font-size: 24rpx;
-		height: 100rpx;
+		height: 150rpx;
 		width: 750rpx;
 		box-sizing: border-box;
 		padding: 0 20rpx;
@@ -363,6 +374,7 @@
 		bottom: 0;
 		left: 0;
 		background: #FFF;
+		border-top: 8rpx solid #d6d6d6;
 		.total text{
 			margin-left: 10rpx;
 			color: red;
@@ -377,6 +389,11 @@
 			width: 120rpx;
 			text-align: center;
 			background: #fb7917;
+		}
+		.icon{
+			width: 174rpx;
+			height: 64rpx;
+			margin-left: 50rpx;
 		}
 	}
 	

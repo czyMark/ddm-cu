@@ -1,5 +1,6 @@
 <template>
 	<view class="goodsDetail">
+		<Title :type="1" title="商品详情"/>
 		<view class="swiper">
 			<swiper
 			  indicator-dots
@@ -17,33 +18,36 @@
 		
 		<view class="title">
 			{{detail.name}}
-			<image @click="copyTitle(detail.name)" src="@/static/copy.png" mode=""></image>
+			<!-- <image @click="copyTitle(detail.name)" src="@/static/copy.png" mode=""></image> -->
 		</view>
 		<view class="price">
-			<view class="currentPrice between" style="margin-bottom: 20rpx;">
+			<!-- <view class="currentPrice between" style="margin-bottom: 20rpx;">
 				<view>
 					<text style="color: #adabab">商品编码</text>
 					<text style="color: #adabab">{{query.id}}</text>
 				</view>
 				<view @click.stop="copyCode(query.id)" style="font-size: 24rpx; border: 1px solid #c5c5c5; padding: 1px 5px; color: #423f3f;">复制</view>
-			</view>
+			</view> -->
 				
 			<view class="currentPrice">
-				<text>当前价格</text>
-				<text>{{detail.price}}円</text>
-				<text>({{detail.price_rmb}}元)</text>
+				<!-- <text>当前价格</text> -->
+				<view>{{detail.price}}円</view>
+				<view>约 {{detail.price_rmb}} 人民币</view>
 			</view>
 		</view>
 		
-		<view class="richText">
-			<rich-text :nodes="htmlData" selectable></rich-text>
+		<view class="des">
+			<view class="maintitle">产品详情</view>
+			<view class="richText">
+				<rich-text :nodes="htmlData" selectable></rich-text>
+			</view>
 		</view>
 		
-		<view class="options flex">
-			<view class="item column" @click="verifyLogin('toPath', '/pages/mine/contact')">
+		<view class="options around">
+			<!-- <view class="item column" @click="verifyLogin('toPath', '/pages/mine/contact')">
 				<image src="@/static/service.png"></image>
 				<view>客服</view>
-			</view>
+			</view> -->
 			<view class="item column" @click="verifyLogin('toCollect')">
 				<image src="@/static/star.png" v-if="!isCollect"></image>
 				<image src="@/static/star-fill.png" v-if="isCollect"></image>
@@ -54,9 +58,9 @@
 				<uni-icons type="cart" size="24"></uni-icons>
 				<view>购物车</view>
 			</view>
-			<view class="btns between">
+			<view class="btns center">
 				<view class="btn" @click="verifyLogin('addToCart')">加入购物车</view>
-				<view class="btn" @click="verifyLogin('showTips')">下单</view>
+				<view class="btn" @click="verifyLogin('showTips')">立即购买</view>
 			</view>
 		</view>
 		
@@ -67,11 +71,11 @@
 				</view>
 				<view class="costForm">
 					<view class="item between">
-						<view class="title">商品价格</view>
+						<view class="title">商品价格共计</view>
 						<view class="value">{{ detail.price_rmb }}元</view>
 					</view>
 					<view class="item between">
-						<view class="title">代购费</view>
+						<view class="title">代购费共计</view>
 						<view class="value">{{buyingAgentFee}}元</view>
 					</view>
 					<view class="item between">
@@ -87,7 +91,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				detail: {
@@ -222,6 +228,9 @@
 					url
 				})
 			},
+			goback(){
+				uni.navigateBack(-1)
+			},
 			async toCollect(){
 				wx.showLoading({title: '操作中'})
 				if(this.isCollect){
@@ -321,13 +330,22 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.goodsDetail{
 		padding-bottom: 160rpx;
 	}
 	.swiper{
 		width: 750rpx;
 		height: 650rpx;
+		position: relative;
+		.icon{
+			width: 18rpx;
+			height: 34rpx;
+			position: absolute;
+			left: 30rpx;
+			top: 100rpx;
+			z-index: 999;
+		}
 		swiper{
 			width: 750rpx;
 			height: 650rpx;
@@ -376,20 +394,25 @@
 	}
 	.currentPrice{
 		padding: 0 20rpx;
-		text:nth-child(1){
+		view:nth-child(1){
+			color: #C91818;
+			font-size: 60rpx;
+		}
+		view:nth-child(2){
 			font-weight: 600;
 			font-size: 24rpx;
+			color: #000;
 		}
-		text:nth-child(2){
-			font-weight: 600;
-			font-size: 30rpx;
-			color: #ffa500;
-			margin: 0 10rpx 0 30rpx;
-		}
-		text:nth-child(3){
-			font-weight: 600;
-			font-size: 20rpx;
-			opacity: 0.5;
+	}
+	.des{
+		padding-top: 30rpx;
+		background-color: #F2F2F2;
+		width: 690rpx;
+		margin: 30rpx auto;
+		.maintitle{
+			width: 100%;
+			text-align: center;
+			font-size: 40rpx;
 		}
 	}
 	.priceLog{
@@ -458,13 +481,12 @@
 			}
 		}
 		.btns{
-			width: 400rpx;
 			height: 70rpx;
 			color: #FFF;
+			border-radius: 40rpx;
 			overflow: hidden;
 			.btn{
 				padding: 0rpx 35rpx;
-				border-radius: 20rpx;
 				height: 70rpx;
 				line-height: 70rpx;
 				// width: 400rpx;
@@ -484,6 +506,20 @@
 		position: relative;
 		height: 800rpx;
 		padding-bottom: 50rpx;
+		.dialogTitle{
+			font-size: 38rpx;
+			font-weight: 600;
+		}
+		.costForm{
+			margin-top: 52rpx;
+			font-size: 38rpx;
+			color: #606060;
+			.title{
+				font-weight: 500;
+				margin: 10rpx 0;
+			}
+		}
+		
 	}
 	
 	.submitBtn{
@@ -496,9 +532,9 @@
 		border-radius: 20rpx;
 		text-align: center;
 		color: #FFF;
-		width: 270rpx;
-		height: 90rpx;
-		line-height: 90rpx;
-		background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
+		width: 616rpx;
+		height: 72rpx;
+		line-height: 72rpx;
+		background: #FF9B24;
 	}
 </style>

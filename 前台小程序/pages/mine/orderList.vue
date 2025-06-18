@@ -498,7 +498,7 @@
 				wx.showLoading({title: '加载中'})
 				const params = {
 					userid: this.userInfo.userid,
-					// userid: 141,
+					userid: 141,
 					type: this.currentMercariType,
 				}
 				const res = await this.$api.queryMercariOrderList(params)

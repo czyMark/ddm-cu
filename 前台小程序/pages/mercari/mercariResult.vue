@@ -1,71 +1,77 @@
 <template>
-	<view class="collect">
-		<view class="header between">
-			<view class="uniInput">
-				<uni-easyinput prefixIcon="search" v-model="keyword"
-					@focus="onFocus" placeholder="搜索" @confirm="onSearch">
-				</uni-easyinput>
-			</view>
-			<view class="right flex" v-if="hasClass">
-				<view class="exchangeRate flex">
-					<view class="title" @click="onSearch">搜索</view>
+	<view class="collect page">
+		<view class="sticky">
+			
+			<Title :type="7" :currentClasses="currentClasses"/>
+			
+			<Header @onSearch="onSearch" ref="header" page="none"/>
+			
+			<!-- <view class="header between">
+				<view class="uniInput">
+					<uni-easyinput prefixIcon="search" v-model="keyword"
+						@focus="onFocus" placeholder="搜索" @confirm="onSearch">
+					</uni-easyinput>
+				</view>
+				<view class="right flex" v-if="hasClass">
+					<view class="exchangeRate flex">
+						<view class="title" @click="onSearch">搜索</view>
+					</view>
 				</view>
 			</view>
-		</view>
-		
-		<view class="currenClass between" v-if="hasClass && !isOnFocus">
-			<view class="value">
-				当前分类: {{currentClasses}}
-			</view>
-			<!-- <view class="close" @click="closeClass">
-				<uni-icons type="closeempty" size="16"></uni-icons>
+			
+			<view class="currenClass between" v-if="hasClass && !isOnFocus">
+				<view class="value">
+					当前分类: {{currentClasses}}
+				</view>
 			</view> -->
+		
+			<view class="filter between" v-if="!isOnFocus">
+				<view class="itemFilter center"
+					v-for="(item, index) in tabs" :key="index"
+					@click="chooseTab(item)">
+					<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
+					<view class="icons column" v-if="item.sort === 0">
+						<image src="@/static/icon/22.png"></image>
+						<image src="@/static/icon/24.png"></image>
+					</view>
+					<view class="icons column" v-if="item.sort === 2">
+						<image src="@/static/icon/21.png"></image>
+						<image src="@/static/icon/24.png"></image>
+					</view>
+					<view class="icons column" v-if="item.sort === 1">
+						<image src="@/static/icon/22.png"></image>
+						<image src="@/static/icon/23.png"></image>
+					</view>
+				</view>
+				<view class="itemFilter center" @click="showDrawer">
+					<view class="label">筛选</view>
+					<view class="icons column icons2">
+						<image src="@/static/filter.png"></image>
+					</view>
+				</view>
+				<!-- <view class="listMode" @click="changeIsList">
+					<image src="@/static/list.png" mode="" v-if="!isList"></image>
+					<image src="@/static/menu.png" mode="" v-if="isList"></image>
+				</view> -->
+			</view>
 		</view>
 		
-		<view class="filter between" v-if="!isOnFocus">
-			<view class="itemFilter center"
-				v-for="(item, index) in tabs" :key="index"
-				@click="chooseTab(item)">
-				<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
-				<view class="icons column" v-if="item.sort === 0">
-					<image src="@/static/Arrow-Up2.png"></image>
-					<image src="@/static/Arrow-Down2.png"></image>
-				</view>
-				<view class="icons column" v-if="item.sort === 2">
-					<image src="@/static/Arrow-Up2-active.png"></image>
-					<image src="@/static/Arrow-Down2.png"></image>
-				</view>
-				<view class="icons column" v-if="item.sort === 1">
-					<image src="@/static/Arrow-Up2.png"></image>
-					<image src="@/static/Arrow-Down2-active.png"></image>
-				</view>
-			</view>
-			<view class="itemFilter center" @click="showDrawer">
-				<view class="label">筛选</view>
-				<view class="icons column icons2">
-					<image src="@/static/filter.png"></image>
-				</view>
-			</view>
-			<view class="listMode" @click="changeIsList">
-				<image src="@/static/list.png" mode="" v-if="!isList"></image>
-				<image src="@/static/menu.png" mode="" v-if="isList"></image>
-			</view>
-		</view>
-		
-		<view class="currenClass currenClass2 between" v-if="!isOnFocus">
+		<!-- <view class="currenClass currenClass2 between" v-if="!isOnFocus">
 			<div class="center">
 				<uni-data-checkbox multiple v-model="isFilter" :localdata="hobby"></uni-data-checkbox>
 				<view class="value">
 					过滤已售商品
 				</view>
 			</div>
-<!-- 			<view class="listMode" @click="changeIsList">
-				<image src="@/static/list.png" mode="" v-if="!isList"></image>
-				<image src="@/static/menu.png" mode="" v-if="isList"></image>
-			</view> -->
-		</view>
+		</view> -->
 		
-		<view class="list" v-if="!isOnFocus && isList">
+		<view
+			class="list"
+			v-if="!isOnFocus && isList"
+		>
+		<!-- :style="{
+			height: `calc(100vh - ${navBarheight}px - 200rpx)`
+		}" -->
 			<view class="item center" v-for="(item, index) in list" :key="index"
 				@click="chooseItem(item)">
 				<view class="img center">
@@ -74,12 +80,12 @@
 				</view>
 				<view class="info column">
 					<view class="title">{{item.name}}</view>
-					<view class="price between" style="width: 478rpx">
-						<view>编号：<text>{{item.id}}</text></view>
-						<view @click.stop="copyCode(item.id)" style="border: 1px solid #c5c5c5; padding: 0px 3px; color: #423f3f;">复制</view>
-					</view>
-					<view class="price">现价：<text>{{item.price}}円</text></view>
-					<view class="price"><text>{{item.price_rmb}}元</text></view>
+					<view class="price"><text>{{item.price}}円</text></view>
+					<!-- <view class="price"><text>{{item.price_rmb}}元</text></view> -->
+					<image
+						class="icon"
+						src="@/static/icon/56.png"
+					>
 				</view>
 			</view>
 		</view>
@@ -166,9 +172,13 @@
 
 <script>
 	import clasMenu from "@/utils/mercariClass.js"
+	import Title from "@/components/title.vue"
+	import Header from "@/components/header.vue"
 	export default {
+		components: {Title, Header},
 		data() {
 			return {
+				navBarheight: 0,
 				currentClasses: '',	// 当前分类
 				hasClass: false, // 有无分类参数
 				keyword: '',
@@ -208,6 +218,7 @@
 			}
 		},
 		async onLoad(query) {
+			this.navBarheight = wx.getStorageSync('statusBarHeight')
 			this.historyList = wx.getStorageSync('mercariHistory') || []
 			this.rate = wx.getStorageSync('rate') || null
 			this.query = query
@@ -425,6 +436,13 @@
 </script>
 
 <style lang="scss">
+	.sticky{
+		position: sticky;
+		top: 0;
+		left: 0;
+		z-index: 8;
+		background: linear-gradient( #DAEBFD 0%, #DEEAFC 32%, #ECEAFC 58%, #F1EAFC 63%, #EFF8FD 83%, #FFFFFF 100%);
+	}
 	.header{
 		height: 85rpx;
 		padding: 0 20rpx;
@@ -465,6 +483,7 @@
 	
 	.filter{
 		margin-top: 30rpx;
+		padding-bottom: 30rpx;
 		.itemFilter{
 			width: 180rpx;
 			.icons{
@@ -547,7 +566,6 @@
 	}
 	
 	.list{
-		margin-top: 20rpx;
 		// padding: 0 20rpx;
 		.item{
 			margin: 0 auto;
@@ -571,6 +589,7 @@
 				font-size: 24rpx;
 				justify-content: space-around;
 				align-items: flex-start;
+				position: relative;
 				.title{
 					font-size: 30rpx;
 					height: 80rpx;
@@ -593,6 +612,13 @@
 				.price text{
 					font-size: 24rpx;
 					color: red;
+				}
+				.icon{
+					width: 54rpx;
+					height: 58rpx;
+					position: absolute;
+					right: 18rpx;
+					bottom: 18rpx;
 				}
 			}
 		}

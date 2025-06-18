@@ -1,16 +1,18 @@
 <template>
-	<view class="yahoo">
-		<Header logo="YaHoo" page="YaHoo" :bigClass="bigClass"></Header>
+	<view class="yahoo page">
+		<Title :type="4"/>
+		<Header page="none" @onSearch="onSearch"/>
 		<goodsClass type="yahoo" :classList="classList" :bigClass="bigClass"></goodsClass>
 	</view>
 </template>
 
 <script>
 	import clasMenu from "@/utils/yahooClass.js"
+	import Title from "@/components/title.vue"
 	import Header from "@/components/header.vue"
 	import goodsClass from "@/components/goodsClass.vue"
 	export default {
-		components: {Header, goodsClass},
+		components: {Title, goodsClass,Header},
 		data() {
 			return {
 				classList: clasMenu,
@@ -24,6 +26,14 @@
 		methods: {
 			onBigClassChange(val){
 				this.bigClass = val
+			},
+			onSearch(keyword){
+				this.toPath(`/pages/yahoo/yahooResult?bigClass=${this.bigClass}&keyword=${keyword}`)
+			},
+			toPath(url){
+				wx.navigateTo({
+					url,
+				})
 			}
 		}
 	}

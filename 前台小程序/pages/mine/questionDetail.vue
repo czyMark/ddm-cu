@@ -1,6 +1,7 @@
 <template>
 	<view class="page">
-		<view class="title">
+		<Title :type="1" title="问题详情"/>
+		<view class="title2">
 			{{title}}
 		</view>
 		<view class="content">
@@ -10,7 +11,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				title: ``,
@@ -40,8 +43,8 @@
 	}
 </script>
 
-<style lang="scss">
-	.title{
+<style lang="scss" sco>
+	.title2{
 		padding: 30rpx;
 		font-size: 46rpx;
 		font-weight: 600;

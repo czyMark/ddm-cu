@@ -21,13 +21,13 @@
                     <template  v-if="item.children">
                         <el-submenu :index="`${index+1}-1`">
                             <template slot="title">
-                                <i class="el-icon-location"></i>
+                                <!-- <i class="el-icon-location"></i> -->
                                 <span slot="title">{{item.label}}</span>
                             </template>
 
                             <el-menu-item-group>
                                 <el-menu-item :index="`${index+1}-${i+1}-1`" v-for="(it, i) in item.children" :key="i"  @click="toPath(it)">
-                                    <i class="el-icon-location"></i>
+                                    <!-- <i class="el-icon-location"></i> -->
                                     <span slot="title">{{it.label}}</span>
                                 </el-menu-item>
                             </el-menu-item-group>
@@ -36,8 +36,8 @@
                     </template>
 
                     <template  v-else>
-                        <el-menu-item :index="`${index+1}-1`">
-                            <i class="el-icon-menu"></i>
+                        <el-menu-item :index="`${index+1}-1`" :disabled="item.disabled">
+                            <!-- <i class="el-icon-menu"></i> -->
                             <span slot="title">{{item.label}}</span>
                         </el-menu-item>
                     </template>
@@ -110,7 +110,7 @@ export default {
         ...mapState(['menuSwitch', 'menuList', 'deviceType']),
     },
     created(){
-        // console.log('menu', this.menu)
+        console.log('menu', this.menuList)
     },
     methods: {
         handleOpen(){},
@@ -203,6 +203,14 @@ export default {
 
 ::v-deep .el-menu{
     border: none;
+}
+
+::v-deep .el-menu .is-disabled{
+    opacity: 1; 
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .showMenu{

@@ -1,18 +1,33 @@
 <template>
 	<view class="goodsClass between">
 		<view class="left">
-			<view :class="['leftItem', currentBigClass === item.id ? 'current' : '', item.cid === '11' ? 'special' : '']"
-				v-for="(item, index) in classList" :key="index" @click=onBigChange(item)>
+			<view :class="[
+					'leftItem',
+					currentBigClass === item.id ? 'current' : '',
+					item.cid === '11' ? 'special' : ''
+				]"
+				v-for="(item, index) in classList"
+				:key="index"
+				@click="onBigChange(item)"
+			>
 				{{ item.name_cn || item.cname }}
 			</view>
 		</view>
 		
 		<view class="right">
-			<view class="rightTop flex">
-				<view :class="['rightTopItem', currentMiddleClass === item.id ? 'current' : '']"
-					v-for="(item, index) in middleClass" :key="index" @click=toPath(item)>
+			<view class="rightTop around">
+				<view :class="['rightTopItem column', currentMiddleClass === item.id ? 'current' : '']"
+					v-for="(item, index) in middleClass" :key="index" @click="toPath(item)">
 					<!-- v-for="(item, index) in middleClass" :key="index" @click=onMiddleChange(item)> -->
-					{{ item.name_cn || item.cname }}
+					<image
+						class="icon"
+						:src="
+							type === 'yahoo' ? yahooImg : mercariImg
+						"
+					>
+					<view>
+						{{ item.name_cn || item.cname }}
+					</view>
 				</view>
 				<i></i>
 				<i></i>
@@ -51,6 +66,8 @@
 		},
 		data() {
 			return {
+				yahooImg: require('@/static/yahoo-fill.png'),
+				mercariImg: require('@/static/mm.png'),
 				middleClass:[],
 				smallClass: [],
 				currentBigClass: null,
@@ -99,10 +116,10 @@
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
 	.goodsClass{
 		margin-top: 30rpx;
-		height: calc(100vh - 140rpx);
+		height: calc(100vh - 320rpx);
 	}
 	.left{
 		height: calc(100% + 30rpx);
@@ -139,6 +156,8 @@
 		overflow : hidden;
 		white-space : nowrap; 
 		text-overflow : ellipsis;
+		color: #949292;
+		font-size: 26rpx;
 	}
 	.special{
 		font-size: 28rpx;
@@ -150,11 +169,22 @@
 		overflow: unset;
 	}
 	.left .current{
-		background: #ffe997;
 		font-weight: 600;
+		color: #4C43E8;
+		position: relative;
+	}
+	.left .current::before{
+		content: '';
+		position: absolute;
+		width: 8rpx;
+		height: 28rpx;
+		background-color: #4C43E8;
+		left: 24rpx;
+		top: 20rpx;
 	}
 	.right{
-		width: 490rpx;
+		width: 520rpx;
+		padding-right: 10rpx;
 	}
 	.rightTop{
 		min-height: 100rpx;
@@ -169,7 +199,7 @@
 	}
 
 	.rightTop::-webkit-scrollbar-thumb {
-		background: #e89909;
+		background: #949292;
 		border-radius: 6rpx;
 	}
 
@@ -178,26 +208,24 @@
 		border-radius: 6rpx;
 	}
 	.rightTopItem{
-		font-weight: 600;
+		width: 140rpx;
+		font-weight: 500;
 		color: #000;
-		padding: 10rpx 20rpx;
-		margin-bottom: 15rpx;
+		font-size: 20rpx;
+		margin-bottom: 30rpx;
+		image{
+			width: 125rpx;
+			height: 125rpx;
+			border-radius: 50%;
+			border: 1px solid #C4C4C4;
+			margin-bottom: 25rpx;
+		}
 	}
 	.rightTop .current{
-		color: orange;
+		color: #4C43E8;
 		position: relative;
 	}
-	.rightTop .current::before{
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		margin: 0 auto;
-		width: 60rpx;
-		height: 2px;
-		background: orange;
-		bottom: 0;
-	}
+	
 	.rightBottom{
 		max-height: calc(100% - 250rpx);
 		overflow: auto;
@@ -208,7 +236,7 @@
 		padding-right: 20rpx;
 	}
 	.right i{
-		width: 60rpx;
+		width: 125rpx;
 		height: 0;
 	}
 	.rightBottom::-webkit-scrollbar {
@@ -216,7 +244,7 @@
 	}
 	
 	.rightBottom::-webkit-scrollbar-thumb {
-		background: #e89909;
+		background: #949292;
 		border-radius: 6rpx;
 	}
 	

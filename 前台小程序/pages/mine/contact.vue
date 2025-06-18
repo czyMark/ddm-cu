@@ -1,5 +1,6 @@
 <template>
 	<view class="page">
+		<Title :type="1" title="联系客服" :showBack="false"/>
 		<view class="content">
 			<rich-text :nodes="HtMLData"></rich-text>
 		</view>
@@ -10,7 +11,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				HtMLData: ``

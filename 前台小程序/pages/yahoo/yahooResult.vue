@@ -1,59 +1,38 @@
 <template>
-	<view class="collect">
-		<view class="header between">
-			<view class="uniInput">
-				<uni-easyinput prefixIcon="search" v-model="keyword"
-					@focus="onFocus" placeholder="搜索" @confirm="onSearch">
-				</uni-easyinput>
-			</view>
-			<view class="right flex" v-if="hasClass">
-				<view class="exchangeRate flex">
-					<view class="title" @click="onSearch">搜索</view>
+	<view class="collect page">
+		<view class="sticky">
+			<Title :type="5" :currentClasses="currentClasses" :showBg="false"/>
+			
+			<Header @onSearch="onSearch" ref="header" page="none"/>
+			
+			<view class="filter between" v-if="!isOnFocus">
+				<view class="itemFilter center"
+					v-for="(item, index) in tabs" :key="index"
+					@click="chooseTab(item)">
+					<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
+					<view class="icons column" v-if="item.sort === 0">
+						<image src="@/static/icon/22.png"></image>
+						<image src="@/static/icon/24.png"></image>
+					</view>
+					<view class="icons column" v-if="item.sort === 2">
+						<image src="@/static/icon/21.png"></image>
+						<image src="@/static/icon/24.png"></image>
+					</view>
+					<view class="icons column" v-if="item.sort === 1">
+						<image src="@/static/icon/22.png"></image>
+						<image src="@/static/icon/23.png"></image>
+					</view>
 				</view>
-			</view>
-			<view class="right flex" v-if="!hasClass">
-				<view class="exchangeRate flex">
-					<view class="title" @click="onSearch">搜索</view>
+				<view class="itemFilter center" @click="showDrawer">
+					<view class="label">筛选</view>
+					<view class="icons column icons2">
+						<image src="@/static/filter.png"></image>
+					</view>
 				</view>
-			</view>
-		</view>
-		
-		<view class="currenClass between" v-if="hasClass && !isOnFocus">
-			<view class="value">
-				当前分类: {{currentClasses}}
-			</view>
-			<!-- <view class="close" @click="closeClass">
-				<uni-icons type="closeempty" size="16"></uni-icons>
-			</view> -->
-		</view>
-		
-		<view class="filter between" v-if="!isOnFocus">
-			<view class="itemFilter center"
-				v-for="(item, index) in tabs" :key="index"
-				@click="chooseTab(item)">
-				<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
-				<view class="icons column" v-if="item.sort === 0">
-					<image src="@/static/Arrow-Up2.png"></image>
-					<image src="@/static/Arrow-Down2.png"></image>
-				</view>
-				<view class="icons column" v-if="item.sort === 2">
-					<image src="@/static/Arrow-Up2-active.png"></image>
-					<image src="@/static/Arrow-Down2.png"></image>
-				</view>
-				<view class="icons column" v-if="item.sort === 1">
-					<image src="@/static/Arrow-Up2.png"></image>
-					<image src="@/static/Arrow-Down2-active.png"></image>
-				</view>
-			</view>
-			<view class="itemFilter center" @click="showDrawer">
-				<view class="label">筛选</view>
-				<view class="icons column icons2">
-					<image src="@/static/filter.png"></image>
-				</view>
-			</view>
-			<view class="listMode" @click="changeIsList">
-				<image src="@/static/list.png" mode="" v-if="!isList"></image>
-				<image src="@/static/menu.png" mode="" v-if="isList"></image>
+				<!-- <view class="listMode" @click="changeIsList">
+					<image src="@/static/list.png" mode="" v-if="!isList"></image>
+					<image src="@/static/menu.png" mode="" v-if="isList"></image>
+				</view> -->
 			</view>
 		</view>
 		
@@ -65,12 +44,12 @@
 				</view>
 				<view class="info column">
 					<view class="title">{{item.title}}</view>
-					<view class="price between" style="width: 478rpx">
+					<!-- <view class="price between" style="width: 478rpx">
 						<view>编号：<text>{{item.code}}</text></view>
 						<view @click.stop="copyCode(item.code)" style="border: 1px solid #c5c5c5; padding: 1px 5px; color: #423f3f;">复制</view>
-					</view>
+					</view> -->
 					<view class="saler">出品者：{{item.seller}}</view>
-					<view class="price">现价：<text>{{item.jpprice}}円 ({{item.price_rmb}}元)</text></view>
+					<view class="price">出价：<text>{{item.jpprice}}円 ({{item.price_rmb}}元)</text></view>
 					<view class="bottom between">
 						<view class="times center">
 							<image src="@/static/shiwu-chuizi.png" mode=""></image>
@@ -138,17 +117,38 @@
 		<view class="drawer">
 			<uni-drawer ref="showRight" mode="right" :width="200">
 				<view class="drawerContent">
+					
 					<view class="item">
-						<view class="label">关键词</view>
-						<uni-easyinput v-model="keyword" placeholder="请输入内容"></uni-easyinput>
-					</view>
-					<view class="item">
-						<view class="label">卖家</view>
+						<view class="label">价格</view>
 						<view class="values between">
-							<view :class="['vItem', currentSalerType === item.id ? 'active' : '']"
+							<view :class="['vItem flex', currentPriceLimits === item.id ? 'active' : '']"
+								v-for="(item, index) in priceLimits" :key="index"
+								@click="onChoose(item, 'currentPriceLimits')"
+							>
+								<image
+									v-if="currentPriceLimits === item.id"
+									class="icon"
+									src="@/static/icon/45.png"
+								>
+								<view class="icon empty" v-else></view>
+								{{item.label}}
+							</view>
+						</view>
+					</view>
+					
+					<view class="item">
+						<view class="label">出品者</view>
+						<view class="values between">
+							<view :class="['vItem flex', currentSalerType === item.id ? 'active' : '']"
 								v-for="(item, index) in salerTypes" :key="index"
 								@click="onChoose(item, 'currentSalerType')"
 							>
+								<image
+									v-if="currentSalerType === item.id"
+									class="icon"
+									src="@/static/icon/45.png"
+								>
+								<view class="icon empty" v-else></view>
 								{{item.label}}
 							</view>
 						</view>
@@ -156,39 +156,47 @@
 					<view class="item">
 						<view class="label">新旧</view>
 						<view class="values between">
-							<view :class="['vItem', currentOldOrNew === item.id ? 'active' : '']"
+							<view :class="['vItem flex', currentOldOrNew === item.id ? 'active' : '']"
 								v-for="(item, index) in oldOrNew" :key="index"
 								@click="onChoose(item, 'currentOldOrNew')"
 							>
+								<image
+									v-if="currentOldOrNew === item.id"
+									class="icon"
+									src="@/static/icon/45.png"
+								>
+								<view class="icon empty" v-else></view>
 								{{item.label}}
 							</view>
-						</view>
-					</view>
-					<view class="item">
-						<view class="label">商品价格</view>
-						<view class="values between">
-							<view :class="['vItem', currentPriceLimits === item.id ? 'active' : '']"
-								v-for="(item, index) in priceLimits" :key="index"
-								@click="onChoose(item, 'currentPriceLimits')"
-							>
-								{{item.label}}
-							</view>
-							<i></i>
-							<i></i>
-							<i></i>
-							<i></i>
 						</view>
 					</view>
 					
-					<view class="btns flex">
-						<view class="btn" @click="closeDrawer">取消</view>
+					
+					<view class="btns around">
+						<image
+							class="btn"
+							src="@/static/icon/46.png"
+							@click="closeDrawer"
+						>
+						<image
+							class="btn"
+							src="@/static/icon/47.png"
+							@click="()=>{
+								tabs.forEach(it=>{
+									it.isCurrent = false
+									it.sort = 0
+								})
+								onSearch()
+							}"
+						>
+						<!-- <view class="btn" @click="closeDrawer">取消</view>
 						<view class="btn" @click="()=>{
 							tabs.forEach(it=>{
 								it.isCurrent = false
 								it.sort = 0
 							})
 							onSearch()
-						}">确定</view>
+						}">确定</view> -->
 					</view>
 				</view>
 			</uni-drawer>
@@ -198,7 +206,10 @@
 
 <script>
 	import clasMenu from "@/utils/yahooClass.js"
+	import Title from "@/components/title.vue"
+	import Header from "@/components/header.vue"
 	export default {
+		components: {Title, Header},
 		data() {
 			return {
 				currentClasses: '',	// 当前分类
@@ -213,9 +224,9 @@
 					{id: 3, sort: 0, label: '热度', isCurrent: false},
 				],
 				salerTypes: [
-					{id: 0, label: '所有卖家'},
-					{id: 1, label: '正规店铺'},
-					{id: 2, label: '个人卖家'},
+					{id: 0, label: '不指定'},
+					{id: 1, label: '店铺'},
+					{id: 2, label: '个人'},
 				],
 				currentSalerType: '',
 				oldOrNew: [
@@ -243,6 +254,10 @@
 			}
 		},
 		onLoad(query) {
+			console.log('query', query, this.$refs)
+			this.$refs.header.$refs.search.keyword = query.keyword
+			
+			
 			this.historyList = wx.getStorageSync('yahooHistory') || []
 			this.rate = wx.getStorageSync('rate') || null
 			if(Object.keys(query).length > 0){
@@ -253,13 +268,15 @@
 			// 查询商品列表
 			const params = {
 				urlid: parseInt(query.smallClass) || this.query.bigClass*1,
-				pagecount: this.pagecount
+				pagecount: this.pagecount,
+				keyword: this.$refs.header.$refs.search.keyword,
 			}
 			this.selectcates(params)
 		},
 		onReachBottom(){
 			this.pagecount++
 			const params = {
+				keyword: this.$refs.header.$refs.search.keyword,
 				urlid: parseInt(this.query?.smallClass) || this.query.bigClass*1,
 				pagecount: this.pagecount
 			}
@@ -273,14 +290,14 @@
 				this.historyList = []
 			},
 			onFocus(){
-				this.isOnFocus = true
+				// this.isOnFocus = true
 			},
 			async selectcates(params){
 				wx.showLoading({title: '加载中'})
 				const res = await this.$api.getYahooGoodList({
 					pagecount: this.pagecount,
 					urlid: parseInt(this.query?.middleClass) || parseInt(this.query?.bigClass),
-					keyword: this.keyword,
+					keyword: this.$refs.header.$refs.search.keyword,
 					priceType: this.currentPriceLimits,
 					isNewType: this.currentOldOrNew,
 					selltype: this.currentSalerType,
@@ -461,7 +478,14 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	.sticky{
+		position: sticky;
+		top: 0;
+		left: 0;
+		z-index: 8;
+		background: linear-gradient( #DAEBFD 0%, #DEEAFC 32%, #ECEAFC 58%, #F1EAFC 63%, #EFF8FD 83%, #FFFFFF 100%);
+	}
 	.header{
 		height: 85rpx;
 		padding: 0 20rpx;
@@ -510,7 +534,7 @@
 				}
 			}
 			.active{
-				color: #ffa500;
+				color: #000;
 			}
 			.icons2 image{
 				width: 30rpx;
@@ -533,39 +557,48 @@
 		width: 600rpx;
 		height: 100%;
 		box-sizing: border-box;
-		padding: 30rpx 0;
+		padding: 78rpx 0 30rpx;
 		position: relative;
+		background-color: #F4F4F4;
 		
 		.item{
 			box-sizing: border-box;
 			padding: 0 30rpx 20rpx 30rpx;
-			border-bottom: 20rpx solid #e5e5e5;
 			.label{
-				color: #e89909;
-				padding-top: 10rpx;
-				margin-bottom: 10rpx;
+				color: #000;
+				font-weight: 600;
+				font-size: 40rpx;
+				padding-top: 30rpx;
+				margin-bottom: 30rpx;
 			}
 			.values{
 				flex-wrap: wrap;
+				box-sizing: border-box;
+				padding: 0 50rpx;
 			}
 			.vItem{
+				width: 210rpx;
 				margin-top: 20rpx;
 				font-size: 26rpx;
-				padding: 8rpx 20rpx;
 				border-radius: 20rpx;
-				background-color: #e5e5e5;
 				color: #6f6d6d;
-				border: 1px solid #e5e5e5;
+				.icon{
+					width: 36rpx;
+					height: 36rpx;
+					border-radius: 50%;
+					margin-right: 10rpx;
+					border: 1px solid #9e9a9a;
+				}
+				.empty{
+					border: 1px solid #9e9a9a;
+				}
 			}
 			i{
 				width: 100rpx;
 				height: 0;
 			}
-			.active{
-				box-sizing: border-box;
-				color: #eba82e;
-				border: 1px solid #eba82e;
-				background: #FFF;
+			.active image{
+				border: 1px solid #F4F4F4 !important;
 			}
 		}
 		.item:last-child{
@@ -575,18 +608,11 @@
 		.btns{
 			width: 100%;
 			position: absolute;
-			bottom: 0;
+			bottom: 46rpx;
 			left: 0;
 			.btn{
-				height: 80rpx;
-				line-height: 80rpx;
-				text-align: center;
-				width: 50%;
-				color: #FFF;
-				background: #d0cbcb;
-			}
-			.btn:last-child{
-				background: #e89909;
+				height: 90rpx;
+				width: 240rpx;
 			}
 		}
 	}
@@ -596,8 +622,8 @@
 		// padding: 0 20rpx;
 		.item{
 			margin: 0 auto;
-			margin-bottom: 20rpx;
-			height: 250rpx;
+			margin-bottom: 40rpx;
+			height: 200rpx;
 			width: 710rpx;
 			.imageUrl{
 				height: 200rpx;
@@ -610,12 +636,13 @@
 				max-width: 200rpx;
 			}
 			.info{
-				height: 250rpx;
+				height: 200rpx;
 				width: 480rpx;
 				margin-left: 30rpx;
 				font-size: 24rpx;
 				justify-content: space-around;
 				align-items: flex-start;
+				color: #787878;
 				.title{
 					font-size: 30rpx;
 					height: 80rpx;
@@ -625,9 +652,10 @@
 					-webkit-line-clamp: 2;
 					overflow: hidden;
 					text-overflow : ellipsis; 
+					color: #000;
 				}
 				.bottom{
-					width: 100%;
+					width: 300rpx;
 					.times{
 						image{
 							width: 30rpx;

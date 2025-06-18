@@ -11,6 +11,8 @@ api.getRate = params => request('POST', '/rate/select', params)
 // 查询帮助设置
 api.querySetting = params => request('POST', '/setting/select', params)
 
+// 改雅虎订单状态
+api.updataTypeByid = params => request('POST', '/yahooOrder/updataTypeByid', params)
 
 // 根据分类类别查询商品列表 雅虎
 api.selectcates = params => request('POST', '/good/selectcates', params)

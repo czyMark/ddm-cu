@@ -1,36 +1,45 @@
 <template>
-	<view class="collect">
-		<view class="tabs around">
-			<view :class="['tabItem', currentTab === item.id ? 'active' : '']" 
+	<view class="collect page">
+		<Title :type="1" title="我的足迹"/>
+		<!-- <view class="tabs around">
+			<view :class="['tabItem', currentPlant === item.id ? 'active' : '']" 
 				v-for="(item, index) in tabList" :key="index" @click="choosetab(item.id)">
 				{{item.title}}
 			</view>
+		</view> -->
+		<view class="plant between">
+			<image
+				class="item"
+				v-for="(item, index) in plants" :key="index"
+				@click="choosePlants(item)"
+				:src="currentPlant === item.id ? item.icon : item.icon2"
+			>
 		</view>
-		<view class="list" v-if="currentTab === 0">
+		<view class="list" v-if="currentPlant === 0">
 			<view class="item flex" v-for="(item, index) in yahooList" :key="index"
 				@click="chooseItem(item, 1)">
 				<image :src="item.imageUrl"></image>
 				<view class="info column">
 					<view class="title">{{item.title}}</view>
-					<view class="price">现价 <text>{{item.price}}</text>円</view>
-					<view class="bottom between">
+					<view class="price"><text>{{item.price}}日元</text></view>
+					<!-- <view class="bottom between">
 						<view class="times">次数: {{item.counts}}次</view>
 						<view class="status">
 							
 						</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 			<view class="tips" v-if="yahooList.length === 0">空空如也</view>
 		</view>
-		<view class="list" v-if="currentTab === 1">
+		<view class="list" v-if="currentPlant === 1">
 			<view class="item flex"  v-for="(item, index) in mercariList" :key="index"
 				@click="chooseItem(item, 2)">
 				<image :src="item.imageUrl"></image>
 				<view class="info column">
 					<view class="title">{{item.title}}</view>
 					<view class="bottom between">
-						<view class="price">现价 <text>{{item.price}}</text>円</view>
+						<view class="price"><text>{{item.price}}日元</text></view>
 						
 					</view>
 				</view>
@@ -41,14 +50,16 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
-				tabList: [
-					{id: 0, title: "雅虎"},
-					{id: 1, title: "煤炉"},
+				currentPlant: 0, // 0雅虎  1煤炉
+				plants: [
+					{id: 0, icon: '/static/icon/14.png', icon2: '/static/icon/15.png'},
+					{id: 1, icon: '/static/icon/17.png', icon2: '/static/icon/16.png'},
 				],
-				currentTab: 0,
 				yahooList: [],
 				mercariList: [],
 				page: 1,
@@ -69,7 +80,7 @@
 				wx.showLoading({title: '加载中'})
 				const params = {
 					userid: this.userInfo.userid,
-					platform: this.currentTab
+					platform: this.currentPlant
 				}
 				const res = await this.$api.queryViewLog(params)
 				const { data } = res.data
@@ -78,7 +89,7 @@
 					item.isCollect = true
 				})
 				
-				if(this.currentTab === 0){
+				if(this.currentPlant === 0){
 					this.yahooList = data
 				}else{
 					this.mercariList = data
@@ -86,12 +97,12 @@
 				
 				wx.hideLoading()
 			},
-			choosetab(id){
+			choosePlants(item){
 				this.list = []
 				this.page = 1
 				this.size = 50
-				this.currentTab = id
-				if(id === 1){
+				this.currentPlant = item.id
+				if(item.id === 1){
 					
 				}else{
 					
@@ -152,14 +163,13 @@
 		padding: 0 20rpx;
 		.item{
 			margin-bottom: 20rpx;
-			height: 250rpx;
 			width: 710rpx;
 			image{
-				height: 250rpx;
-				width: 250rpx;
+				width: 220rpx;
+				height: 180rpx;
 			}
 			.info{
-				width: 430rpx;
+				width: 450rpx;
 				margin-left: 30rpx;
 				font-size: 28rpx;
 				justify-content: space-around;
@@ -192,5 +202,15 @@
 		font-size: 28rpx;
 		color: #9e9a9a;
 		margin-bottom: 30rpx;
+	}
+	
+	
+	.plant{
+		padding: 20rpx 70rpx;
+		.item{
+			width: 220rpx;
+			height: 86rpx;
+			margin-right: 30rpx;
+		}
 	}
 </style>

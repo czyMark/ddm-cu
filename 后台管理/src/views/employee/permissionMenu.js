@@ -3,68 +3,69 @@ const permissionMenu = [
     {
         id: 1,
         label: '系统运营',
-        path: '/employee'
+        path: '/employee',
+        disabled: true,
     },
 
     {
         id: 2,
         label: '订单管理',
-        path: '/employee',
+        path: '/orderList',
         children: [
             {
                 id: 3,
                 label: '预约出价',
-                path: '/orderList/yahoo?yahooType=100'
+                path: '/orderList/allOrderList?yahooType=100'
             },
             {
                 id: 4,
                 label: '竞拍中',
-                path: '/orderList/yahoo?yahooType=1'
+                path: '/orderList/allOrderList?yahooType=1'
             },
             {
                 id: 5,
                 label: '待支付',
-                path: '/orderList/yahoo?yahooType=2'
+                path: '/orderList/allOrderList?yahooType=2'
             },
             {
                 id: 6,
                 label: '已支付',
-                path: '/orderList/yahoo?yahooType=2'
+                path: '/orderList/allOrderList?yahooType=2&mercariType=1'
             },
             {
                 id: 7,
                 label: '待入库',
-                path: '/orderList/yahoo?yahooType=4'
+                path: '/orderList/allOrderList?yahooType=4&mercariType=1'
             },
             {
                 id: 8,
                 label: '已入库',
-                path: '/orderList/yahoo?yahooType=5'
+                path: '/orderList/allOrderList?yahooType=5&mercariType=2'
             },
             {
                 id: 9,
                 label: '申请发货',
-                path: '/orderList/yahoo?yahooType=6'
+                path: '/orderList/allOrderList?yahooType=6&mercariType=3'
             },
             {
                 id: 10,
                 label: '待付尾款',
-                path: '/orderList/yahoo?yahooType=7'
+                path: '/orderList/allOrderList?yahooType=7&mercariType=4'
             },
             {
                 id: 11,
                 label: '待发货',
-                path: '/orderList/yahoo?yahooType=8'
+                path: '/orderList/allOrderList?yahooType=8&mercariType=5'
             },
             {
                 id: 12,
                 label: '已发货',
-                path: '/orderList/yahoo?yahooType=9'
+                path: '/orderList/allOrderList?yahooType=9&mercariType=6'
             },
             {
                 id: 13,
                 label: '待签收',
-                path: '/orderList/yahoo?yahooType=999'
+                path: '/orderList/allOrderList?yahooType=9&mercariType=6'
             },
 
         ]
@@ -110,7 +111,7 @@ const permissionMenu = [
     {
         id: 19,
         label: '财务管理',
-        path: '/employee',
+        path: '/money',
         children: [
             {
                 id: 20,
@@ -129,13 +130,15 @@ const permissionMenu = [
         
         id: 22,
         label: '站点设置',
-        path: '/employee',
+        path: '/setting',
+        disabled: true,
+
     },
 
     {
         id: 23,
         label: '美术设计',
-        path: '/employee',
+        path: '/art',
         children: [
             {
                 id: 24,
@@ -165,7 +168,7 @@ const permissionMenu = [
         
         id: 28,
         label: '系统管理',
-        path: '/employee',
+        path: '/system',
         children: [
             {
                 id: 29,
@@ -175,7 +178,7 @@ const permissionMenu = [
             {
                 id: 30,
                 label: '规则设置',
-                path: '/setting'
+                path: '/rate'
             },
             {
                 id: 31,

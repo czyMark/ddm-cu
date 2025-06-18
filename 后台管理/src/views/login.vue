@@ -57,6 +57,8 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="ba">京ICP备2025129620号-1</a>
   </div>
 </template>
 
@@ -203,16 +205,17 @@ export default {
             localStorage.setItem('token', data.token)
             
 
+            console.log('permissionMenu', permissionMenu[1].children[0].path)
             // 跳转第一个菜单
             const record = {
-              path,
+              path: permissionMenu[1].children[0].path,
               meta: {
                 title: label
               }
             }
             this.$store.commit('add_historyRecord', record)
             this.$router.push({
-              path
+              path: permissionMenu[1].children[0].path
             })
           }else{
             this.$message.error(msg)
@@ -233,6 +236,18 @@ export default {
 $bg:#283443;
 $light_gray:#fff;
 $cursor: #fff;
+.login-container{
+  position: relative;
+  .ba{
+    color: #fff;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+  }
+}
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {

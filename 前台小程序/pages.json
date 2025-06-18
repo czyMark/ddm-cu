@@ -4,7 +4,16 @@
 			"path": "pages/home/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/home/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
@@ -30,21 +39,24 @@
 			"path": "pages/yahoo/index",
 			"style": {
 				"navigationBarTitleText": "雅虎代购",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/yahoo/yahooResult",
 			"style": {
 				"navigationBarTitleText": "雅虎搜索",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/yahoo/detail",
 			"style": {
 				"navigationBarTitleText": "商品详情",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
@@ -65,28 +77,32 @@
 			"path": "pages/mercari/index",
 			"style": {
 				"navigationBarTitleText": "煤炉代购",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mercari/mercariResult",
 			"style": {
 				"navigationBarTitleText": "煤炉搜索",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mercari/detail",
 			"style": {
 				"navigationBarTitleText": "商品详情",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mercari/cart",
 			"style": {
 				"navigationBarTitleText": "购物车",
-				"navigationBarBackgroundColor": "#FFFFFF"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationStyle":"custom"
 			}
 		},
 		{
@@ -106,87 +122,157 @@
 			"path": "pages/mine/collect",
 			"style": {
 				"navigationBarTitleText": "我的收藏",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/viewlog",
 			"style": {
 				"navigationBarTitleText": "我的足迹",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/orderList",
 			"style": {
 				"navigationBarTitleText": "我的订单",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+				"navigationStyle":"custom"
 			}
 		},
 		{
+			"path": "pages/mine/auctionList",
+			"style": {
+				"navigationBarTitleText": "竞拍订单",
+				"enablePullDownRefresh": true,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/mine/allOrderList",
+			"style": {
+				"navigationBarTitleText": "全部订单",
+				"enablePullDownRefresh": true,
+				"navigationStyle":"custom"
+			}
+		},
+		
+		
+		
+		{
 			"path": "pages/mine/orderDetail",
 			"style": {
-				"navigationBarTitleText": "订单详情"
+				"navigationBarTitleText": "订单详情",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/address",
 			"style": {
-				"navigationBarTitleText": "我的地址"
+				"navigationBarTitleText": "我的地址",
+				"navigationStyle":"custom"
 			}
 		}, 
 		{
+			"path": "pages/mine/addAddress",
+			"style": {
+				"navigationBarTitleText": "地址操作",
+				"navigationStyle":"custom"
+			}
+		}, 
+		{
+			"path": "pages/mine/charge",
+			"style": {
+				"navigationBarTitleText": "充值",
+				"navigationStyle":"custom"
+			}
+		}, 
+		{
+			"path": "pages/mine/guaranteeCharge",
+			"style": {
+				"navigationBarTitleText": "保证金充值",
+				"navigationStyle":"custom"
+			}
+		}, 
+		
+		
+		
+		{
 			"path": "pages/mine/profile",
 			"style": {
-				"navigationBarTitleText": "资料修改"
+				"navigationBarTitleText": "资料修改",
+				"navigationStyle":"custom"
 			}
 		}, 
 		{
 			"path": "pages/mine/account",
 			"style": {
-				"navigationBarTitleText": "我的钱包"
+				"navigationBarTitleText": "我的钱包",
+				"navigationStyle":"custom"
 			}
 		}, 
 		{
 			"path": "pages/mine/contact",
 			"style": {
-				"navigationBarTitleText": "联系客服"
+				"navigationBarTitleText": "联系客服",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/questions",
 			"style": {
-				"navigationBarTitleText": "常见问题"
+				"navigationBarTitleText": "常见问题",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/questionDetail",
 			"style": {
-				"navigationBarTitleText": "问题详情"
+				"navigationBarTitleText": "问题详情",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/privacyPolicy",
 			"style": {
-				"navigationBarTitleText": "隐私政策"
+				"navigationBarTitleText": "隐私政策",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/rules",
 			"style": {
-				"navigationBarTitleText": "收费标准"
+				"navigationBarTitleText": "收费标准",
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/mine/progress",
+			"style": {
+				"navigationBarTitleText": "竞拍流程",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/userAgreement",
 			"style": {
-				"navigationBarTitleText": "用户协议"
+				"navigationBarTitleText": "用户协议",
+				"navigationStyle":"custom"
 			}
 		},
 		{
 			"path": "pages/mine/setting",
 			"style": {
 				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/plantList/index",
+			"style": {
+				"navigationBarTitleText": "优选",
+				"navigationStyle":"custom"
 			}
 		}
 		
@@ -197,26 +283,32 @@
 			{
 				"pagePath": "pages/home/index",
 				"text": "首页",
-				"iconPath":"./static/home.png",
-				"selectedIconPath":"./static/home2.png"
+				"iconPath":"./static/tabbar/1.png",
+				"selectedIconPath":"./static/tabbar/11.png"
 			}, 
 			{
-				"pagePath": "pages/yahoo/index",
-				"text": "雅虎",
-				"iconPath":"./static/yahoo.png",
-				"selectedIconPath":"./static/yahoo-fill.png"
+				"pagePath": "pages/plantList/index",
+				"text": "优选",
+				"iconPath":"./static/tabbar/2.png",
+				"selectedIconPath":"./static/tabbar/22.png"
 			}, 
 			{
-				"pagePath": "pages/mercari/index",
-				"text": "煤炉",
-				"iconPath":"./static/m.png",
-				"selectedIconPath":"./static/mm.png"
+				"pagePath": "pages/mine/contact",
+				"text": "客服",
+				"iconPath":"./static/tabbar/3.png",
+				"selectedIconPath":"./static/tabbar/33.png"
+			}, 
+			{
+				"pagePath": "pages/mine/collect",
+				"text": "收藏",
+				"iconPath":"./static/tabbar/4.png",
+				"selectedIconPath":"./static/tabbar/44.png"
 			}, 
 			{
 				"pagePath": "pages/mine/index",
 				"text": "我的",
-				"iconPath":"./static/user.png",
-				"selectedIconPath":"./static/yonghu.png"
+				"iconPath":"./static/tabbar/5.png",
+				"selectedIconPath":"./static/tabbar/55.png"
 			}
 		]
 	},

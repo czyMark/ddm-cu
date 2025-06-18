@@ -1,10 +1,31 @@
 <template>
-	<view class="collect">
+	<view class="collect page">
+		<Title :type="1" title="我的地址"/>
 		<view class="list">
-			<view class="item"
-				v-for="(item, index) in list" :key="index"
+			<view class="item between"
+					v-for="(item, index) in list" :key="index"
 				>
-				<view class="container">
+				
+				<view class="left">
+					<view class="contrat flex">
+						<view class="name">{{item.username}}</view>
+						<view class="phone">{{item.phone}}</view>
+					</view>
+					<view class="address">{{item.region.replace(/,/g, ' ')}} {{item.address}}</view>
+					<view :class="['no flex', item.defaultType === 1 ? 'isDefalt' : '']" @click="onDefaultChange(item)">
+						<radio :checked="item.defaultType === 1" color="#7D9CFF" size="16"/>
+						默认
+					</view>
+				</view>
+				<view class="right">
+					<image
+						class="icon"
+						src="@/static/icon/75.png"
+						@click="toggle(2, item)"
+					>
+					<view class="del" @click="deleteItem(item)">删除</view>
+				</view>
+				<!-- <view class="container">
 					<view class="itemNav flex">
 						<view class="info column">
 							<view class="bottom between">
@@ -23,16 +44,25 @@
 						</view>
 						<view class="copy"  @click="toggle('修改', item)">修改</view>
 					</view>
-				</view>
+				</view> -->
+			</view>
+			<view class="nodata column" v-if="list.length === 0">
+				<image
+					class="icon"
+					src="@/static/icon/59.png"
+				>
+				<view>暂无收货地址</view>
 			</view>
 		</view>
 
 
 		
 		<view class="addbtn">
-			<button class="button" type="primary" @click="toggle('新增')">
-				新增收货地址
-			</button>
+			<image
+				class="icon"
+				src="@/static/icon/60.png"
+				@click="toggle(1)"
+			>
 		</view>
 		
 		<uni-popup ref="popupref">
@@ -47,14 +77,14 @@
 							}"/>
 					</view>
 					<view class="item center">
-						<view class="label">手机号：</view>
+						<view class="label">手机号码：</view>
 						<input type="number" class="value" :value="phone"
 							@input="(e)=>{
 								onInputChange(e.detail.value, 'phone')
 							}"/>
 					</view>
 					<view class="item center">
-						<view class="label">地区：</view>
+						<view class="label">所在地区：</view>
 						<view class="value">
 							<picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
 							    <view class="picker">
@@ -94,7 +124,9 @@
 </template>
 
 <script>
+	import Title from "@/components/title.vue"
 	export default {
+		components: {Title},
 		data() {
 			return {
 				list: [],
@@ -110,7 +142,7 @@
 				idImgBack: '',
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.userInfo = wx.getStorageSync('userInfo') || {}
 			this.getAddress()
 		},
@@ -193,6 +225,16 @@
 				wx.hideLoading()
 			},
 			toggle(type, item) {
+				if(type === 1){
+					uni.navigateTo({
+						url: `/pages/mine/addAddress?type=${type}`
+					})
+				}else{
+					uni.navigateTo({
+						url: `/pages/mine/addAddress?type=${type}&id=${item.id}`
+					})
+				}
+				return false
 				this.type = type
 				if(item){
 					this.addressId = item.id
@@ -245,72 +287,50 @@
 </script>
 
 <style lang="scss">
-	page{
-		background: #f7f7f7;
-	}
 	.list{
 		margin-top: 20rpx;
 		margin-bottom: 150rpx;
 		.item{
-			box-shadow: 0rpx 2rpx 5rpx 3rpx rgba(0,0,0,0.07);
-			border-radius: 20rpx;
-			padding: 20rpx;
-			background: #FFF;
-			margin-bottom: 30rpx;
-			height: 220rpx;
-			width: 710rpx;
-			.container{
-				width: 710rpx;
+			padding: 40rpx 20rpx 20rpx;
+			box-sizing: border-box;
+			margin: 0 auto 30rpx;
+			width: 690rpx;
+			background-color: #eaeaea;
+			
+			radio .wx-radio-input{
+				width: 24rpx;
+				height: 24rpx;
 			}
-			.itemHeader{
-				color: #848282;
-				padding: 0 20rpx;
-				box-sizing: border-box;
-				width: 100%;
-				font-size: 26rpx;
-				.copy{
-					padding: 4rpx 8rpx;
-					border: 1px solid #e5e5e5;
+			.left{
+				.contrat{
+					align-items: flex-end;
 				}
-				radio .wx-radio-input{
-					width: 30rpx;
-					height: 30rpx;
+				.name{
+					font-size: 32rpx;
 				}
-				.isDefalt{
-					color: #f9bf3b;
-				}
-			}
-			.itemNav{
-				width: 100%;
-				margin-top: 10rpx;
-			}
-			.info{
-				width: 100%;
-				margin-left: 30rpx;
-				font-size: 28rpx;
-				justify-content: space-around;
-				align-items: flex-start;
-				.title{
-					margin-top: 20rpx;
+				.phone{
+					color: #898989;
 					font-size: 28rpx;
-					height: 80rpx;
-					width: 100%;
-					display: -webkit-box;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 2;
-					overflow: hidden;
-					text-overflow : ellipsis; 
+					margin-left: 30rpx;
 				}
-				.bottom{
-					width: 100%;
+				.address{
+					margin: 20rpx 0;
+					font-size: 26rpx;
 				}
-				.price text{
-					font-size: 36rpx;
-					color: red;
-					margin: 0 10rpx;
+				.no{
+					color: #898989;
+					font-size: 26rpx;
 				}
-				.status{
-					color: red;
+			}
+			.right{
+				.icon{
+					width: 50rpx;
+					height: 56rpx;
+				}
+				.del{
+					margin-top: 30rpx;
+					color: #898989;
+					font-size: 26rpx;
 				}
 			}
 		}
@@ -320,13 +340,14 @@
 		bottom: 50rpx;
 		left: 30rpx;
 		width: 690rpx;
-		height: 80rpx;
-		line-height: 80rpx;
+		height: 66rpx;
+		line-height: 66rpx;
 		text-align: center;
 		color: #FFF;
 		border-radius: 20rpx;
-		button{
-			background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
+		.icon{
+			width: 690rpx;
+			height: 66rpx;
 		}
 	}
 	.popup-content{
@@ -388,5 +409,16 @@
 			background: linear-gradient(270deg, #f9bf3b 0%, #eba82e 100%);
 		}
 	}
-
+	.nodata{
+		width: 100vw;
+		text-align: center;
+		font-size: 28rpx;
+		color: #9e9a9a;
+		margin: 180rpx 0 0;
+		.icon{
+			width: 266rpx;
+			height: 296rpx;
+			margin-bottom: 20rpx;
+		}
+	}
 </style>

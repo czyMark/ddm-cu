@@ -14,6 +14,7 @@ body{
 
 * {
     box-sizing: border-box;
+    font-family: STFangsong, '华文仿宋'
 }
  
 img{ display:block; border:none}
