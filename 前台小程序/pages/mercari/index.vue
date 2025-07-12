@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import clasMenu from "@/utils/mercariClass.js"
+	// import clasMenu from "@/utils/mercariClass.js"
 	import Title from "@/components/title.vue"
 	import Header from "@/components/header.vue"
 	import goodsClass from "@/components/goodsClass.vue"
@@ -15,19 +15,25 @@
 		components: {Title, Header, goodsClass},
 		data() {
 			return {
-				classList: clasMenu,
+				classList: [],
 				bigClass: 0,
 			}
 		},
 		onShow(){
-			this.bigClass = 1
+			const classes = wx.getStorageSync('classes') || {}
+			this.classList = classes.mercariClass || []
+			const showClasses = []
+			this.classList.forEach(item=>{
+				if(item.isShow) showClasses.push(item)
+			})
+			this.bigClass = showClasses[0].id
 		},
 		methods: {
 			onBigClassChange(val){
 				this.bigClass = val
 			},
 			onSearch(keyword){
-				this.toPath(`/pages/yahoo/yahooResult?bigClass=${this.bigClass}&keyword=${keyword}`)
+				this.toPath(`/pages/mercari/mercariResult?bigClass=${this.bigClass}&keyword=${keyword}`)
 			},
 			toPath(url){
 				wx.navigateTo({

@@ -9,6 +9,7 @@
 				v-for="(item, index) in classList"
 				:key="index"
 				@click="onBigChange(item)"
+				v-if="item.isShow"
 			>
 				{{ item.name_cn || item.cname }}
 			</view>
@@ -17,12 +18,13 @@
 		<view class="right">
 			<view class="rightTop around">
 				<view :class="['rightTopItem column', currentMiddleClass === item.id ? 'current' : '']"
-					v-for="(item, index) in middleClass" :key="index" @click="toPath(item)">
+					v-for="(item, index) in middleClass" :key="index" @click="toPath(item)"
+					v-if="item.isShow">
 					<!-- v-for="(item, index) in middleClass" :key="index" @click=onMiddleChange(item)> -->
 					<image
 						class="icon"
 						:src="
-							type === 'yahoo' ? yahooImg : mercariImg
+							item.imageUrl || (type === 'yahoo' ? yahooImg : mercariImg)
 						"
 					>
 					<view>

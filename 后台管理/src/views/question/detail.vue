@@ -10,7 +10,20 @@
                     <el-input v-model="form.title" :disabled="type === '3'"></el-input>
                 </el-form-item>
                 <el-form-item label="帮助内容">
-                    <ckeditor ref="ckeditor" v-model="form.ckeditorData" class="ckeditor" :config="editorConfig" :disabled="type === '3'"/>
+                    <!-- <ckeditor ref="ckeditor" v-model="form.ckeditorData" class="ckeditor" :config="editorConfig" :disabled="type === '3'"/> -->
+                    <div class="ckeditor">
+                        <quill-editor
+                            class="ql-editor"
+                            v-model="form.ckeditorData"
+                            ref="myQuillEditor"
+                            :options="editorOption"
+                            @blur="onEditorBlur($event)"
+                            @focus="onEditorFocus($event)"
+                            @change="onEditorChange($event)"
+                            :disabled="type === '3'"
+                        >
+                        </quill-editor>
+                    </div>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit" v-if="submitBtnText">{{submitBtnText}}</el-button>
@@ -23,8 +36,12 @@
   
 <script>
 import {getQuestionById, updataQuestion, addQuestion} from "@/http/api"
+import { quillEditor, Quill } from 'vue-quill-editor'
 
 export default {
+    components: {
+        quillEditor
+    },
     data(){
         return {
             id: '',
@@ -51,6 +68,30 @@ export default {
                 colorButton_enableMore: true,
                 colorButton_colors: 'CF5D4E,454545,FFF,DDD,CCEAEE,66AB16'
             },
+
+            
+            // 富文本功能配置
+            editorOption:{
+                modules:{
+                    // 如果想增加事件控制，比如图片的事件，参考我上面vue3的配置，是一样的用法
+                    toolbar:[
+                        ['bold', 'italic', 'underline', 'strike'],    //加粗，斜体，下划线，删除线
+                        // ['blockquote', 'code-block'],     //引用，代码块
+                        // [{ 'header': 1 }, { 'header': 2 }],        // 标题，键值对的形式；1、2表示字体大小
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+                        // [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+                        // [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+                        // [{ 'direction': 'rtl' }],             // 文本方向
+                        [{ 'size': ['small', false, 'large', 'huge'] }], // 字体大小
+                        // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],     //几级标题
+                        [{ 'color': [] }, { 'background': [] }],     // 字体颜色，字体背景颜色
+                        [{ 'font': [] }],     //字体
+                        [{ 'align': [] }],    //对齐方式
+                        // ['clean'],    //清除字体样式
+                        ['image','video']    //上传图片、上传视频
+                    ]
+                },
+            },
         }
     },
     created(){
@@ -61,6 +102,19 @@ export default {
         if(this.type !== '1') this.getQuestionById()
     },
     methods: {
+        // 失去焦点事件
+        onEditorBlur(e){
+            console.log(e, '失去焦点事件');
+        },
+        // 获得焦点事件
+        onEditorFocus(e){
+            console.log(e, '获得焦点事件');
+        },
+        // 内容改变事件
+        // html是带标签，text是纯文本
+        onEditorChange({ quill, html, text }){
+            this.form.ckeditorData = html
+        },
         async onSubmit(){
             this.loading = true
             let res = null
@@ -115,6 +169,10 @@ export default {
     nav{
         margin-top: 50px;
         max-width: 100%;
+    }
+
+    ::v-deep .ql-container{
+        min-height: 400px;
     }
 </style>
   

@@ -25,7 +25,7 @@
 				</view>
 			</view> -->
 			
-			<view class="subclass" v-if="subClasses.length > 0">
+			<view class="subclass">
 				<view class="subtitle between">
 					<view>类别细分</view>
 					<view class="icon" @click="showSubClasses = !showSubClasses">
@@ -37,7 +37,7 @@
 					<view class="classItem between"
 						v-for="(item, index) in subClasses"
 						:key="index"
-						@click="toChild(item, index)"
+						@click="toChild(item)"
 					>
 						<view class="label">{{item.cname}}</view>
 						
@@ -286,21 +286,18 @@
 			}
 		},
 		methods: {
-			toChild(item, index){
+			toChild(item){
 				const {bigClass='', middleClass='', smallClass=''} = this.query
 				wx.setStorage({ key: 'classArr' , data: this.classArr })
-				const url = `/pages/mercari/mercariResult2?smallClass=${item.id}&from=1`
-				
+				const url = `/pages/mercari/mercariResult?smallClass=${item.id}&from=2`
 				wx.navigateTo({
 					url,
 				})
 			},
-			setClass(query){
+			async setClass(query){
 				uni.showLoading()
-				
 				const arr = []
 				const {bigClass='', middleClass='', smallClass='', from=''} = query
-				console.log(bigClass, middleClass, smallClass)
 				
 				if(!from){
 					let bigClassIndex = ''
@@ -360,14 +357,7 @@
 				
 				uni.hideLoading()
 			},
-			onChoose(item, key){
-				if(this[key] === item.id){
-					console.log(this[key], item.id)
-					this[key] = ''
-				}else{
-					this[key] = item.id
-				}
-			},
+			
 			setClassMenu(){
 				let currentClasses = []
 				let subClasses = []
@@ -379,6 +369,15 @@
 				})
 				this.subClasses = subClasses
 				this.currentClasses = currentClasses.join(' > ')
+			},
+			
+			onChoose(item, key){
+				if(this[key] === item.id){
+					console.log(this[key], item.id)
+					this[key] = ''
+				}else{
+					this[key] = item.id
+				}
 			},
 			closeDrawer(){
 				this.$refs['showRight'].close()
@@ -397,6 +396,7 @@
 			},
 			async getMercariSelectcates(){
 				wx.showLoading({title: '加载中'})
+				
 				const length = this.classArr.length
 				const urlid = this.classArr[length-1].id
 				const res = await this.$api.getMercariSelectcates({
@@ -433,6 +433,7 @@
 				}
 				wx.hideLoading()
 			},
+			
 			chooseTab(item){
 				if(!item.isCurrent){
 					this.tabs.forEach(it=>{

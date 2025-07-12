@@ -131,7 +131,7 @@
 				</view> -->
 				<view class="btns center">
 					<view class="btn" @click="verifyLogin('showPopupPrice', 2)">预约出价</view>
-					<view class="btn" @click="verifyLogin('showPopupPrice', 0)">即刻竞拍</view>
+					<view class="btn" @click="verifyLogin('showPopupPrice', 0)">即刻出价</view>
 				</view>
 			</view>
 			
@@ -684,7 +684,8 @@
 					})
 					setTimeout(()=>{
 						wx.navigateTo({
-							url: '/pages/mine/allOrderList?type=1'
+							// url: '/pages/mine/allOrderList?type=1'
+							url: '/pages/mine/auctionList?platformType=1&statusType=1'
 						})
 					}, 1500)
 				}else{

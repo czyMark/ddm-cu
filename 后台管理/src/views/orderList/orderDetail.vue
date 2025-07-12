@@ -576,7 +576,8 @@ export default {
                 trackingNumber: this.sendForm.expressDeliveryNo,
                 wlRemarks: this.sendForm.remarks,
                 userid: this.query.userid,
-                id: this.query.id,
+                // id: this.query.id,
+                orderid: this.query.orderid,
             }
             let res = null
             if(this.query.type === '1'){

@@ -1,6 +1,6 @@
 <template>
 	<view class="collect">
-		<Title :type="3"/>
+		<Title :type="3" @onSearch="onSearch"/>
 		
 		<view class="plant flex">
 			<image
@@ -11,13 +11,14 @@
 			>
 		</view>
 		
-		<view class="filter flex">
-			<view :class="['itemFilter center']" @click="resetSearch">
-				<view :class="['label', currentTab === '' ? 'active' : '1']">推荐</view>
+		<!-- 雅虎 -->
+		<view class="filter flex" v-if="currentPlant === 1">
+			<view :class="['itemFilter center']" @click="resetYahooSearch">
+				<view :class="['label', currentYahooTab === '' ? 'active' : '1']">推荐</view>
 			</view>
 			<view class="itemFilter center"
-				v-for="(item, index) in tabs" :key="index"
-				@click="chooseTab(item)">
+				v-for="(item, index) in yahoo_tabs" :key="index"
+				@click="chooseYahooTab(item)">
 				<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
 				<view class="icons column" v-if="item.sort === 0">
 					<image src="@/static/icon/22.png"></image>
@@ -38,9 +39,39 @@
 			</view> -->
 		</view>
 		
-		<view class="list list2 between" v-if="!isOnFocus && !isList">
+		<!-- 煤炉 -->
+		<view class="filter flex" v-if="currentPlant === 2">
+			<view :class="['itemFilter center']" @click="resetMercariSearch">
+				<view :class="['label', currentMercariTab === '' ? 'active' : '1']">推荐</view>
+			</view>
+			<view class="itemFilter center"
+				v-for="(item, index) in mercari_tabs" :key="index"
+				@click="chooseMetcariTab(item)">
+				<view :class="['label', item.isCurrent ? 'active' : '']">{{item.label}}</view>
+				<view class="icons column" v-if="item.sort === 0">
+					<image src="@/static/icon/22.png"></image>
+					<image src="@/static/icon/24.png"></image>
+				</view>
+				<view class="icons column" v-if="item.sort === 2">
+					<image src="@/static/icon/21.png"></image>
+					<image src="@/static/icon/24.png"></image>
+				</view>
+				<view class="icons column" v-if="item.sort === 1">
+					<image src="@/static/icon/22.png"></image>
+					<image src="@/static/icon/23.png"></image>
+				</view>
+			</view>
+			<!-- <view class="listMode" @click="changeIsList">
+				<image src="@/static/list.png" mode="" v-if="!isList"></image>
+				<image src="@/static/menu.png" mode="" v-if="isList"></image>
+			</view> -->
+		</view>
+		
+		
+		
+		<view class="list list2 between" v-if="!isOnFocus && !isList && currentPlant === 1">
 			<view class="item column" v-for="(item, index) in list" :key="index"
-				@click="chooseItem(item)">
+				@click="chooseYahooItem(item)">
 				<view class="imageUrl center">
 					<image class="main" :src="item.imageUrl" mode="aspectFit"></image>
 					<image
@@ -57,6 +88,30 @@
 				<view class="info column">
 					<view class="title">{{item.title}}</view>
 					<view class="price">{{item.jpprice}}日元</view>
+				</view>
+			</view>
+		</view>
+		
+		
+		<view class="list list2 between" v-if="!isOnFocus && !isList && currentPlant === 2">
+			<view class="item column" v-for="(item, index) in list" :key="index"
+				@click="chooseMercariItem(item)">
+				<view class="imageUrl center">
+					<image class="main" :src="item.thumbnails[0]" mode="aspectFit"></image>
+					<image
+						v-show="currentPlant === 1"
+						class="logo"
+						src="@/static/icon/14.png"
+					>
+					<image
+						v-show="currentPlant === 2"
+						class="logo"
+						src="@/static/icon/17.png"
+					>
+				</view>
+				<view class="info column">
+					<view class="title">{{item.name}}</view>
+					<view class="price">{{item.price}}日元</view>
 				</view>
 			</view>
 		</view>
@@ -135,7 +190,7 @@
 								it.isCurrent = false
 								it.sort = 0
 							})
-							onSearch()
+							onYahooSearch()
 						}">确定</view>
 					</view>
 				</view>
@@ -163,12 +218,19 @@
 					{id: 2, icon: '/static/icon/17.png', icon2: '/static/icon/16.png'},
 				],
 				
-				currentTab: '',
-				tabs: [
+				currentYahooTab: '',
+				yahoo_tabs: [
 					{id: 3, sort: 0, label: '人气', isCurrent: false},
 					{id: 1, sort: 0, label: '价格', isCurrent: false},
 					{id: 2, sort: 0, label: '最新', isCurrent: false},
 				],
+				
+				mercari_tabs: [
+					{id: 1, sort: 0, label: '价格', isCurrent: false},
+					{id: 2, sort: 0, label: '最新', isCurrent: false},
+				],
+				currentMercariTab: '',
+				
 				salerTypes: [
 					{id: 0, label: '所有卖家'},
 					{id: 1, label: '正规店铺'},
@@ -196,19 +258,47 @@
 				
 				isOnFocus: false,
 				isList: false,
-				historyList: []
+				historyList: [],
+				
+				
+				
+				isFilter: [],
+				hobby: [{value: 1}],
+				defaultList: [],
+			}
+		},
+		watch: {
+			isFilter: {
+				handler(val){
+					if(val.length > 0){
+						const list = []
+						this.defaultList.map(item=>{
+							if(item.status === "ITEM_STATUS_ON_SALE"){
+								list.push(item)
+							}
+						})
+						this.list = list
+					}else{
+						this.list = JSON.parse(JSON.stringify(this.defaultList))
+					}
+				},
+				immediate: true
 			}
 		},
 		onLoad(query) {
 			this.historyList = wx.getStorageSync('yahooHistory') || []
 			this.rate = wx.getStorageSync('rate') || null
 			
-			// 查询商品列表
-			const params = {
-				urlid: '',
-				pagecount: this.pagecount
+			if(this.currentPlant === 1){
+				// 查询商品列表
+				const params = {
+					urlid: '',
+					pagecount: this.pagecount
+				}
+				this.selectcates(params)
+			}else{
+				this.getMercariSelectcates()
 			}
-			this.selectcates(params)
 		},
 		onReachBottom(){
 			this.pagecount++
@@ -219,6 +309,21 @@
 			this.selectcates(params)
 		},
 		methods: {
+			onSearch(val){
+				this.list = []
+				this.pagecount = 1
+				this.keyword = val
+				if(this.currentPlant === 1){
+					// 查询商品列表
+					const params = {
+						urlid: '',
+						pagecount: this.pagecount
+					}
+					this.selectcates(params)
+				}else{
+					this.getMercariSelectcates()
+				}
+			},
 			changeIsList(){
 				this.isList = !this.isList
 			},
@@ -237,9 +342,9 @@
 					priceType: this.currentPriceLimits,
 					isNewType: this.currentOldOrNew,
 					selltype: this.currentSalerType,
-					priceOderType: this.tabs[0].sort,
-					timeType: this.tabs[1].sort,
-					hotType: this.tabs[2].sort,
+					priceOderType: this.yahoo_tabs[0].sort,
+					timeType: this.yahoo_tabs[1].sort,
+					hotType: this.yahoo_tabs[2].sort,
 				})
 				const {data} = res.data
 				
@@ -300,12 +405,57 @@
 				this.currentClasses = arr.join(' > ')
 			},
 			choosePlants(item){
+				this.list = []
+				this.pagecount = 1
 				this.currentPlant = item.id
+				if(item.id === 1){
+					this.selectcates()
+				}else{
+					this.getMercariSelectcates()
+				}
 			},
-			chooseTab(item){
-				this.currentTab = item.id
+			async getMercariSelectcates(){
+				wx.showLoading({title: '加载中'})
+				
+				const res = await this.$api.getMercariSelectcates({
+					urlid: 11,
+					pageSize: 100,
+					pageCount: 1,
+					keyWord: this.keyword,
+					priceOderType: this.mercari_tabs[0].sort,
+					isNewType: this.mercari_tabs[1].sort,
+					lowPrice: '',
+					maxPrice: ''
+					
+				})
+				const {data} = res.data
+				if(data.items.length < 50){
+					this.noMore = true
+				}
+				data.items?.forEach(item=>{
+					item.price_rmb = parseInt((item.price * this.rate) * 100) / 100
+					if(item.thumbnails[0].indexOf("@webp") === -1){
+						item.thumbnails[0] = item.thumbnails[0].replace('https://', 'https://imghk.ripai.com/')
+					}
+				})
+				this.defaultList = this.defaultList.concat(data.items)
+				if(this.isFilter.length > 0){
+					const list = []
+					this.defaultList.map(item=>{
+						if(item.status === "ITEM_STATUS_ON_SALE"){
+							list.push(item)
+						}
+					})
+					this.list = list
+				}else{
+					this.list = JSON.parse(JSON.stringify(this.defaultList))
+				}
+				wx.hideLoading()
+			},
+			chooseYahooTab(item){
+				this.currentYahooTab = item.id
 				if(!item.isCurrent){
-					this.tabs.forEach(it=>{
+					this.yahoo_tabs.forEach(it=>{
 						it.isCurrent = false
 						it.sort = 0
 						if(it.id === item.id){
@@ -320,17 +470,44 @@
 				}else if(item.sort === 1){
 					item.sort = 2
 				}
-				this.onSearch()
+				this.onYahooSearch()
 			},
-			chooseItem(item){
+			
+			chooseMetcariTab(item){
+				this.currentMercariTab = item.id
+				if(!item.isCurrent){
+					this.mercari_tabs.forEach(it=>{
+						it.isCurrent = false
+						it.sort = 0
+						if(it.id === item.id){
+							it.isCurrent = true
+						}
+					})
+				}
+				if(item.sort === 0){
+					item.sort = 2
+				}else if(item.sort === 2){
+					item.sort = 1
+				}else if(item.sort === 1){
+					item.sort = 2
+				}
+				this.onMercariSearch()
+			},
+			
+			chooseYahooItem(item){
 				const {seller, code, breakurl} = item
 				wx.navigateTo({
 					url: `/pages/yahoo/detail?code=${item.code}`,
 				})
 			},
+			chooseMercariItem(item){
+				wx.navigateTo({
+					url: '/pages/mercari/detail?id=' + item.id
+				})
+			},
 			onHistoryTap(val){
 				this.keyword = val
-				this.onSearch()
+				this.onYahooSearch()
 			},
 			setHistory(){
 				const keyword = this.keyword.trim()
@@ -352,7 +529,21 @@
 				}
 				wx.setStorage({ key: 'yahooHistory' , data: this.historyList })
 			},
-			async onSearch(){
+			resetYahooSearch(){
+				this.currentYahooTab = ''
+				this.yahoo_tabs.forEach(item=>{
+					item.sort = 0
+				})
+				this.onYahooSearch()
+			},
+			resetMercariSearch(){
+				this.currentMercariTab = ''
+				this.mercari_tabs.forEach(item=>{
+					item.sort = 0
+				})
+				this.onMercariSearch()
+			},
+			async onYahooSearch(){
 				wx.showLoading()
 				this.isOnFocus = false
 				this.setHistory()
@@ -377,13 +568,32 @@
 					priceType: this.currentPriceLimits,
 					isNewType: this.currentOldOrNew,
 					selltype: this.currentSalerType,
-					priceOderType: this.tabs[0].sort,
-					timeType: this.tabs[1].sort,
-					hotType: this.tabs[2].sort,
+					priceOderType: this.yahoo_tabs[0].sort,
+					timeType: this.yahoo_tabs[1].sort,
+					hotType: this.yahoo_tabs[2].sort,
 				}
 				this.selectcates(params)
 				this.closeDrawer()
 			},
+			
+			async onMercariSearch(){
+				this.list = []
+				this.defaultList = []
+				
+				const res = await this.$api.getMercariGoodDetail({goodcode: this.keyword})
+				console.log('res', res)
+				if(res.data.code !== 500){
+					wx.hideLoading()
+					wx.navigateTo({
+						url: `/pages/mercari/detail?id=${this.keyword}`,
+					})
+					return false
+				}
+				this.getMercariSelectcates()
+			},
+			
+			
+			
 			showDrawer(){
 				this.$refs['showRight'].open()
 				this.currentSalerType = ''

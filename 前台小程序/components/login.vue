@@ -32,7 +32,7 @@
 					<input placeholder="请输入验证码" v-model="psd" type="number">
 				</view>
 				
-				<view class="formItem flex">
+				<view class="formItem flex" v-if="showInvitedCode">
 					<i class="icon"></i>
 					<input placeholder="请输入邀请码" v-model="inviteCode" type="text">
 				</view>
@@ -62,6 +62,7 @@
 				<image
 					class="loginBtn"
 					src="@/static/icon/70.png"
+					@click="wxlogin"
 				>
 				
 				<view class="loginTip">第三方登录</view>
@@ -69,7 +70,7 @@
 				<image
 					class="wx"
 					src="@/static/icon/71.png"
-					@click="wxlogin"
+					@click="wxlogin(true)"
 				>
 				
 				<image
@@ -92,7 +93,7 @@
 				
 				agree: false,
 				
-				tel: '',
+				tel: 18614286775,
 				psd: '',
 				inviteCode: '',
 			};
@@ -101,7 +102,11 @@
 			showLogin: {
 				type: Boolean,
 				default: false
-			}
+			},
+			showInvitedCode: {
+				type: Boolean,
+				default: true
+			},
 		},
 		watch: {
 			showLogin: {
@@ -125,7 +130,20 @@
 			clearInterval(this.timer)
 		},
 		methods: {
-			wxlogin(){
+			// async login(){
+			// 	uni.showLoading()
+			// 		const params = {
+			// 			phone: this.tel,
+			// 			code: this.psd,
+			// 		}
+			// 		const res = await this.$api.phonecheckcode(params)
+			// 		uni.hideLoading()
+			// 		uni.showToast({
+			// 			title: '设置成功',
+			// 			icon: 'none'
+			// 		})
+			// },
+			wxlogin(val){
 				// 授权获取用户信息
 				wx.showLoading({
 					title: '授权登录中'
@@ -140,9 +158,11 @@
 							  success: async (res)=>{
 								if (res.code) {
 								  const params = {
+									
+									loginphone: val ? '' : this.tel,
+									phonecode: val ? '' : this.psd,
+									invitecode: val ? '' : this.inviteCode,
 									code: res.code,
-									encryptedData,
-									iv
 								  }
 								  const loginRes = await this.$api.login(params)
 								  const { data } = loginRes.data
@@ -165,17 +185,36 @@
 					}
 				})
 			},
-			sendCode(){
-				this.isSend = true
-				this.second = 59
-				this.timer = setInterval(()=>{
-					this.second = this.second - 1
-					if(this.second === 0){
-						clearInterval(this.timer)
-						this.second = 60
-						this.isSend = false
+			async sendCode(){
+				const reg = /^1[3|4|5|6|7|8]\d{9}$/
+				const result = reg.test(this.tel)
+				if(result){
+					uni.showLoading()
+					const params = {
+						phone: this.tel,
 					}
-				}, 1000)
+					const res = await this.$api.phonegetcode(params)
+					uni.hideLoading()
+					uni.showToast({
+						title: '发送成功',
+						icon: 'none'
+					})
+					this.isSend = true
+					this.second = 59
+					this.timer = setInterval(()=>{
+						this.second = this.second - 1
+						if(this.second === 0){
+							clearInterval(this.timer)
+							this.second = 60
+							this.isSend = false
+						}
+					}, 1000)
+				}else{
+					uni.showToast({
+						title: '请输入正确手机号',
+						icon: 'none'
+					})
+				}
 			},
 			close(){
 				console.log('close')
@@ -212,7 +251,7 @@
 		z-index: 1;
 	}
 	.logo{
-		width: 200rpx;
+		width: 300rpx;
 		height: 100rpx;
 		margin-bottom: 50rpx;
 	}

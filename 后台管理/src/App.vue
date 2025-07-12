@@ -14,7 +14,9 @@ export default {
         layout
     },
     created(){
-        this.pcOrh5()
+        // this.pcOrh5()
+        this.$store.commit("change_deviceType", 'pc')
+
         if(this.deviceType !== 'pc'){
             this.$store.commit("change_menuSwitch", false)
         }   

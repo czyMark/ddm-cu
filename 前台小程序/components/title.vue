@@ -23,6 +23,7 @@
 				height="70rpx"
 				width="365rpx"
 				@onFocus="onFocus"
+				@keywordChange="keywordChange"
 			/>
 		</view>
 		
@@ -35,6 +36,8 @@
 			<Search
 				height="70rpx"
 				width="482rpx"
+				@keywordChange="keywordChange"
+				@onSearch="onSearch"
 			/>
 		</view>
 		
@@ -97,6 +100,7 @@
 		data() {
 			return {
 				navBarheight: 0,
+				keyword: '',
 			};
 		},
 		props: {
@@ -134,6 +138,9 @@
 			this.navBarheight = wx.getStorageSync('statusBarHeight')
 		},
 		methods: {
+			keywordChange(val){
+				this.keyword = val
+			},
 			goback(){
 				wx.navigateBack(-1)
 			},
@@ -142,6 +149,11 @@
 					url: '/pages/home/search'
 				})
 			},
+			
+			onSearch(){
+				console.log('onSearch2')
+				this.$emit('onSearch', this.keyword)
+			}
 		}
 	}
 </script>
@@ -166,7 +178,7 @@
 }
 .logo{
 	width: 145rpx;
-	height: 72rpx;
+	height: 54rpx;
 	margin-right: 22rpx;
 }
 .arrow{

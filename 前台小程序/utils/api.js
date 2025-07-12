@@ -222,9 +222,22 @@ api.userRead = params => request('POST', '/contact/userRead', params)
 // 根据卖家code查询商品列表
 api.queryGoodsBySalerCode = params => request('POST', '/good/selectSellerGoods', params)
 
+// 获取雅虎煤炉分类
+api.fenleiselect = params => request('POST', '/fenlei/select', params)
 
 
 
+// 获取code
+api.phonegetcode = params => request('POST', '/phone/getcode', params)
+
+// 手机号登录
+api.phonecheckcode = params => request('POST', '/phone/checkcode', params)
+
+// 根据用户id绑定用户邀请码
+api.updatainvitecode = params => request('POST', '/user/updatainvitecode', params)
+
+// 查询商品细节分类
+api.selectFelede = params => request('POST', '/good/selectFelede', params)
 
 
 

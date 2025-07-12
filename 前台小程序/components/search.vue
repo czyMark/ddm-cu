@@ -6,6 +6,7 @@
 				:placeholder="placeholder"
 				@focus="onFocus"
 				v-model="keyword"
+				@confirm="onSearch"
 				placeholder-style="color:#ADADAD;font-size:28rpx;"
 			/>
 			
@@ -51,9 +52,11 @@
 				wx.navigateBack(-1)
 			},
 			onFocus(){
+				console.log('onFocus')
 				this.$emit('onFocus')
 			},
 			onSearch(){
+				console.log('onSearch1')
 				this.$emit('onSearch')
 			}
 		}

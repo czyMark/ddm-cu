@@ -38,7 +38,7 @@
                 </div>
                 <div class="flex">
                     <el-button type="primary" @click="reset">重置</el-button>
-                    <el-button type="primary" @click="queryYahooOrderList()">查询</el-button>
+                    <el-button type="primary" @click="searchOrder()">查询</el-button>
                     <el-button type="primary"
                         :loading="exportLoading"
                         @click="exportFile"
@@ -107,18 +107,29 @@
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">竞拍成功</el-button>
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 3, scope.row.userid)" v-if="scope.row.type === 1">竞拍失败</el-button>
 
-                                <!-- 测试 -->
+                                <!-- 测试付款 -->
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 4, scope.row.userid)" v-if="scope.row.type === 2">支付</el-button>
 
-                                <!-- 测试 -->
+                                <!-- 测试付款 -->
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)" v-if="scope.row.type === 7">支付</el-button>
+
+                                <!-- 测试改已入库 -->
+                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 4, scope.row.userid)">改回待入库</el-button>
+
+                                <!-- 测试改待发货 -->
+                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)">改回待发货</el-button>
 
                                 <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row.type === 4">已入库</el-button>
                                 <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库</el-button> -->
                                 
-                                <el-button type="text" size="small" @click="toDetail(scope.row)" v-if="scope.row.type === 6">计算尾款</el-button>
+
+                                <!-- 测试已入库 -->
+                                <el-button type="text" size="small" @click="changeStatus_yahoo2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库2</el-button>
+
+
+                                <el-button type="text" size="small" @click="toDetail(scope.row, 1)" v-if="scope.row.type === 6">计算尾款</el-button>
                                 <el-button type="text" size="small" @click="changeCount(scope.row)" v-if="scope.row.type === 7">更正尾款金额</el-button>
-                                <el-button type="text" size="small" @click="sendPackage(scope.row)" v-if="scope.row.type === 8">发货</el-button>
+                                <el-button type="text" size="small" @click="sendPackage(scope.row, 1)" v-if="scope.row.type === 8">发货</el-button>
                                 <el-button type="text" size="small" @click="review(scope.row)">查看</el-button>
                                 <el-button type="text" size="small" @click="deleteItem(scope.row)" style="color: red">删除</el-button>
                             </div>
@@ -198,10 +209,24 @@
                             <div v-if="!scope.row.parentid" class="around">
                                 <el-button type="text" size="small" @click="orderRefund(scope.row)" v-if="scope.row.type === 1">退款</el-button>
                                 <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row.type === 1">已入库</el-button>
+
+
+                                <!-- 测试改已入库 -->
+                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 1, scope.row.userid)">改回待入库</el-button>
+
+                                <!-- 测试改待发货 -->
+                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 4, scope.row.userid)">改回待发货</el-button>
+
+                                <!-- 测试已入库 -->
+                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 1">测试已入库</el-button>
+                                <!-- 测试付尾款支付 -->
+                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">支付尾款</el-button>
+
+
                                 <!-- <el-button type="text" size="small" @click="changeStatus(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">已入库</el-button> -->
-                                <el-button type="text" size="small" @click="toDetail(scope.row)" v-if="scope.row.type === 3">计算尾款</el-button>
+                                <el-button type="text" size="small" @click="toDetail(scope.row, 2)" v-if="scope.row.type === 3">计算尾款</el-button>
                                 <el-button type="text" size="small" @click="changeCount(scope.row)" v-if="scope.row.type === 4">更正尾款金额</el-button>
-                                <el-button type="text" size="small" @click="sendPackage(scope.row)" v-if="scope.row.type === 5">发货</el-button>
+                                <el-button type="text" size="small" @click="sendPackage(scope.row, 2)" v-if="scope.row.type === 5">发货</el-button>
                                 <el-button type="text" size="small" @click="review(scope.row)">查看</el-button>
                                 <el-button type="text" size="small" @click="deleteItem(scope.row)" style="color: red">删除</el-button>
                             </div>
@@ -268,7 +293,7 @@
                 </div>
                 <div class="flex seatchOptions">
                     <el-button type="primary" size="mini" @click="reset">重置</el-button>
-                    <el-button type="primary" size="mini" @click="queryYahooOrderList()">查询</el-button>
+                    <el-button type="primary" size="mini" @click="searchOrder()">查询</el-button>
                     <el-button type="primary" size="mini"
                         :loading="exportLoading"
                         @click="exportFile"
@@ -338,7 +363,19 @@
 </template>
   
 <script>
-import {queryYahooOrderList, updataYahooOrderStatus, countYahooCost, sendYahooGood, fixYahooPrice, exportYahooOrder, deleteYahooOrderList, queryMercariOrderList} from "@/http/api"
+import {
+    queryYahooOrderList,
+    updataYahooOrderStatus,
+    updataYahooOrderStatus2,
+    countYahooCost,
+    sendYahooGood,
+    fixYahooPrice,
+    exportYahooOrder,
+    deleteYahooOrderList,
+    queryMercariOrderList,
+    updataMercariOrderStatus,
+    updataMercariOrderStatus2,
+} from "@/http/api"
 import fileDownload from "js-file-download";
 import { mapState } from 'vuex'
 import tableList from "@/components/tableList.vue"
@@ -455,6 +492,15 @@ export default {
         this.queryYahooOrderList()
     },
     methods: {
+        searchOrder(){
+            this.pageNumber = 1
+            this.pageSize = 10
+            if(this.currentPlant === 'yahoo'){
+                this.queryYahooOrderList()
+            }else if(this.currentPlant === 'mercari'){
+                this.queryMercariOrderList()
+            }
+        },
         async confirmGot(){
             this.btnLoading = true
             const params = {
@@ -511,15 +557,16 @@ export default {
         handleSelectionChange(val){
             this.multipleSelection = val;
         },
-        toDetail(row){
+        toDetail(row, type){
             this.$router.push({
                 path: '/orderList/orderDetail',
                 query: {
                     id: row.id,
-                    type: 1,
+                    type,
                     userid: row.userid,
                     addressid: row.addressid,
-                    option: 'countRest'
+                    option: 'countRest',
+                    orderid: row.orderid,
                 }
             })
         },
@@ -531,19 +578,21 @@ export default {
                     type: 1,
                     userid: row.userid,
                     addressid: row.addressid,
-                    option: 'changeCount'
+                    option: 'changeCount',
+                    orderid: row.orderid,
                 }
             })
         },
-        sendPackage(row){
+        sendPackage(row, type){
             this.$router.push({
                 path: '/orderList/orderDetail',
                 query: {
                     id: row.id,
-                    type: 1,
+                    type,
                     userid: row.userid,
                     addressid: row.addressid,
-                    option: 'sendPackage'
+                    option: 'sendPackage',
+                    orderid: row.orderid,
                 }
             })
         },
@@ -747,6 +796,94 @@ export default {
                 });          
             });
         },
+
+        changeStatus_yahoo2(id, type, userid){
+            this.$confirm('此操作将更改订单状态, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                this.loading = true
+                const params = {
+                    type,
+                    orderid: id,
+                    userid
+                }
+                const res = await updataYahooOrderStatus2(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.$message.success('操作成功')
+                    this.queryYahooOrderList()
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作'
+                });          
+            });
+        },
+
+        
+        changeStatus_mercari(id, type, userid){
+            this.$confirm('此操作将更改订单状态, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                this.loading = true
+                const params = {
+                    type,
+                    id,
+                    userid
+                }
+                const res = await updataMercariOrderStatus(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.$message.success('操作成功')
+                    this.queryMercariOrderList()
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作'
+                });          
+            });
+        },
+        changeStatus_mercari2(id, type, userid){
+            this.$confirm('此操作将更改订单状态, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                this.loading = true
+                const params = {
+                    type,
+                    orderid: id,
+                    userid
+                }
+                const res = await updataMercariOrderStatus2(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.$message.success('操作成功')
+                    this.queryMercariOrderList()
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作'
+                });          
+            });
+        },
+
         showSendForm(row){
             
             this.sendForm.expressDeliveryCompany = ''

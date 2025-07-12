@@ -15,13 +15,21 @@
 		components: {Title, goodsClass,Header},
 		data() {
 			return {
-				classList: clasMenu,
+				classList: [],
 				bigClass: 23336,
 			}
 		},
 		onShow(){
 			const bigClass = wx.getStorageSync('yahooId') || '23336'
 			this.bigClass = bigClass === '0' ? '23336' : bigClass
+			
+			clasMenu.forEach(item=>{
+				item.isShow = true
+				item.children.forEach(it=>{
+					it.isShow = true
+				})
+			})
+			this.classList = clasMenu
 		},
 		methods: {
 			onBigClassChange(val){

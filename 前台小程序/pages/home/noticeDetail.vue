@@ -28,7 +28,11 @@
 				const { data, code, msg } = res.data
 				if(code === 0){
 					this.title = data.title
-					this.HtMLData = data.content
+					const arr = data.content.split('<img')
+					
+					console.log('arr', arr)
+					
+					this.HtMLData = arr.join(`<img style="width: 365px;"`)
 					wx.hideLoading()
 				}else{
 					wx.hideLoading()

@@ -99,3 +99,11 @@ $uni-font-size-paragraph:15px;
 	z-index: 9;
 	background: linear-gradient( #DAEBFD 0%, #DEEAFC 32%, #ECEAFC 58%, #F1EAFC 63%, #EFF8FD 83%, #FFFFFF 100%);
 }
+
+// 去掉滚动条
+::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
+  color:transparent;
+}

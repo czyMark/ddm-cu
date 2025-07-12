@@ -33,6 +33,7 @@
 			</view>
 			
 			<view class="tabs between">
+				<view></view>
 				<view class="item column" @click="toTabbar(`/pages/mine/collect`)">
 					<view class="value">0</view>
 					<view class="label">商品收藏</view>
@@ -45,22 +46,24 @@
 					<view class="value">0</view>
 					<view class="label">足迹</view>
 				</view>
-				<image
+				<view></view>
+				<!-- <image
 					class="line"
 					src="@/static/icon/25.png"
 				>
 				<view class="item column" @click="toPath(`/pages/mine/account`)">
-					<view class="value">10000<text>(JPY)</text></view>
+					<view class="value">0<text>(JPY)</text></view>
 					<view class="label">账户余额</view>
 				</view>
+				
 				<image
 					class="line"
 					src="@/static/icon/25.png"
 				>
 				<view class="item column" @click="toPath(`/pages/mine/account`)">
-					<view class="value">50000<text>(JPY)</text></view>
+					<view class="value">0<text>(JPY)</text></view>
 					<view class="label">保证金</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		
@@ -75,7 +78,6 @@
 					v-for="(item, index) in auctionMenu" :key="index"
 				>
 					<image :src="item.icon" mode=""></image>
-					<!-- <view>{{item.text}}</view> -->
 				</view>
 				<i></i>
 			</view>
@@ -89,7 +91,6 @@
 					v-for="(item, index) in orderMenu" :key="index"
 				>
 					<image :src="item.icon" mode=""></image>
-					<!-- <view>{{item.text}}</view> -->
 				</view>
 			</view>
 		</view>
@@ -616,7 +617,7 @@
 			z-index: 1;
 		}
 		.logo{
-			width: 200rpx;
+			width: 300rpx;
 			height: 100rpx;
 			margin-bottom: 100rpx;
 		}

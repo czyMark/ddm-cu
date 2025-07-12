@@ -173,6 +173,14 @@ export const constantRoutes = [
     meta: { title: '汇率设置', icon: 'el-icon-tickets'},
     component: () => import('../views/rate')
   },
+  {
+    id: 14,
+    path: '/classes',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: '汇率设置', icon: 'el-icon-tickets'},
+    component: () => import('../views/classes')
+  },
 ]
 
 const router = new VueRouter({

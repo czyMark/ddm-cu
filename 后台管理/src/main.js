@@ -12,6 +12,13 @@ Vue.use(ElementUI)
 import CKEditor from 'ckeditor4-vue';
 Vue.use( CKEditor );
 
+import VueQuillEditor from 'vue-quill-editor'
+// 引入相关css
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+Vue.use(VueQuillEditor)
+
 // import Vant from 'vant';
 // import 'vant/lib/index.css';
 // Vue.use(Vant);

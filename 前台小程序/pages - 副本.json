@@ -90,14 +90,6 @@
 			}
 		},
 		{
-			"path": "pages/mercari/mercariResult2",
-			"style": {
-				"navigationBarTitleText": "煤炉搜索",
-				"navigationBarBackgroundColor": "#FFFFFF",
-				"navigationStyle":"custom"
-			}
-		},
-		{
 			"path": "pages/mercari/detail",
 			"style": {
 				"navigationBarTitleText": "商品详情",
@@ -293,7 +285,13 @@
 				"text": "首页",
 				"iconPath":"./static/tabbar/1.png",
 				"selectedIconPath":"./static/tabbar/11.png"
-			},
+			}, 
+			{
+				"pagePath": "pages/plantList/index",
+				"text": "优选",
+				"iconPath":"./static/tabbar/2.png",
+				"selectedIconPath":"./static/tabbar/22.png"
+			}, 
 			{
 				"pagePath": "pages/mine/contact",
 				"text": "客服",

@@ -21,16 +21,25 @@ import api from './utils/api'
 				wx.showToast({title: rateData.msg})
 			}
 			
-			
 			const settingRes = await api.querySetting()
 			const settingData = settingRes.data
-			console.log('settingData', settingData)
 			if(settingData.code === 0){
 				wx.setStorage({ key: 'setting' , data: settingData.data })
 			}else{
 				wx.setStorage({ key: 'setting' , data: {} })
 				wx.showToast({title: settingData.msg})
 			}
+			
+			
+			// const classRes = await api.fenleiselect()
+			// const classes = JSON.parse(classRes.data.data.content)
+			// wx.setStorage({ key: 'classes' , data: classes })
+			
+			api.fenleiselect().then(classRes=>{
+				const classes = JSON.parse(classRes.data.data.content)
+				wx.setStorage({ key: 'classes' , data: classes })
+			})
+			
 		},
 		onShow: function() {
 			console.log('App Show')

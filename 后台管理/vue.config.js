@@ -70,6 +70,15 @@ module.exports = defineConfig({
         target: "https://ddm-cu.com/",
         changeOrigin: true,
       },
+      "/fenlei": {
+        target: "https://ddm-cu.com/",
+        changeOrigin: true,
+      },
+      "/upload": {
+        target: "https://ddm-cu.com/",
+        changeOrigin: true,
+      },
+      
     }
   }
 })

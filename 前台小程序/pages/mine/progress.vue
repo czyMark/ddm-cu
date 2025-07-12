@@ -1,6 +1,6 @@
 <template>
 	<view class="page">
-		<Title :type="1" title="竞拍流程"/>
+		<Title :type="1" title="下单流程"/>
 		<view class="content">
 			<rich-text :nodes="HtMLData"></rich-text>
 		</view>

@@ -238,6 +238,14 @@ export function updataMercariOrderStatus(data) {
         data,
     });
 }
+// 根据用户id和type状态修改订单状态（煤炉）
+export function updataMercariOrderStatus2(data) {
+    return service({
+        url: "/MerOrder/updataTypeByorderid",
+        method: "POST",
+        data,
+    });
+}
 // 管理员计算费用接口（煤炉）
 export function countCost(data) {
     return service({
@@ -295,6 +303,14 @@ export function queryYahooOrderList(data) {
 export function updataYahooOrderStatus(data) {
     return service({
         url: "/yahooOrder/updataTypeByid",
+        method: "POST",
+        data,
+    });
+}
+// 根据用户id和type状态修改订单状态（雅虎）
+export function updataYahooOrderStatus2(data) {
+    return service({
+        url: "/yahooOrder/updataTypeByOrderid",
         method: "POST",
         data,
     });
@@ -474,6 +490,25 @@ export function updatapassword(data) {
     });
 }
 
+
+
+// 分类获取
+export function fenleiselect(data) {
+    return service({
+        url: "/fenlei/select",
+        method: "POST",
+        data,
+    });
+}
+
+// 分类修改
+export function fenleiupdata(data) {
+    return service({
+        url: "/fenlei/updata",
+        method: "POST",
+        data,
+    });
+}
 
 
 

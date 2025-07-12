@@ -141,6 +141,11 @@ const permissionMenu = [
         path: '/art',
         children: [
             {
+                id: 244,
+                label: '分类管理',
+                path: '/classes'
+            },
+            {
                 id: 24,
                 label: '首页轮播图',
                 path: '/swiper'

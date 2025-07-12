@@ -46,18 +46,22 @@
 				{{item.text}}
 			</view>
 		</view>
-		<view class="list" v-if="currentTab === 1">
+		<view class="list">
 			<view :class="['item', selectMode ? 'center selectMode' : '']"
 				v-for="(item, index) in list" :key="index"
 				@click="chooseItem(item)" @longpress="selectOrder(item)">
 				<view class="radio" v-if="selectMode">
 					<radio :checked="item.isSelect" :disabled="item.type !== 5" @click.navtive="onSelectChange(item)"/>
 				</view>
-				<view class="container">
+				<view class="container" v-if="item.plant_type === 'yahoo'">
 					<view class="itemNav flex">
-						<image :src="item.imageurl"></image>
-						<!-- <image src="https://img.alicdn.com/imgextra/i3/2200632700688/O1CN01guYXUz1Gx9KuHSeRB_!!2200632700688-0-scmitem6000.jpg"></image> -->
-						
+						<view class="main">
+							<image :src="item.imageurl"></image>
+							<image
+								class="logo"
+								src="@/static/icon/14.png"
+							>
+						</view>
 						<view class="info" v-if="orderType === '2'">
 							<view class="title">{{item.title}}</view>
 							<view class="price">{{item.price}}日元</view>
@@ -140,6 +144,73 @@
 								src="@/static/icon/38.png"
 							>
 						</view> -->
+					</view>
+				</view>
+				
+				
+				<view class="container" v-if="item.plant_type === 'mercari'">
+					<view class="itemNav flex">
+						<view class="main">
+							<image :src="item.imageurl"></image>
+							<image
+								class="logo"
+								src="@/static/icon/17.png"
+							>
+						</view>
+							
+						<view class="info" v-if="orderType === '2'">
+							<view class="title">{{item.title}}</view>
+							<view class="price">{{item.price}}日元</view>
+							<view class="option flex">
+								<image
+									@click.stop="showReducePrice(item)"
+									v-if="item.type === 2"
+									class="type2"
+									src="@/static/icon/74.png"
+								>
+							</view>
+						</view>
+						
+						<view class="info" v-if="orderType === '4'">
+							<view class="title">{{item.title}}</view>
+							<view class="price price2">{{item.price}}日元</view>
+						</view>
+						
+						<view class="info" v-if="orderType === '5'">
+							<view class="title">{{item.title}}</view>
+							<view class="price">{{item.price}}日元</view>
+							<view class="option flex">
+								<view class="type2 center"
+									@click.stop="toPath(`/pages/mercari/requestSend?type=2&id=${item.id}&orderid=${item.orderid}`)"
+								>
+									申请发货
+								</view>
+							</view>
+						</view>
+						
+						<view class="info" v-if="orderType === '7'">
+							<view class="title">{{item.title}}</view>
+							<view class="btns">
+								<view class="btn center"
+									@click.stop="showCostDetail(item)"
+								>
+									国际运费
+								</view>
+								<view class="btn center">
+									准备出库
+								</view>
+							</view>
+						</view>
+						
+						<view class="info" v-if="orderType === '9'">
+							<view class="title">{{item.title}}</view>
+							<view class="btns">
+								<view class="btn center">
+									商品已出库
+								</view>
+							</view>
+						</view>
+						
 					</view>
 				</view>
 				<view class="item" v-for="it in item.children" :key="it.id" v-if="item.showChildren">
@@ -332,7 +403,6 @@
 			if(query.statusType){
 				if(this.currentTab === 1) this.currentYahooType = query.statusType*1
 				if(this.currentTab === 2) this.currentMercariType = query.statusType*1
-				
 			}
 		},
 		onShow(){
@@ -370,12 +440,13 @@
 					})
 				}
 			},
-			getList(){
-				if(this.currentTab === 1){
-					this.queryYahooOrderList()
-				}else{
-					this.queryMercariOrderList()
-				}
+			async getList(){
+				console.log('get')
+				// if(this.currentTab === 1){
+					await this.queryYahooOrderList()
+				// }else{
+					await this.queryMercariOrderList()
+				// }
 			},
 			async fixPrice(){
 				const item = this.currentOrder
@@ -523,14 +594,32 @@
 			async queryMercariOrderList(){
 				this.loading = true
 				wx.showLoading({title: '加载中'})
+				
+				let type = ''
+				
+				const mercariOrderType = {
+					'2': '',
+					'4': 1,
+					'5': 2,
+					'7': 4,
+					'9': 6,
+				}
+				type = mercariOrderType[this.orderType]
+				
+				if(type === ''){
+					this.loading = false
+					wx.hideLoading()
+					return false
+				}
 				const params = {
 					userid: this.userInfo.userid,
 					// userid: 141,
-					type: this.currentMercariType,
+					type,
 				}
 				const res = await this.$api.queryMercariOrderList(params)
 				const { data } = res.data
 				data?.forEach(item=>{
+					item.plant_type = 'mercari'
 					let total = 0
 					item.children?.forEach(it=>{
 						total += (it.price * 100)
@@ -540,8 +629,10 @@
 					item.isSelect = false
 					item.showChildren = false
 				})
+				
+				this.list = this.list.concat(data)
 				this.list = data
-				this.mercariOrderList = data
+				console.log('queryMercariOrderList', this.list)
 				this.loading = false
 				wx.hideLoading()
 			},
@@ -556,7 +647,8 @@
 				const res = await this.$api.queryYahooOrderList(params)
 				const { data } = res.data
 				data?.forEach(item=>{
-					console.log('paytime', item.paytime)
+					item.plant_type = 'yahoo'
+					
 					let total = 0
 					item.children?.forEach(it=>{
 						if(it.ratetype === 1){
@@ -574,7 +666,7 @@
 					item.isSelect = false
 					item.showChildren = false
 				})
-				this.list = data
+				this.list = this.list.concat(data)
 				// this.list = [{}]
 				this.yahooOrderList = data
 				wx.hideLoading()
@@ -591,7 +683,9 @@
 			chooseType(id){
 				if(this.loading) return false
 				this.orderType = id
+				this.list = []
 				this.queryYahooOrderList()
+				this.queryMercariOrderList()
 				// if(id === 0){
 				// 	this.list = this.yahooOrderList
 				// }else{
@@ -719,10 +813,6 @@
 			.container{
 				width: 710rpx;
 			}
-			image{
-				width: 228rpx;
-				height: 194rpx;
-			}
 			.itemHeader{
 				width: 100%;
 				font-size: 26rpx;
@@ -734,6 +824,23 @@
 			.itemNav{
 				width: 100%;
 				margin-top: 10rpx;
+				
+				.main{
+					width: 228rpx;
+					height: 194rpx;
+					position: relative;
+					image{
+						width: 228rpx;
+						height: 194rpx;
+					}
+					.logo{
+						position: absolute;
+						width: 88rpx;
+						height: 34rpx;
+						bottom: 8rpx;
+						left: 4rpx;
+					}
+				}
 			}
 			.info{
 				position: relative;

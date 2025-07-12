@@ -36,8 +36,8 @@
 				v-for="(item, index) in menuList" :key="index"
 				@click="onMenuClick(item)"
 			>
-				<image :src="item.icon"></image>
-				<text>{{item.label}}</text>
+				<image :src="item.img"></image>
+				<text>{{item.cname}}</text>
 			</view>
 		</view>
 		
@@ -50,12 +50,12 @@
 			<image
 				class="sign"
 				src="@/static/icon/11.png"
-				@click="showLogin = true"
+				@click="register"
 			>
 			<image
 				class="login"
 				src="@/static/icon/12.png"
-				@click="showLogin = true"
+				@click="login"
 			>
 		</view>
 		
@@ -82,7 +82,7 @@
 			  vertical>
 			  <block v-for="(item, index) in noticeList" :key="index">
 			    <swiper-item>
-					<view class="item">
+					<view class="item" @click="toPath(`/pages/home/noticeDetail?id=${item.id}`)">
 						<view class="nav">
 							<uni-notice-bar
 								background-color="none"
@@ -136,12 +136,15 @@
 				<view class="item column"
 					v-for="(it, ii) in item.children" :key="ii"
 					@click="onSecondMenuClick(item, it)"
+					v-if="it.isShow"
 				>
 					<image
 						class="icon"
-						src="@/static/yahoo-fill.png"
+						:src="it.img || mercariImg"
 					>
-					<view class="label">{{it.name_cn}}</view>
+					<!-- src="@/static/yahoo-fill.png" -->
+					<!-- <view class="label">{{it.name_cn}}</view> -->
+					<view class="label">{{it.cname}}</view>
 				</view>
 				<i></i>
 				<i></i>
@@ -149,14 +152,24 @@
 			</view>
 		</view>
 		
+		<view class="bottom center">
+			<view></view>
+			<text>我是有底线的</text>
+			<view></view>
+		</view>
 		
-		
-		<Login :showLogin="showLogin" @close="closePop" @loginSuccess="loginSuccess" />
+		<Login
+			:showLogin="showLogin"
+			:showInvitedCode="showInvitedCode"
+			@close="closePop"
+			@loginSuccess="loginSuccess"
+		/>
 	</view>
 </template>
 
 <script>
-	import clasMenu from "@/utils/yahooClass.js"
+	// import clasMenu from "@/utils/yahooClass.js"
+	// import clasMenu from "@/utils/mercariClass.js"
 	import Title from "@/components/title.vue"
 	import Search from "@/components/search.vue"
 	import Login from "@/components/login.vue"
@@ -166,37 +179,51 @@
 		components: {Title, Search, Login},
 		data() {
 			return {
+				showInvitedCode: false,
 				banners: [],
 				noticeList: [],
+				// menuList: [
+				// 	{id: '20000', label: '收藏艺术', icon: '/static/icon/4.png',},
+				// 	{id: '22152', label: '影音娱乐', icon: '/static/icon/5.png'},
+				// 	{id: '23632', label: '数码家电', icon: '/static/icon/6.png'},
+				// 	{id: '25464', label: '游戏动漫', icon: '/static/icon/7.png'},
+				// 	{id: '23000', label: '时尚穿搭', icon: '/static/icon/8.png'},
+				// 	{id: '23140', label: '首饰手表', icon: '/static/icon/9.png'},
+				// 	// {id: 'jiu', label: '酒类厨刀', icon: '/static/jiubeihongjiu.png'},
+				// 	// {id: '0', label: '全部分类', icon: '/static/caidan.png'},
+				// ],
+				
 				menuList: [
-					{id: '20000', label: '收藏艺术', icon: '/static/icon/4.png',},
-					{id: '22152', label: '影音娱乐', icon: '/static/icon/5.png'},
-					{id: '23632', label: '数码家电', icon: '/static/icon/6.png'},
-					{id: '25464', label: '游戏动漫', icon: '/static/icon/7.png'},
-					{id: '23000', label: '时尚穿搭', icon: '/static/icon/8.png'},
-					{id: '23140', label: '首饰手表', icon: '/static/icon/9.png'},
-					// {id: 'jiu', label: '酒类厨刀', icon: '/static/jiubeihongjiu.png'},
-					// {id: '0', label: '全部分类', icon: '/static/caidan.png'},
+					{id: 9, label: '衣帽服饰', icon: '/static/icon/4.png',},
+					// {id: '22152', label: '影音娱乐', icon: '/static/icon/5.png'},
+					{id: 7, label: '数码家电', icon: '/static/icon/6.png'},
+					{id: 1328, label: '游戏动漫', icon: '/static/icon/7.png'},
+					{id: 8, label: '时尚穿搭', icon: '/static/icon/8.png'},
+					// {id: '23140', label: '首饰手表', icon: '/static/icon/9.png'},
 				],
 				childrenList: [],
 				currentClass: {},
 				menuList2: [
-					{id: '20000', label: '竞拍流程', icon: '/static/icon/42.png', url: '/pages/mine/progress'},
+					{id: '20000', label: '下单流程', icon: '/static/icon/42.png', url: '/pages/mine/progress'},
 					{id: '22152', label: '费用说明', icon: '/static/icon/43.png', url: '/pages/mine/rules'},
 					{id: '23632', label: '帮助中心', icon: '/static/icon/44.png', url: '/pages/mine/questions'},
 				],
 				list: [],
 				isLogin: false,
 				showLogin: false,
+				
+				mercariImg: require('@/static/mm.png')
 			}
 		},
 		async onLoad() {
-			const ids = []
-			clasMenu.forEach(item=>{
-				item.children?.forEach(it=>{
-					ids.push(it.id)
-				})
-			})
+			// const ids = []
+			// clasMenu.forEach(item=>{
+			// 	item.children?.forEach(it=>{
+			// 		ids.push(it.id)
+			// 	})
+			// })
+			this.setMenuList()
+			this.setChildrenList()
 			
 			let result = Math.floor(Math.random()*149)
 			if(result>=148){
@@ -211,12 +238,20 @@
 			
 			await this.getNoticeList()
 			
-			this.setChildrenList()
 		},
 		onShow(){
 			this.isLogin = wx.getStorageSync('login') || false
+			setTimeout(()=>{
+				this.setMenuList()
+				this.setChildrenList()
+			}, 500)
 		},
 		methods: {
+			toDetail(item){
+				wx.navigateTo({
+					url: `/pages/yahoo/detail?code=${item.code}`,
+				})
+			},
 			loginSuccess(){
 				this.isLogin = true
 				this.showLogin = false
@@ -336,9 +371,13 @@
 				})
 			},
 			onSecondMenuClick(item, it){
+				// wx.navigateTo({
+				// 	url: `/pages/yahoo/yahooResult?bigClass=${item.id}&middleClass=${it.id}`
+				// })
 				wx.navigateTo({
-					url: `/pages/yahoo/yahooResult?bigClass=${item.id}&middleClass=${it.id}`
+					url: `/pages/mercari/mercariResult?bigClass=${item.id}&middleClass=${it.id}`
 				})
+				
 			},
 			onMenuClick(item){
 				
@@ -354,18 +393,41 @@
 					key: 'yahooId',
 					data: item.id
 				})
+				// wx.navigateTo({
+				// 	url: `/pages/yahoo/yahooResult?bigClass=${item.id}`
+				// })
+				
+				
 				wx.navigateTo({
-					url: `/pages/yahoo/yahooResult?bigClass=${item.id}`
+					url: `/pages/mercari/mercariResult?bigClass=${item.id}`
 				})
 			},
 			
+			setMenuList(){
+				const classes = wx.getStorageSync('classes') || {}
+				const clasMenu = classes.mercariClass || []
+				const menuList = []
+				clasMenu.forEach(item=>{
+					if(item.showInHome){
+						menuList.push(item)
+					}
+				})
+				this.menuList = menuList
+			},
+			
 			setChildrenList(){
+				
+				const classes = wx.getStorageSync('classes') || {}
+				const clasMenu = classes.mercariClass || []
+				
 				const list = []
 				this.menuList?.forEach(item=>{
 					clasMenu.forEach(it=>{
 						if(item.id === it.id){
+							
+							console.log('item.id === it.id', item.id, it.id)
 							const obj = {
-								title: item.label,
+								title: item.cname,
 								id: item.id,
 								children: it.children
 							}
@@ -387,16 +449,28 @@
 				})
 			},
 			
+			login(){
+				this.showLogin = true
+				this.showInvitedCode = false
+			},
+			
+			register(){
+				this.showLogin = true
+				this.showInvitedCode = true
+			},
+			
 			closePop(){
 				this.showLogin = false
 			},
 			
 			toPath(url, val){
 				if(val){
+					console.log('1')
 					uni.switchTab({
 						url,
 					})
 				}else{
+					console.log('2')
 					wx.navigateTo({
 						url,
 					})
@@ -810,5 +884,20 @@
 
 ::v-deep .uni-noticebar{
 	padding: 0 !important;
+}
+
+.bottom{
+	width: 750rpx;
+	padding: 30rpx 0;
+	text{
+		font-size: 24rpx;
+		color: #b7b7b7;
+		margin: 0 30rpx;
+	}
+	view{
+		width: 200rpx;
+		height: 1px;
+		background-color: #b7b7b7;
+	}
 }
 </style>

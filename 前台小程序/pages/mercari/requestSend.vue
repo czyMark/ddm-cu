@@ -284,7 +284,8 @@
 				const params = {
 					userid: this.userInfo.userid,
 					order: [{
-						id: this.query.id
+						id: this.query.id,
+						orderid: this.query.orderid,
 					}],
 					addressid: this.currentAddressId,
 					luxian: this.routeValue,

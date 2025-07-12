@@ -188,6 +188,19 @@
 				}
 				const res = await this.$api.mercariOrder(params)
 				const {data} = res.data
+				
+				console.log('success', res)
+				wx.hideLoading()
+				wx.showToast({
+					title: '下单成功'
+				})
+				setTimeout(()=>{
+					wx.navigateTo({
+						url: '/pages/mine/allOrderList?type=2'
+					})
+				}, 1500)
+				
+				return false
 				const {timeStamp, nonceStr, signType, paySign} = data
 				wx.requestPayment({
 					timeStamp: timeStamp,
