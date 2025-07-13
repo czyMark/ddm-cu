@@ -4,7 +4,7 @@
 			
 			<Title :type="7" :currentClasses="currentClasses"/>
 			
-			<Header @onSearch="onSearch" ref="header" page="none"/>
+			<Header @onSearch="onSearch" @keywordChange="keywordChange" :keyword="keyword" ref="header" page="none"/>
 			
 			<!-- <view class="header between">
 				<view class="uniInput">
@@ -248,6 +248,8 @@
 		},
 		async onLoad(query) {
 			this.query = query
+			this.keyword = query.keyword || ''
+			console.log('load', this.keyword)
 			// 获取煤炉分类
 			const classes = wx.getStorageSync('classes') || {}
 			clasMenu = classes.mercariClass || []
@@ -286,10 +288,15 @@
 			}
 		},
 		methods: {
+			keywordChange(val){
+				this.keyword = val
+			},
 			toChild(item, index){
 				const {bigClass='', middleClass='', smallClass=''} = this.query
 				wx.setStorage({ key: 'classArr' , data: this.classArr })
-				const url = `/pages/mercari/mercariResult2?smallClass=${item.id}&from=1`
+				const arr = item.path.split(',')
+				const path = arr[arr.length - 1]
+				const url = `/pages/mercari/mercariResult2?smallClass=${item.id}&from=1&path=${path}`
 				
 				wx.navigateTo({
 					url,
@@ -300,7 +307,6 @@
 				
 				const arr = []
 				const {bigClass='', middleClass='', smallClass='', from=''} = query
-				console.log(bigClass, middleClass, smallClass)
 				
 				if(!from){
 					let bigClassIndex = ''
@@ -314,7 +320,6 @@
 							bigClassIndex = i
 						}
 					})
-					console.log(bigClassIndex)
 					let middileClassIndex = ''
 					if(middleClass){
 						clasMenu[bigClassIndex].children?.forEach((item, i)=>{
@@ -362,7 +367,6 @@
 			},
 			onChoose(item, key){
 				if(this[key] === item.id){
-					console.log(this[key], item.id)
 					this[key] = ''
 				}else{
 					this[key] = item.id
@@ -396,9 +400,12 @@
 				this.isOnFocus = true
 			},
 			async getMercariSelectcates(){
+				console.log('this.query', this.query)
+				console.log('keyword', this.query.keyword)
+				console.log('this.keyword', this.keyword)
 				wx.showLoading({title: '加载中'})
 				const length = this.classArr.length
-				const urlid = this.classArr[length-1].id
+				const urlid = this.query.path
 				const res = await this.$api.getMercariSelectcates({
 					urlid,
 					pageSize: this.size,
@@ -496,7 +503,6 @@
 				this.defaultList = []
 				
 				const res = await this.$api.getMercariGoodDetail({goodcode: this.keyword})
-				console.log('res', res)
 				if(res.data.code !== 500){
 					wx.hideLoading()
 					wx.navigateTo({

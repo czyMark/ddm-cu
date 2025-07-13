@@ -5,8 +5,9 @@
 				type="text"
 				:placeholder="placeholder"
 				@focus="onFocus"
-				v-model="keyword"
+				v-model="searchValue"
 				@confirm="onSearch"
+				@input="onInput"
 				placeholder-style="color:#ADADAD;font-size:28rpx;"
 			/>
 			
@@ -22,15 +23,14 @@
 		data() {
 			return {
 				navBarheight: 0,
-				keyword: '',
+				searchValue: '',
 			};
 		},
-		watch: {
-			keyword(val){
-				this.$emit('keywordChange', val)
-			}
-		},
 		props: {
+			keyword: {
+				type: String,
+				default: ''
+			},
 			placeholder: {
 				type: String,
 				default: '请输入关键词搜索'
@@ -45,11 +45,16 @@
 			},
 		},
 		onReady(){
+			this.searchValue = this.keyword
 			this.navBarheight = wx.getStorageSync('statusBarHeight')
 		},
 		methods: {
 			goback(){
 				wx.navigateBack(-1)
+			},
+			onInput(e){
+				const val = e.detail.value
+				this.$emit('keywordChange', val)
 			},
 			onFocus(){
 				console.log('onFocus')

@@ -29,11 +29,15 @@
 			this.bigClass = showClasses[0].id
 		},
 		methods: {
-			onBigClassChange(val){
+			onBigClassChange(val, item){
+				this.currentClass = item
 				this.bigClass = val
 			},
 			onSearch(keyword){
-				this.toPath(`/pages/mercari/mercariResult?bigClass=${this.bigClass}&keyword=${keyword}`)
+				const arr = this.currentClass.path.split(',')
+				const path = arr[arr.length - 1]
+				console.log("path", path)
+				this.toPath(`/pages/mercari/mercariResult?bigClass=${this.bigClass}&keyword=${keyword}&path=${path}`)
 			},
 			toPath(url){
 				wx.navigateTo({

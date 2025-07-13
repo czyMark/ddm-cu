@@ -82,6 +82,8 @@ export default {
             loading: false,
             showForm: false,
             currentLevel: null,
+
+            newArr: []
         }
     },
     created(){
@@ -89,11 +91,38 @@ export default {
         // this.treeData = JSON.parse(localStorage.getItem('newMercariClass'))
         // this.setChildren(this.treeData)
 
+        this.bianpinghua(newMercariClass, this.newArr)
 
 
         this.getClasses()
     },
     methods: {
+        setId(data){
+            data?.forEach(item=>{
+                this.newArr.forEach(it=>{
+                    if(item.id === it.id){
+                        item.path = it.path
+                    }
+                })
+
+                if(item.children && item.children.length > 0){
+                    this.setId(item.children)
+                }
+            })
+        },
+        bianpinghua(data, newArr){
+            data?.forEach(item=>{
+                newArr.push({
+                    id: item.id,
+                    path: item.path
+                })
+
+                if(item.children && item.children.length > 0){
+                    this.bianpinghua(item.children, newArr)
+                }
+            })
+        },
+        
         setChildren(data){
             data?.forEach(item=>{
                 delete item.cid
@@ -118,7 +147,6 @@ export default {
                     item.showInHome = false
                 })
 
-                // this.setChildren(classes.mercariClass)
                 this.treeData = classes.mercariClass
                 console.log('this.treeData', this.treeData)
 

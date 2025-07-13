@@ -46,10 +46,13 @@
 				type: [String, Number],
 				default:　0
 			},
+			keyword: {
+				type: String,
+				default: ''
+			}
 		},
 		data() {
 			return {
-				keyword: '',
 				rate: '查询中',
 				rateTimer: null,
 			}
@@ -77,7 +80,7 @@
 		},
 		methods: {
 			keywordChange(val){
-				this.keyword = val
+				this.$emit('keywordChange', val)
 			},
 			iconClick(type) {
 				uni.showToast({
@@ -86,7 +89,6 @@
 				})
 			},
 			onSearch(){
-				console.log('onSearch', this.keyword)
 				this.$emit('onSearch', this.keyword)
 			},
 			onFocus(){

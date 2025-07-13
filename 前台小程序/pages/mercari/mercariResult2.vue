@@ -4,7 +4,7 @@
 			
 			<Title :type="7" :currentClasses="currentClasses"/>
 			
-			<Header @onSearch="onSearch" ref="header" page="none"/>
+			<Header @onSearch="onSearch" @keywordChange="keywordChange" ref="header" page="none"/>
 			
 			<!-- <view class="header between">
 				<view class="uniInput">
@@ -248,6 +248,7 @@
 		},
 		async onLoad(query) {
 			this.query = query
+			this.keyword = this.query.keyword || ''
 			// 获取煤炉分类
 			const classes = wx.getStorageSync('classes') || {}
 			clasMenu = classes.mercariClass || []
@@ -286,10 +287,15 @@
 			}
 		},
 		methods: {
+			keywordChange(val){
+				this.keyword = val
+			},
 			toChild(item){
 				const {bigClass='', middleClass='', smallClass=''} = this.query
 				wx.setStorage({ key: 'classArr' , data: this.classArr })
-				const url = `/pages/mercari/mercariResult?smallClass=${item.id}&from=2`
+				const arr = item.path.split(',')
+				const path = arr[arr.length - 1]
+				const url = `/pages/mercari/mercariResult?smallClass=${item.id}&from=2&path=${path}`
 				wx.navigateTo({
 					url,
 				})
@@ -398,7 +404,7 @@
 				wx.showLoading({title: '加载中'})
 				
 				const length = this.classArr.length
-				const urlid = this.classArr[length-1].id
+				const urlid = this.query.path
 				const res = await this.$api.getMercariSelectcates({
 					urlid,
 					pageSize: this.size,

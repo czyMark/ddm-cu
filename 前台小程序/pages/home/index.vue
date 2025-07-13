@@ -374,8 +374,10 @@
 				// wx.navigateTo({
 				// 	url: `/pages/yahoo/yahooResult?bigClass=${item.id}&middleClass=${it.id}`
 				// })
+				const arr = it.path.split(',')
+				const path = arr[arr.length - 1]
 				wx.navigateTo({
-					url: `/pages/mercari/mercariResult?bigClass=${item.id}&middleClass=${it.id}`
+					url: `/pages/mercari/mercariResult?bigClass=${item.id}&middleClass=${it.id}&path=${path}`
 				})
 				
 			},
@@ -398,8 +400,11 @@
 				// })
 				
 				
+				const arr = item.path.split(',')
+				const path = arr[arr.length - 1]
+				
 				wx.navigateTo({
-					url: `/pages/mercari/mercariResult?bigClass=${item.id}`
+					url: `/pages/mercari/mercariResult?bigClass=${item.id}&path=${path}`
 				})
 			},
 			

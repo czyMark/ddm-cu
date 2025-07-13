@@ -96,7 +96,7 @@
 				}
 				this.currentBigClass = item.id
 				this.middleClass = item.children
-				this.$parent.onBigClassChange(item.id)
+				this.$parent.onBigClassChange(item.id, item)
 			},
 			onMiddleChange(item){
 				this.currentMiddleClass = item.id
