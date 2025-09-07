@@ -6,19 +6,19 @@
                     <div class="item center">
                         <div class="title">订单编号</div>
                         <div class="value">
-                            <el-input v-model="orderid" clearable></el-input>
+                            <el-input v-model="orderid" clearable style="width: 200px"></el-input>
                         </div>
                     </div>
                     <div class="item center">
                         <div class="title">商品标题</div>
                         <div class="value">
-                            <el-input v-model="title" clearable></el-input>
+                            <el-input v-model="title" clearable style="width: 200px"></el-input>
                         </div>
                     </div>
                     <div class="item center">
                         <div class="title">用户昵称</div>
                         <div class="value">
-                            <el-input v-model="nickName" clearable></el-input>
+                            <el-input v-model="nickName" clearable style="width: 200px"></el-input>
                         </div>
                     </div>
                     <div class="item center">
@@ -30,8 +30,35 @@
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
-                                style="width: 545px">
+                                style="width: 510px">
                             </el-date-picker>
+                        </div>
+                    </div>
+                    <div class="item center">
+                        <div class="title">是否到付</div>
+                        <div class="value">
+                            <el-select v-model="isPost_filter" placeholder="请选择" style="width: 200px" clearable>
+                                <el-option
+                                    label="到付"
+                                    :value="1"
+                                >
+                                </el-option>
+                                <el-option
+                                    label="不到付"
+                                    :value="0"
+                                >
+                                </el-option>
+                                <el-option
+                                    label="雅虎已付"
+                                    :value="2"
+                                >
+                                </el-option>
+                                <el-option
+                                    label="雅虎待付"
+                                    :value="3"
+                                >
+                                </el-option>
+                            </el-select>
                         </div>
                     </div>
                     <i></i>
@@ -44,7 +71,7 @@
                         @click="exportFile"
                         style="margin-left: 10px"
                         :disabled="multipleSelection.length === 0"
-                        >
+                    >
                             导出订单
                     </el-button>
                 </div>
@@ -67,11 +94,11 @@
                     :span-method="objectSpanMethod"
                     @selection-change="handleSelectionChange"
                 >
-                    <!-- <el-table-column
-                        v-if="$route.query.yahooType === '8'"
+                    <el-table-column
+                        v-if="$route.query.yahooType === '4' || $route.query.yahooType === '8' || $route.query.yahooType === '9'"
                         type="selection"
                         width="55">
-                    </el-table-column> -->
+                    </el-table-column>
 
                     <el-table-column label="序号" type="index" width="50"></el-table-column>
 
@@ -87,9 +114,9 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="商品图片" width="120"  header-align="center" align="center">
+                    <el-table-column label="商品图片" width="80"  header-align="center" align="center">
                         <template slot-scope="scope">
-                            <img :src="scope.row.imageurl || ''" alt="" style="width: 80px; height: 80px; border-radius: 50%; margin: auto">
+                            <img :src="scope.row.imageurl || ''" alt="" style="width: 60px; height: 60px; border-radius: 50%; margin: auto">
                         </template>
                     </el-table-column>
 
@@ -104,27 +131,35 @@
                     <el-table-column fixed="right" label="操作" width="200"  header-align="center" align="center">
                         <template slot-scope="scope">
                             <div v-if="!scope.row.parentid" class="around">
+                                <el-button type="text" size="small" @click="showPostDialog(scope.row)" v-if="scope.row.type === 2 || scope.row.type === 4">支付完成</el-button>
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">竞拍成功</el-button>
                                 <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 3, scope.row.userid)" v-if="scope.row.type === 1">竞拍失败</el-button>
 
-                                <!-- 测试付款 -->
-                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 4, scope.row.userid)" v-if="scope.row.type === 2">支付</el-button>
+
+                                <!-- 改回待支付 -->
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 2, scope.row.userid)">改回待支付</el-button> -->
+
+                                <!-- 测试改回待付尾款 -->
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 7, scope.row.userid)">改回待付尾款</el-button> -->
 
                                 <!-- 测试付款 -->
-                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)" v-if="scope.row.type === 7">支付</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)" v-if="scope.row.type === 7">支付</el-button> -->
 
                                 <!-- 测试改已入库 -->
-                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 4, scope.row.userid)">改回待入库</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 4, scope.row.userid)">改回待入库</el-button> -->
 
                                 <!-- 测试改待发货 -->
-                                <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)">改回待发货</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 8, scope.row.userid)">改回待发货</el-button> -->
 
-                                <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row.type === 4">已入库</el-button>
+                                <template v-if="scope.row.type === 4">
+                                    <!-- <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row. jpyunfeiType === 0">已入库</el-button> -->
+                                    <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 5, scope.row.userid)">已入库</el-button>
+                                </template>
                                 <!-- <el-button type="text" size="small" @click="changeStatus_yahoo(scope.row.id, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库</el-button> -->
                                 
 
                                 <!-- 测试已入库 -->
-                                <el-button type="text" size="small" @click="changeStatus_yahoo2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库2</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_yahoo2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">已入库2</el-button> -->
 
 
                                 <el-button type="text" size="small" @click="toDetail(scope.row, 1)" v-if="scope.row.type === 6">计算尾款</el-button>
@@ -172,7 +207,7 @@
 
                     <el-table-column label="序号" type="index" width="50"></el-table-column>
 
-                    <el-table-column label="订单号" prop="orderid"  width="150">
+                    <el-table-column label="订单号" prop="orderid"  width="160">
                         <template slot-scope="scope">
                             <div :class="scope.row.isCurrentDay ? 'isCurrentDay' : ''">{{scope.row.orderid}}</div>
                         </template>
@@ -207,20 +242,20 @@
                     <el-table-column fixed="right" label="操作" width="150"  header-align="center" align="center">
                         <template slot-scope="scope">
                             <div v-if="!scope.row.parentid" class="around">
-                                <el-button type="text" size="small" @click="orderRefund(scope.row)" v-if="scope.row.type === 1">退款</el-button>
-                                <el-button type="text" size="small" @click="showPostFee(scope.row)" v-if="scope.row.type === 1">已入库</el-button>
+                                <!-- <el-button type="text" size="small" @click="orderRefund(scope.row)" v-if="scope.row.type === 1">退款</el-button> -->
+                                <el-button type="text" size="small" @click="changeStatus_mercari(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">已入库</el-button>
 
 
                                 <!-- 测试改已入库 -->
-                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 1, scope.row.userid)">改回待入库</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 1, scope.row.userid)">支付完成</el-button> -->
 
                                 <!-- 测试改待发货 -->
-                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 4, scope.row.userid)">改回待发货</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 4, scope.row.userid)">改回待发货</el-button> -->
 
                                 <!-- 测试已入库 -->
-                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 1">测试已入库</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 1">测试已入库</el-button> -->
                                 <!-- 测试付尾款支付 -->
-                                <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">支付尾款</el-button>
+                                <!-- <el-button type="text" size="small" @click="changeStatus_mercari2(scope.row.orderid, 5, scope.row.userid)" v-if="scope.row.type === 4">支付尾款</el-button> -->
 
 
                                 <!-- <el-button type="text" size="small" @click="changeStatus(scope.row.id, 2, scope.row.userid)" v-if="scope.row.type === 1">已入库</el-button> -->
@@ -228,7 +263,7 @@
                                 <el-button type="text" size="small" @click="changeCount(scope.row)" v-if="scope.row.type === 4">更正尾款金额</el-button>
                                 <el-button type="text" size="small" @click="sendPackage(scope.row, 2)" v-if="scope.row.type === 5">发货</el-button>
                                 <el-button type="text" size="small" @click="review(scope.row)">查看</el-button>
-                                <el-button type="text" size="small" @click="deleteItem(scope.row)" style="color: red">删除</el-button>
+                                <el-button type="text" size="small" @click="deleteItem_mercari(scope.row)" style="color: red">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -350,12 +385,47 @@
             :close-on-click-modal="false"
             :before-close="handleClose">
             <div class="center">
-                <div>运费：</div>
+                <div>运费(円)：</div>
                 <el-input v-model="postFee" style="width: 400px"></el-input>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="confirmGot">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <el-dialog
+            title="支付确认"
+            :visible="dialogVisible2"
+            :width="deviceType === 'pc' ? '600px' : '80%'"
+            :close-on-click-modal="false"
+            :before-close="handleClose2">
+            <div class="center">
+                <div style="width: 90px">是否到付：</div>
+                <el-select v-model="isPost" placeholder="请选择" style="width: 400px" clearable>
+                    <el-option
+                        label="到付"
+                        :value="1"
+                    >
+                    </el-option>
+                    <el-option
+                        label="不到付"
+                        :value="0"
+                    >
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="center" style="margin-top: 20px">
+                <div style="width: 90px">运费(円)：</div>
+                <el-input v-model="postFee" style="width: 400px"></el-input>
+            </div>
+            <div class="center" style="margin-top: 20px">
+                <div style="width: 90px">手续费(円)：</div>
+                <el-input v-model="shouxufei" style="width: 400px"></el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="handleClose2">取 消</el-button>
+                <el-button type="primary" @click="confirmGot2">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -370,11 +440,19 @@ import {
     countYahooCost,
     sendYahooGood,
     fixYahooPrice,
-    exportYahooOrder,
+    allOrderExport,
+    allOrderExportexcelout,
     deleteYahooOrderList,
     queryMercariOrderList,
     updataMercariOrderStatus,
     updataMercariOrderStatus2,
+
+    deleteMercariOrderList,
+    countCost,
+    queryRate,
+    exportMercariOrder,
+    orderRefund,
+    updataJpyunfeiType,
 } from "@/http/api"
 import fileDownload from "js-file-download";
 import { mapState } from 'vuex'
@@ -387,11 +465,15 @@ export default {
             hasChildren: true,
             loading: false,
             column1_yahoo: [
-                { label: "商品标题", prop: "title", width: "" },
+                { label: "下单账号", prop: "accountidText", width: "" },
+                { label: "是否到付", prop: "jpyunfeiTypeText", width: "" },
+                { label: "商品标题", prop: "title", width: "300" },
                 { label: "商品价格(円)", prop: "price", width: "100" },
-                { label: "价格总计(円)", prop: "priceTotal", width: "100" },
-                { label: "订单状态", prop: "typeText", width: "120" },
+                { label: "价格总计(円)", prop: "firstPayPrice", width: "100" },
+                { label: "岛内运费", prop: "jpyunfei", width: "80" },
+                { label: "手续费", prop: "shouxufei", width: "80" },
                 { label: "下单时间", prop: "createtime", width: "90" },
+                { label: "更新时间", prop: "updateTime", width: "90" },
                 { label: "用户id", prop: "userid", width: "60" },
             ],
             column2_yahoo: [
@@ -400,12 +482,14 @@ export default {
 
             column1_mercari: [
                 { label: "商品标题", prop: "title", width: "" },
-                { label: "商品价格(円)", prop: "JPprice", width: "100" },
-                { label: "价格总计(元)", prop: "priceTotal", width: "100" },
-                { label: "订单状态", prop: "typeText", width: "120" },
+                { label: "商品价格(円)", prop: "price", width: "100" },
+                { label: "价格总计(円)", prop: "firstPayPrice", width: "100" },
+                { label: "岛内运费", prop: "jpyunfei", width: "120" },
                 { label: "下单时间", prop: "time", width: "90" },
+                { label: "更新时间", prop: "updateTime", width: "90" },
                 { label: "用户id", prop: "userid", width: "60" },
             ],
+
             column2_mercari: [
                 { label: "用户昵称", prop: "user.nickName", width: "80" },
             ],
@@ -448,6 +532,10 @@ export default {
             
             currentRow: {},
             dialogVisible: false,
+            dialogVisible2: false,
+
+            isPost: '',
+            isPost_filter: '',
 
             form: {
                 agentFee: '',
@@ -482,6 +570,7 @@ export default {
 
 
             currentPlant: 'yahoo',
+            shouxufei: '',
 
         }
     },
@@ -489,6 +578,13 @@ export default {
         ...mapState(['deviceType'])
     },
     created(){
+        console.log('created', this.$route.query)
+        if(this.$route.query?.jpyunfeiType === '2'){
+            this.isPost_filter = 2
+        }
+        if(this.$route.query?.jpyunfeiType === '3'){
+            this.isPost_filter = 3
+        }
         this.queryYahooOrderList()
     },
     methods: {
@@ -501,28 +597,92 @@ export default {
                 this.queryMercariOrderList()
             }
         },
-        async confirmGot(){
-            this.btnLoading = true
+
+        showPostDialog(row){
+            this.dialogVisible2 = true
+            this.currentRow = row
+            this.isPost = row.jpyunfeiType
+            this.postFee = row.jpyunfei
+            this.shouxufei = row.shouxufei || ''
+        },
+
+        async confirmGot2(){
+            await this.confirmGot(true)
+        },
+
+        async changeIsPost(){
+            this.loading = true
             const params = {
-                dgPrice: '',
-                jpyunfei: this.postFee,
-                gjyunfei: '',
-                cangcufei: '',
-                baozhuangfei: '',
-                otherPrice: '',
-                otherPriceContent: '',
-                id: this.currentRow.id,
-                userid: this.currentRow.userid,
+                orderid: this.currentRow.orderid,
+                jpyunfeiType: this.isPost
             }
-            const res = await countYahooCost(params)
+            const res = await updataJpyunfeiType(params)
             const {code, data, msg} = res
             if(code === 0){
-                this.handleClose()
-                this.changeStatus_yahoo(this.currentRow.id, 5, this.currentRow.userid)
+                this.queryYahooOrderList()
+                this.handleClose2()
             }else{
                 this.$message.error(msg)
             }
             this.loading = false
+        },
+
+        async confirmGot(val){
+            if(this.currentPlant === 'yahoo'){
+                this.btnLoading = true
+                const params = {
+                    dgPrice: '',
+                    jpyunfei: this.postFee || 0,
+                    shouxufei: this.shouxufei || 0,
+                    gjyunfei: '',
+                    cangcufei: '',
+                    baozhuangfei: '',
+                    otherPrice: '',
+                    otherPriceContent: '',
+                    id: this.currentRow.id,
+                    userid: this.currentRow.userid,
+                }
+                const res = await countYahooCost(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.handleClose()
+                    if(!val){
+                        this.changeStatus_yahoo(this.currentRow.id, 5, this.currentRow.userid)
+                    }else{
+                        if(this.$route.query.yahooType == '2'){
+                            this.changeStatus_yahoo(this.currentRow.id, 2, this.currentRow.userid, val)
+                        }else if(this.$route.query.yahooType == '4'){
+                            this.changeStatus_yahoo(this.currentRow.id, 4, this.currentRow.userid, val)
+                        }
+                    }
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }else{
+                this.loading = true
+                const params = {
+                    dgPrice: '',
+                    jpyunfei: this.postFee,
+                    gjyunfei: '',
+                    cangcufei: '',
+                    baozhuangfei: '',
+                    otherPrice: '',
+                    otherPriceContent: '',
+                    id: this.currentRow.id,
+                    userid: this.currentRow.userid,
+                }
+                const res = await countCost(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.handleClose()
+                    this.changeStatus_mercari(this.currentRow.id, 2, this.currentRow.userid)
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }
+            
         },
         showPostFee(row){
             this.dialogVisible = true
@@ -543,6 +703,33 @@ export default {
                 if(code === 0){
                     this.$message.success('操作成功')
                     this.queryYahooOrderList()
+                }else{
+                    this.$message.error(msg)
+                }
+                this.loading = false
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作'
+                });          
+            });
+        },
+
+        deleteItem_mercari(row){
+            this.$confirm('此操作将进行删除操作, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                this.loading = true
+                const params = {
+                    id: row.id,
+                }
+                const res = await deleteMercariOrderList(params)
+                const {code, data, msg} = res
+                if(code === 0){
+                    this.$message.success('操作成功')
+                    this.queryMercariOrderList()
                 }else{
                     this.$message.error(msg)
                 }
@@ -575,7 +762,7 @@ export default {
                 path: '/orderList/orderDetail',
                 query: {
                     id: row.id,
-                    type: 1,
+                    type: this.currentPlant === 'yahoo' ? 1 : 2,
                     userid: row.userid,
                     addressid: row.addressid,
                     option: 'changeCount',
@@ -716,6 +903,22 @@ export default {
              ss= ss < 10 ? ('0' + ss) : ss;
              return y + "-" + m + "-" + d + " " + h + ":" + mm + ":" + ss
         },
+        
+        forDateYMD(timestamp){
+             const date = new Date(timestamp);
+             const y = date.getFullYear();
+             let m = date.getMonth() + 1;
+             m = m < 10 ? '0' + m : m;
+             let d = date.getDate();
+             d = d < 10 ? ('0' + d) : d;
+             let h = date.getHours();
+             h = h < 10 ? ('0' + h) : h;
+             let mm = date.getMinutes();
+             mm = mm < 10 ? ('0' + mm) : mm;
+             let ss = date.getSeconds();
+             ss= ss < 10 ? ('0' + ss) : ss;
+             return y + "-" + m + "-" + d
+        },
         reset(){
             this.orderid = ''
             this.title = ''
@@ -724,12 +927,56 @@ export default {
             this.timeLimit = []
         },
         async exportFile(){
-            this.exportLoading = true
-            const params = {
-                list: this.multipleSelection
+            // 
+            console.log('multipleSelection', this.multipleSelection)
+            const arr = []
+            if(this.$route.query.yahooType === '4'){
+                this.multipleSelection?.forEach(item=>{
+                    const obj = {
+                        plantform: this.currentPlant === 'yahoo' ? '雅虎' : '煤炉',
+                        goodCode: item.goodCode,
+                        title: item.title,
+                        updateTime: item.updateTime,
+                        price: item.price,
+                        yufei: this.currentPlant === 'yahoo' ? item.jpyunfei : 0,
+                        totalprice: this.currentPlant === 'yahoo' ? item.firstPayPrice : item.price,
+                        userid: item.userid,
+                        paytime: this.currentPlant === 'yahoo' ? item.paytime : item.time
+                    }
+                    arr.push(obj)
+                })
+
+                this.exportLoading = true
+                const params = {
+                    list: arr
+                }
+                const res = await allOrderExport(params)
+                fileDownload(res, `${this.forDateYMD(Date.parse(new Date()))}_${this.currentPlant === 'yahoo' ? '雅虎' : '煤炉'}_待入库_列表.xlsx`);
+            }else{
+                this.multipleSelection?.forEach(item=>{
+                    const obj = {
+                        userid: item.userid,
+                        nickName: item.user?.nickName || '',
+                        goodCode: item.goodCode,
+                        title: item.title,
+                        leibie: '',
+                        count: '1',
+                        yunfeiprice: this.currentPlant === 'yahoo' ? (Number(item.price) + Number(item.jpyunfei)) : item.price,
+                        saomaprice: item.firstPayPrice,
+                        updateTime: item.updateTime,
+                    }
+                    arr.push(obj)
+                })
+
+                this.exportLoading = true
+                const params = {
+                    list: arr
+                }
+                const res = await allOrderExportexcelout(params)
+                fileDownload(res, `${this.forDateYMD(Date.parse(new Date()))}_${this.currentPlant === 'yahoo' ? '雅虎' : '煤炉'}_${this.$route.query.yahooType === '8' ? '待发货' : '已发货'}_列表.xlsx`);
             }
-            const res = await exportYahooOrder(params)
-            fileDownload(res, `雅虎待发货列表导出.xlsx`);
+
+            
             this.$message.success("下载成功");
             this.exportLoading = false
         },
@@ -766,9 +1013,13 @@ export default {
         handleClose(){
             console.log('-------------')
             this.dialogVisible = false
-            this.postFee = ''
         },
-        changeStatus_yahoo(id, type, userid){
+        handleClose2(){
+            console.log('-------------')
+            this.dialogVisible2 = false
+            this.isPost = ''
+        },
+        changeStatus_yahoo(id, type, userid, val){
             this.$confirm('此操作将更改订单状态, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -784,7 +1035,11 @@ export default {
                 const {code, data, msg} = res
                 if(code === 0){
                     this.$message.success('操作成功')
-                    this.queryYahooOrderList()
+                    if(val){
+                        this.changeIsPost()
+                    }else{
+                        this.queryYahooOrderList()
+                    }
                 }else{
                     this.$message.error(msg)
                 }
@@ -907,6 +1162,8 @@ export default {
                 title: this.title,
                 nickName: this.nickName,
                 type: this.$route.query.yahooType * 1,
+                isHaveFirstPayPrice: this.$route.query.isHaveFirstPayPrice || '',
+                jpyunfeiType: this.isPost_filter,
             }
             if(this.timeLimit.length > 0){
                 params.begintime =  this.forDate(this.timeLimit[0])
@@ -919,6 +1176,14 @@ export default {
                 let index = 0
 
                 this.tableData_yahoo = data.list?.map((item, index)=>{
+                    item.accountidText = item.accountid === 1 ? 'babyface' : 'eut'
+                    if(item.jpyunfeiType === 1){
+                        item.jpyunfeiTypeText = '到付'
+                    }
+                    if(item.jpyunfeiType === 0){
+                        item.jpyunfeiTypeText = '不到付'
+                    }
+
                     let priceTotal = item.price * 10000
                     
                     const createtime = item.createtime?.substr(0, 10)
@@ -951,11 +1216,21 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val
-            this.queryYahooOrderList()
+            
+            if(this.currentPlant === 'yahoo'){
+                this.queryYahooOrderList()
+            }else if(this.currentPlant === 'mercari'){
+                this.queryMercariOrderList()
+            }
         },
         handleCurrentChange(val) {
             this.pageNumber = val
-            this.queryYahooOrderList()
+            
+            if(this.currentPlant === 'yahoo'){
+                this.queryYahooOrderList()
+            }else if(this.currentPlant === 'mercari'){
+                this.queryMercariOrderList()
+            }
         }
     }
 }

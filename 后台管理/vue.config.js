@@ -11,19 +11,19 @@ module.exports = defineConfig({
     https: false,
     proxy: {
       "/notice": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/question": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/setting": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/image": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/user": {
@@ -31,7 +31,7 @@ module.exports = defineConfig({
         changeOrigin: true,
       },
       "/rate": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/cookie": {
@@ -71,11 +71,11 @@ module.exports = defineConfig({
         changeOrigin: true,
       },
       "/fenlei": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       "/upload": {
-        target: "https://ddm-cu.com/",
+        target: "https://fenlei.ddm-cu.com/",
         changeOrigin: true,
       },
       

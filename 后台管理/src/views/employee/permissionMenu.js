@@ -25,12 +25,12 @@ const permissionMenu = [
             {
                 id: 5,
                 label: '待支付',
-                path: '/orderList/allOrderList?yahooType=2'
+                path: '/orderList/allOrderList?yahooType=2&isHaveFirstPayPrice=0'
             },
             {
                 id: 6,
                 label: '已支付',
-                path: '/orderList/allOrderList?yahooType=2&mercariType=1'
+                path: '/orderList/allOrderList?yahooType=2&mercariType=1&isHaveFirstPayPrice=1'
             },
             {
                 id: 7,
@@ -62,34 +62,54 @@ const permissionMenu = [
                 label: '已发货',
                 path: '/orderList/allOrderList?yahooType=9&mercariType=6'
             },
-            {
-                id: 13,
-                label: '待签收',
-                path: '/orderList/allOrderList?yahooType=9&mercariType=6'
-            },
+            // {
+            //     id: 13,
+            //     label: '待签收',
+            //     path: '/orderList/allOrderList?yahooType=9&mercariType=6'
+            // },
 
         ]
     },
 
     {
         id: 14,
-        label: '仓库管理',
-        path: '/employee',
+        label: '雅虎付款管理',
+        path: '/orderList',
         
         children: [
             {
-                id: 15,
-                label: '已入库',
-                path: '/orderList/yahoo?yahooType=9999'
+                id: 16,
+                label: '待付款',
+                path: '/orderList/allOrderList?yahooType=2&jpyunfeiType=3'
             },
             {
-                id: 16,
-                label: '已出库',
-                path: '/orderList/yahoo?yahooType=99999'
+                id: 15,
+                label: '已付款',
+                path: '/orderList/allOrderList?yahooType=2&jpyunfeiType=2'
             },
 
         ]
     },
+
+    // {
+    //     id: 14,
+    //     label: '仓库管理',
+    //     path: '/employee',
+        
+    //     children: [
+    //         {
+    //             id: 15,
+    //             label: '已入库',
+    //             path: '/orderList/yahoo?yahooType=9999'
+    //         },
+    //         {
+    //             id: 16,
+    //             label: '已出库',
+    //             path: '/orderList/yahoo?yahooType=99999'
+    //         },
+
+    //     ]
+    // },
 
     
     {
@@ -113,15 +133,20 @@ const permissionMenu = [
         label: '财务管理',
         path: '/money',
         children: [
-            {
-                id: 20,
-                label: '用户提现申请',
-                path: '/drawRequest'
-            },
+            // {
+            //     id: 20,
+            //     label: '用户提现申请',
+            //     path: '/drawRequest'
+            // },
             {
                 id: 21,
                 label: '押金解冻列表',
                 path: '/releaseDeposit'
+            },
+            {
+                id: 211,
+                label: '经销商信息',
+                path: '/sub'
             },
         ]
     },

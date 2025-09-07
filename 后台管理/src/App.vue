@@ -1,7 +1,7 @@
 <template>
     <div id="app" :class="deviceType === 'pc' ? '' : 'app2'">
         <layout v-if="$route.path.indexOf('/login') === -1"/>
-        <router-view></router-view>
+        <router-view v-else></router-view>
     </div>
 </template>
 

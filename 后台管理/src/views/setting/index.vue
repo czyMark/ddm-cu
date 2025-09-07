@@ -5,13 +5,13 @@
             </el-tab-pane>
             <el-tab-pane label="用户协议" name="1">
             </el-tab-pane>
-            <el-tab-pane label="竞拍规则" name="2">
+            <el-tab-pane label="国际邮费" name="2">
             </el-tab-pane>
             <el-tab-pane label="隐私政策" name="3">
             </el-tab-pane>
-            <el-tab-pane label="出价规则" name="4">
+            <el-tab-pane label="收费标准" name="4">
             </el-tab-pane>
-            <el-tab-pane label="风险提示" name="5">
+            <el-tab-pane label="下单流程" name="5">
             </el-tab-pane>
         </el-tabs>
 
@@ -26,7 +26,6 @@
                 @blur="onEditorBlur($event)"
                 @focus="onEditorFocus($event)"
                 @change="onEditorChange($event)"
-                :disabled="type === '3'"
             >
             </quill-editor>
         </div>
@@ -43,6 +42,8 @@
 <script>
 import {querySetting, updataSetting } from "@/http/api"
 import { quillEditor, Quill } from 'vue-quill-editor'
+import { container, ImageExtend, QuillWatch } from "quill-image-extend-module";
+Quill.register("modules/ImageExtend", ImageExtend); //注册扩展模块
 
 export default {
     components: {
@@ -67,23 +68,41 @@ export default {
             // 富文本功能配置
             editorOption:{
                 modules:{
+                    ImageExtend: {
+                        loading: true,
+                        name: "image",
+                        size: 2,
+                        action: '/upload', 
+                        response: (res) => {
+                            console.log('res', res)
+                            return res.data;
+                        },
+                    },
                     // 如果想增加事件控制，比如图片的事件，参考我上面vue3的配置，是一样的用法
-                    toolbar:[
-                        ['bold', 'italic', 'underline', 'strike'],    //加粗，斜体，下划线，删除线
-                        // ['blockquote', 'code-block'],     //引用，代码块
-                        // [{ 'header': 1 }, { 'header': 2 }],        // 标题，键值对的形式；1、2表示字体大小
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
-                        // [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
-                        // [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
-                        // [{ 'direction': 'rtl' }],             // 文本方向
-                        [{ 'size': ['small', false, 'large', 'huge'] }], // 字体大小
-                        // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],     //几级标题
-                        [{ 'color': [] }, { 'background': [] }],     // 字体颜色，字体背景颜色
-                        [{ 'font': [] }],     //字体
-                        [{ 'align': [] }],    //对齐方式
-                        // ['clean'],    //清除字体样式
-                        ['image','video']    //上传图片、上传视频
-                    ]
+                    toolbar:{
+                        container: [
+                            ['bold', 'italic', 'underline', 'strike'],    //加粗，斜体，下划线，删除线
+                            // ['blockquote', 'code-block'],     //引用，代码块
+                            // [{ 'header': 1 }, { 'header': 2 }],        // 标题，键值对的形式；1、2表示字体大小
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+                            // [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+                            // [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+                            // [{ 'direction': 'rtl' }],             // 文本方向
+                            [{ 'size': ['small', false, 'large', 'huge'] }], // 字体大小
+                            // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],     //几级标题
+                            [{ 'color': [] }, { 'background': [] }],     // 字体颜色，字体背景颜色
+                            [{ 'font': [] }],     //字体
+                            [{ 'align': [] }],    //对齐方式
+                            // ['clean'],    //清除字体样式
+                            ['image']    //上传图片、上传视频
+                        ],
+                        handlers: {
+                            image: function () {
+                                QuillWatch.emit(this.quill.id);
+                            },
+                        }
+
+                    },
                 },
             },
         }
@@ -103,7 +122,8 @@ export default {
         // 内容改变事件
         // html是带标签，text是纯文本
         onEditorChange({ quill, html, text }){
-            this.form.ckeditorData = html
+            // this.editorValue = html
+            console.log('html', html)
         },
         handleClick() {
             if(this.activeName === '0') this.editorValue = this.serviceContact

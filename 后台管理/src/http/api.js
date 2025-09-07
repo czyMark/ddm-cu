@@ -1,11 +1,15 @@
 import service from "./request";
 
+// const mode = 'prod'
+const mode = 'prod'
+const url = 'https://fenlei.ddm-cu.com'
+
 // -----------------------------------------------
 
 // 查询轮播图列表
 export function getSwiperList(data) {
     return service({
-        url: "/image/selectAll",
+        url: mode === 'dev' ? "/image/selectAll" : (url + '/image/selectAll'),
         method: "POST",
         data,
     });
@@ -14,7 +18,7 @@ export function getSwiperList(data) {
 // 根据id查询轮播图
 export function getSwiperById(data) {
     return service({
-        url: "/image/selectByid",
+        url: mode === 'dev' ? "/image/selectByid" : (url + '/image/selectByid'),
         method: "POST",
         data,
     });
@@ -23,7 +27,7 @@ export function getSwiperById(data) {
 // 根据轮播图id修改轮播图
 export function updataSwiper(data) {
     return service({
-        url: "/image/updata",
+        url: mode === 'dev' ? "/image/updata" : (url + '/image/updata'),
         method: "POST",
         data,
     });
@@ -32,7 +36,7 @@ export function updataSwiper(data) {
 // 新增轮播图
 export function addSwiper(data) {
     return service({
-        url: "/image/add",
+        url: mode === 'dev' ? "/image/add" : (url + '/image/add'),
         method: "POST",
         data,
     });
@@ -41,7 +45,7 @@ export function addSwiper(data) {
 // 根据轮播图id删除轮播图
 export function deleteSwiper(data) {
     return service({
-        url: "/image/deleteByid",
+        url: mode === 'dev' ? "/image/deleteByid" : (url + '/image/deleteByid'),
         method: "POST",
         data,
     });
@@ -53,7 +57,7 @@ export function deleteSwiper(data) {
 // 查询公告列表
 export function getNoticetList(data) {
     return service({
-        url: "/notice/selectList",
+        url: mode === 'dev' ? "/notice/selectList" : (url + '/notice/selectList'),
         method: "POST",
         data,
     });
@@ -62,7 +66,7 @@ export function getNoticetList(data) {
 // 根据id查询公告
 export function getNoticetById(data) {
     return service({
-        url: "/notice/selectByid",
+        url: mode === 'dev' ? "/notice/selectByid" : (url + '/notice/selectByid'),
         method: "POST",
         data,
     });
@@ -71,16 +75,16 @@ export function getNoticetById(data) {
 // 根据公告id修改标题和内容
 export function updataNotice(data) {
     return service({
-        url: "/notice/updataNotice",
+        url: mode === 'dev' ? "/notice/updataNotice" : (url + '/notice/updataNotice'),
         method: "POST",
         data,
-    });
+    })
 }
 
 // 新增公告
 export function addNotice(data) {
     return service({
-        url: "/notice/addNotice",
+        url: mode === 'dev' ? "/notice/addNotice" : (url + '/notice/addNotice'),
         method: "POST",
         data,
     });
@@ -89,7 +93,7 @@ export function addNotice(data) {
 // 根据公告id删除公告
 export function deleteNotice(data) {
     return service({
-        url: "/notice/deleteNotice",
+        url: mode === 'dev' ? "/notice/deleteNotice" : (url + '/notice/deleteNotice'),
         method: "POST",
         data,
     });
@@ -103,7 +107,7 @@ export function deleteNotice(data) {
 // 查询常见问题列表
 export function getQuestionList(data) {
     return service({
-        url: "/question/selectList",
+        url: mode === 'dev' ? "/question/selectList" : (url + '/question/selectList'),
         method: "POST",
         data,
     });
@@ -112,7 +116,7 @@ export function getQuestionList(data) {
 // 根据id查询常见问题
 export function getQuestionById(data) {
     return service({
-        url: "/question/selectByid",
+        url: mode === 'dev' ? "/question/selectByid" : (url + '/question/selectByid'),
         method: "POST",
         data,
     });
@@ -121,7 +125,7 @@ export function getQuestionById(data) {
 // 根据常见问题id修改标题和内容
 export function updataQuestion(data) {
     return service({
-        url: "/question/updataQuestion",
+        url: mode === 'dev' ? "/question/updataQuestion" : (url + '/question/updataQuestion'),
         method: "POST",
         data,
     });
@@ -130,7 +134,7 @@ export function updataQuestion(data) {
 // 新增常见问题
 export function addQuestion(data) {
     return service({
-        url: "/question/addQuestion",
+        url: mode === 'dev' ? "/question/addQuestion" : (url + '/question/addQuestion'),
         method: "POST",
         data,
     });
@@ -139,7 +143,7 @@ export function addQuestion(data) {
 // 根据常见问题id删除常见问题
 export function deleteQuestion(data) {
     return service({
-        url: "/question/deleteQuestion",
+        url: mode === 'dev' ? "/question/deleteQuestion" : (url + '/question/deleteQuestion'),
         method: "POST",
         data,
     });
@@ -150,7 +154,7 @@ export function deleteQuestion(data) {
 // 查询帮助设置
 export function querySetting(data) {
     return service({
-        url: "/setting/select",
+        url: mode === 'dev' ? "/setting/select" : (url + '/setting/select'),
         method: "POST",
         data,
     });
@@ -159,7 +163,7 @@ export function querySetting(data) {
 // 修改帮助设置
 export function updataSetting(data) {
     return service({
-        url: "/setting/updataSetting",
+        url: mode === 'dev' ? "/setting/updataSetting" : (url + '/setting/updataSetting'),
         method: "POST",
         data,
     });
@@ -180,7 +184,7 @@ export function queryUserList(data) {
 // 查询中日汇率
 export function queryRate(data) {
     return service({
-        url: "/rate/select",
+        url: mode === 'dev' ? "/rate/select" : (url + '/rate/select'),
         method: "POST",
         data,
     });
@@ -188,7 +192,7 @@ export function queryRate(data) {
 // 更新中日汇率
 export function updataRate(data) {
     return service({
-        url: "/rate/updata",
+        url: mode === 'dev' ? "/rate/updata" : (url + '/rate/updata'),
         method: "POST",
         data,
     });
@@ -360,6 +364,36 @@ export function exportYahooOrder(data) {
     });
 }
 
+// 导出订单（待入库）
+export function allOrderExport(data) {
+    return service({
+        url: "/yahooOrder/excel",
+        method: "POST",
+        data,
+        headers: {
+            'Content-Type': 'application/json; application/octet-stream',
+        },
+        responseType: "blob"
+    });
+}
+
+// 导出订单（待出库）
+export function allOrderExportexcelout(data) {
+    return service({
+        url: "/yahooOrder/excelout",
+        method: "POST",
+        data,
+        headers: {
+            'Content-Type': 'application/json; application/octet-stream',
+        },
+        responseType: "blob"
+    });
+}
+
+
+
+
+
 
 
 // 导出煤炉订单（煤炉）
@@ -401,6 +435,9 @@ export function releaseDeposit(data) {
         data,
     });
 }
+
+ 
+
 // 根据用户id查询押金列表
 export function queryReleaseDepositList(data) {
     return service({
@@ -418,6 +455,14 @@ export function checkUserReleaseDeposit(data) {
     });
 }
 
+// 后台押金审批2
+export function updataYjBalance(data) {
+    return service({
+        url: "/account/updataYjBalance",
+        method: "POST",
+        data,
+    });
+}
 
 
 
@@ -433,7 +478,7 @@ export function updataAdmin(data) {
 // 上传图片
 export function uploadImg(data) {
     return service({
-        url: "/upload",
+        url: mode === 'dev' ? "/upload" : (url + '/upload'),
         method: "POST",
         data,
     });
@@ -495,7 +540,7 @@ export function updatapassword(data) {
 // 分类获取
 export function fenleiselect(data) {
     return service({
-        url: "/fenlei/select",
+        url: mode === 'dev' ? "/fenlei/select" : (url + '/fenlei/select'),
         method: "POST",
         data,
     });
@@ -504,13 +549,57 @@ export function fenleiselect(data) {
 // 分类修改
 export function fenleiupdata(data) {
     return service({
-        url: "/fenlei/updata",
+        url: mode === 'dev' ? "/fenlei/updata" : (url + '/fenlei/updata'),
         method: "POST",
         data,
     });
 }
 
 
+
+// 下级经销
+
+// 根据用户id查询下级用户信息
+export function selectMyxiaji(data) {
+    return service({
+        url: "/user/selectMyxiaji",
+        method: "POST",
+        data,
+    });
+}
+
+// 根据用户id更新已经体现金额（传金额 自动累加的）
+export function updatatxprice(data) {
+    return service({
+        url: "/user/updatatxprice",
+        method: "POST",
+        data,
+    });
+}
+
+
+
+
+// 根据用户id修改备注
+export function updataRemark(data) {
+    return service({
+        url: "/user/updataRemark",
+        method: "POST",
+        data,
+    });
+}
+
+
+
+
+// 是否包邮
+export function updataJpyunfeiType(data) {
+    return service({
+        url: "/yahooOrder/updataJpyunfeiType",
+        method: "POST",
+        data,
+    });
+}
 
 
 

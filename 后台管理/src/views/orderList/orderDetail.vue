@@ -14,7 +14,7 @@
                             <img :src="item.imageurl" alt=""/>
                             <div class="info column">
                                 <div class="title">{{item.title}}</div>
-                                <div class="price">支付价格：{{item.price}}</div>
+                                <div class="price">商品价格：{{item.price}}</div>
                                 <div class="code">商品编码：{{item.goodCode}}</div>
                                 <div class="status" v-if="query.type === '2'">状态：{{mercariTypeMap[item.type]}}</div>
                                 <div class="status" v-if="query.type === '1'">状态：{{yahooTypeMap[item.type]}}</div>
@@ -94,22 +94,25 @@
                 <div class="payRest" v-if="mainOrderDetail.type > ( query.type === '1' ? 4 : 2)">
                     <div class="pagetitle">补差价详情</div>
                     <el-form class="detail" ref="form" :model="form" label-width="120px">
-                        <el-form-item label="日本邮费(元)">
-                        <!-- <el-form-item label="日本邮费(円)"> -->
+                        <el-form-item label="岛内运费(円)">
+                        <!-- <el-form-item label="岛内运费(円)"> -->
                             <!-- <el-input v-model="form.jpPostage_yuan" @input="onPostYuanChange" type="number" :disabled="isReivew" style="width: 200px"></el-input> -->
                             <el-input v-model="form.jpPostage" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                             <!-- <div>{{form.jpPostage}}元</div> -->
                         </el-form-item>
-                        <el-form-item label="国际运费(元)">
+                        <el-form-item label="手续费(円)">
+                            <el-input v-model="form.shouxufei" type="number" :disabled="isReivew" style="width: 200px"></el-input>
+                        </el-form-item>
+                        <el-form-item label="国际运费(円)">
                             <el-input v-model="form.internationalPostage" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                         </el-form-item>
-                        <el-form-item label="仓储费(元)">
+                        <el-form-item label="仓储费(円)">
                             <el-input v-model="form.storageCharge" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                         </el-form-item>
-                        <el-form-item label="包装费(元)">
+                        <el-form-item label="包装费(円)">
                             <el-input v-model="form.packingCharge" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                         </el-form-item>
-                        <el-form-item label="其他费用(元)">
+                        <el-form-item label="其他费用(円)">
                             <el-input v-model="form.otherCharge" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                         </el-form-item>
                         <el-form-item label="其他费用备注">
@@ -250,8 +253,8 @@
                 <div class="payRest" v-if="mainOrderDetail.type > ( query.type === '1' ? 4 : 2)">
                     <div class="pagetitle">补差价详情</div>
                     <el-form class="detail" ref="form" :model="form" label-width="120px">
-                        <el-form-item label="日本邮费(元)">
-                        <!-- <el-form-item label="日本邮费(円)"> -->
+                        <el-form-item label="岛内运费(元)">
+                        <!-- <el-form-item label="岛内运费(円)"> -->
                             <!-- <el-input v-model="form.jpPostage_yuan" @input="onPostYuanChange" type="number" :disabled="isReivew" style="width: 200px"></el-input> -->
                             <el-input v-model="form.jpPostage" type="number" :disabled="isReivew" style="width: 200px"></el-input>
                             <!-- <div>{{form.jpPostage}}元</div> -->
@@ -359,6 +362,7 @@ export default {
                 agentFee: '',
                 jpPostage: '',
                 internationalPostage: '',
+                shouxufei: '',
                 storageCharge: '',
                 packingCharge: '',
                 otherCharge: '',
@@ -452,6 +456,7 @@ export default {
             this.form.agentFee = data.orderDetile.dgPrice || ''
             this.form.jpPostage = data.orderDetile.jpyunfei || ''
             this.form.internationalPostage = data.orderDetile.gjyunfei || ''
+            this.form.shouxufei = data.orderDetile.shouxufei || ''
             this.form.storageCharge = data.orderDetile.cangcufei || ''
             this.form.packingCharge = data.orderDetile.baozhuangfei || ''
             this.form.otherCharge = data.orderDetile.otherPrice || ''
@@ -502,6 +507,7 @@ export default {
             this.form.agentFee = data.orderDetile.dgPrice || ''
             this.form.jpPostage = data.orderDetile.jpyunfei || ''
             this.form.internationalPostage = data.orderDetile.gjyunfei || ''
+            this.form.shouxufei = data.orderDetile.shouxufei || ''
             this.form.storageCharge = data.orderDetile.cangcufei || ''
             this.form.packingCharge = data.orderDetile.baozhuangfei || ''
             this.form.otherCharge = data.orderDetile.otherPrice || ''
@@ -523,7 +529,9 @@ export default {
                             (this.form.jpPostage * 100)
                             + 
                             (this.form.internationalPostage * 100)
-                             + 
+                            +
+                            (this.form.shouxufei * 100)
+                            +
                             (this.form.storageCharge * 100)
                              + 
                             (this.form.packingCharge * 100)
@@ -539,6 +547,7 @@ export default {
                     dgPrice: this.form.agentFee * 1 || 0,
                     jpyunfei: this.form.jpPostage * 1 || 0,
                     gjyunfei: this.form.internationalPostage * 1 || 0,
+                    shouxufei: this.form.shouxufei * 1 || 0,
                     cangcufei: this.form.storageCharge * 1 || 0,
                     baozhuangfei: this.form.packingCharge * 1 || 0,
                     otherPrice: this.form.otherCharge * 1 || 0,

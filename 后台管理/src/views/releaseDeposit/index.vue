@@ -32,10 +32,10 @@
             <el-table :data="tableData" border style="width: 100%" v-loading="loading">
                 <el-table-column label="序号" type="index" width="50"></el-table-column>
 
-                <el-table-column label="用户头像" width="120"  header-align="center" align="center">
+                <el-table-column label="用户头像" width="100"  header-align="center" align="center">
                     <template slot-scope="scope">
-                        <img v-if="scope.row.user.avatarUrl" :src="scope.row.user.avatarUrl" alt="" style="width: 80px; height: 80px; border-radius: 50%; margin: auto">
-                        <img v-else src="@/assets/defaultAvatar.png" alt="" style="width: 80px; height: 80px; border-radius: 50%; margin: auto">
+                        <img v-if="scope.row.user?.avatarUrl" :src="scope.row.user.avatarUrl" alt="" style="width: 40px; height: 40px; border-radius: 50%; margin: auto">
+                        <img v-else src="@/assets/defaultAvatar.png" alt="" style="width: 40px; height: 40px; border-radius: 50%; margin: auto">
                     </template>
                 </el-table-column>
                 
@@ -43,10 +43,10 @@
                     :prop="item.prop" :label="item.label" :width="item.width">
                 </el-table-column>
                 
-                <el-table-column fixed="right" label="操作" width="200"  header-align="center" align="center">
+                <el-table-column fixed="right" label="操作" width="120"  header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="checkUserReleaseDeposit(scope.row, 1)" v-if="scope.row.type === 1">退还押金</el-button>
-                        <el-button type="text" size="small" style="color: red" @click="checkUserReleaseDeposit(scope.row, 0)" v-if="scope.row.type === 1">暂不退还</el-button>
+                        <el-button type="text" size="small" @click="updataYjBalance(scope.row, 2)" v-if="scope.row.type === 1">通过</el-button>
+                        <el-button type="text" size="small" style="color: red" @click="updataYjBalance(scope.row, 0)" v-if="scope.row.type === 1">驳回</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -65,66 +65,29 @@
                 </el-pagination>
             </div>
         </div>
-        
-        <div class="page_m" v-else>
-            <div class="search_m">
-                <div class="search between">
-                    <div class="item center">
-                        <div class="title">用户Id</div>
-                        <div class="value">
-                            <el-input v-model="userId" clearable></el-input>
-                        </div>
-                    </div>
-                    <div class="item center">
-                        <div class="title">申请状态</div>
-                        <div class="value">
-                            <el-select v-model="checkType" placeholder="请选择" clearable>
-                                <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex seatchOptions">
-                    <el-button type="primary" size="mini" @click="reset">重置</el-button>
-                    <el-button type="primary" size="mini" @click="queryReleaseDepositList">查询</el-button>
-                </div>
-            </div>
-            <tableList
-                type="releaseDeposit"
-                :list="tableData"
-                :column="column"
-                @checkUserReleaseDeposit="checkUserReleaseDeposit"
-                :showPagination="true"
-                @handleSizeChange="handleSizeChange"
-                @handleCurrentChange="handleCurrentChange"
-                :pageNumber="pageNumber"
-                :pageSize="pageSize"
-                :total="total"
-            />
-        </div>
     </div>
 </template>
   
 <script>
 
-import {queryReleaseDepositList, checkUserReleaseDeposit} from "@/http/api"
+import {queryReleaseDepositList, updataYjBalance} from "@/http/api"
 import { mapState } from 'vuex'
 import tableList from "@/components/tableList.vue"
 export default {
     components: {tableList},
     data(){
         return {
+            loading: false,
             column: [
-                { label: "ID", prop: "userid", width: "80" },
+                { label: "充值金额", prop: "balance", width: "120" },
+                { label: "状态", prop: "typeText", width: "80" },
+                { label: "订单号", prop: "transactionid", width: "" },
+                { label: "用户ID", prop: "userid", width: "80" },
                 { label: "用户昵称", prop: "user.nickName", width: "200" },
                 { label: "真实姓名", prop: "user.realname", width: "120" },
                 { label: "联系电话", prop: "user.phone", width: "" },
-                { label: "申请状态", prop: "typeText", width: "" },
+                { label: "充值时间", prop: "date", width: "200" },
+
             ],
             tableData: [],
             
@@ -139,14 +102,12 @@ export default {
             typeMap:{
                 0: '已充值',
                 1: '申请中',
-                2: '已退还',
-                3: '驳回',
+                2: '已退款',
             },
             options: [
                 {value: 0, label: '已充值'},
                 {value: 1, label: '申请中'},
-                {value: 2, label: '已退还'},
-                {value: 3, label: '驳回'},
+                {value: 2, label: '已退款'},
             ],
 
         }
@@ -158,15 +119,16 @@ export default {
         this.queryReleaseDepositList()
     },
     methods: {
-        async checkUserReleaseDeposit(row, type){
+        async updataYjBalance(row, type){
             this.loading = true
             const params = {
-                transactionid: row.transactionid,
-                price: row.balance,
                 type,
+                id: row.id,
+                balance: row.balance,
+                userid: row.userid,
             }
             console.log('row', row)
-            const res = await checkUserReleaseDeposit(params)
+            const res = await updataYjBalance(params)
             const {code, data, msg} = res
             if(code === 0){
                 this.$message.success('操作成功')
@@ -212,6 +174,7 @@ export default {
 
         reset(){
             this.userId = ''
+            this.checkType = ''
         }
     }
 }

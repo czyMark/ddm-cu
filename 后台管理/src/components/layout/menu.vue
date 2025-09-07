@@ -1,7 +1,6 @@
 <template>
     <div>
 
-
         <div :class="['menu', menuSwitch ? 'menu-ani-open' : 'menu-ani-close']" v-if="deviceType === 'pc'">
             <img src="./../../assets/img/logo.png" alt="" class="logo" v-if="menuSwitch"/>
             <el-menu

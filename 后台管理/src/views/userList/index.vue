@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" v-loading="loading">
         <div v-if="deviceType === 'pc'">
             <div class="search between">
                 <div class="flex">
@@ -32,8 +32,8 @@
 
                 <el-table-column label="用户头像" width="120"  header-align="center" align="center">
                     <template slot-scope="scope">
-                        <img v-if="scope.row.avatarUrl" :src="scope.row.avatarUrl" alt="" style="width: 80px; height: 80px; border-radius: 50%; margin: auto">
-                        <img v-else src="@/assets/defaultAvatar.png" alt="" style="width: 80px; height: 80px; border-radius: 50%; margin: auto">
+                        <img v-if="scope.row.avatarUrl" :src="scope.row.avatarUrl" alt="" style="width: 50px; height: 50px; border-radius: 50%; margin: auto">
+                        <img v-else src="@/assets/defaultAvatar.png" alt="" style="width: 50px; height: 50px; border-radius: 50%; margin: auto">
                     </template>
                 </el-table-column>
                 
@@ -44,6 +44,7 @@
                 <el-table-column fixed="right" label="操作" width="200"  header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="showContactUser(scope.row)">联系用户</el-button>
+                        <el-button type="text" size="small" @click="changeRemark(scope.row)">修改备注</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -123,24 +124,46 @@
                 <el-button type="primary" @click="contactUser">确 定</el-button>
             </span>
         </el-dialog>
+
+        
+        <el-dialog
+            :title="'修改备注：' + currentRow.nickName"
+            :visible.sync="dialogVisible2"
+            :close-on-click-modal="false"
+            :width="deviceType === 'pc' ? '500px' : '80%'"
+            :before-close="handleClose2">
+            <div>
+                <div style="margin-bottom: 30px">请输入备注内容</div>
+                <div>
+                    <el-input v-model="remark" type="textarea" :rows="4"></el-input>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="handleClose2">取 消</el-button>
+                <el-button type="primary" @click="updataRemark">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
   
 <script>
-import {queryUserList, contactUser} from "@/http/api"
+import {queryUserList, contactUser, updataRemark} from "@/http/api"
 import { mapState } from 'vuex'
 import tableList from "@/components/tableList.vue"
 export default {
     components: {tableList},
     data(){
         return {
+            loading: false,
             column: [
                 { label: "ID", prop: "userid", width: "80" },
-                { label: "用户昵称", prop: "nickName", width: "200" },
+                { label: "用户昵称", prop: "nickName", width: "300" },
+                { label: "邀请码", prop: "myinvitecode", width: "120" },
                 { label: "真实姓名", prop: "realname", width: "120" },
                 { label: "联系电话", prop: "phone", width: "" },
-                { label: "联系状态", prop: "isReadText", width: "" },
-                { label: "第二联系电话", prop: "twophone", width: "" },
+                { label: "备注", prop: "remark", width: "" },
+                { label: "联系状态", prop: "isReadText", width: "200" },
+                // { label: "第二联系电话", prop: "twophone", width: "" },
             ],
             tableData: [],
             
@@ -153,8 +176,10 @@ export default {
             userid: '',
 
             contact: '',
+            remark: '',
             currentRow: {},
             dialogVisible: false,
+            dialogVisible2: false,
         }
     },
     computed: {
@@ -176,10 +201,18 @@ export default {
         handleClose(){
             this.dialogVisible = false
         },
+        handleClose2(){
+            this.dialogVisible2 = false
+        },
         showContactUser(row){
             this.currentRow = row
             this.dialogVisible = true
             this.contact = row.contact
+        },
+        changeRemark(row){
+            this.currentRow = row
+            this.dialogVisible2 = true
+            this.remark = row.remark
         },
         async contactUser(){
             this.loading = true
@@ -190,7 +223,26 @@ export default {
             const res = await contactUser(params)
             const {code, data, msg} = res
             if(code === 0){
+                this.$message.success('操作成功')
                 this.dialogVisible = false
+                this.queryUserList()
+            }else{
+                this.$message.error(msg)
+            }
+            this.loading = false
+        },
+
+        async updataRemark(){
+            this.loading = true
+            const params = {
+                userid: this.currentRow.userid,
+                remark: this.remark,
+            }
+            const res = await updataRemark(params)
+            const {code, data, msg} = res
+            if(code === 0){
+                this.$message.success('操作成功')
+                this.dialogVisible2 = false
                 this.queryUserList()
             }else{
                 this.$message.error(msg)
