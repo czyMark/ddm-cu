@@ -2,9 +2,9 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-一套完整的 **日本海淘 / 日淘代购** 前端解决方案，面向中国用户提供雅虎拍卖（Yahoo Auctions）与煤炉（Mercari）代购服务。本仓库包含 **用户端微信小程序**、**运营管理后台**，以及仓库出入库 APP 的工程骨架。
+一套完整的 **日本海淘 / 日淘代购** 全栈解决方案，面向中国用户提供雅虎拍卖（Yahoo Auctions）与煤炉（Mercari）代购服务。本仓库包含 **用户端微信小程序**、**运营管理后台**、**后端 API 服务**，以及仓库出入库 APP 的工程骨架。
 
-> 本仓库为 **前端 Monorepo**，不含后端服务源码。完整运行需自行部署或对接后端 API。
+> 后端为 Spring Boot Web 层（Controller），依赖 `demo-service-logic` 业务模块（需自行补充或联系作者获取）。
 
 ---
 
@@ -35,6 +35,7 @@
 ddmGit/
 ├── 前台小程序/              # 用户端微信小程序（核心业务）
 ├── 后台管理/                # 运营管理 Web 后台
+├── 后端服务/                # Spring Boot 后端 API（Controller 层）
 ├── 代代米日淘出入库APP/      # 仓库出入库 APP（工程骨架，待完善）
 ├── docs/                    # 文档与资源
 │   └── wechat-qrcode.png    # 作者微信二维码
@@ -76,6 +77,27 @@ ddmGit/
 
 基于 uni-app 的仓库端 APP 工程骨架，**目前尚未实现完整业务**。当前仓库操作通过后台管理的订单列表完成（标记入库、计算费用、发货等）。
 
+### 后端服务
+
+基于 **Spring Boot + MyBatis + Druid + Redis** 的 REST API 服务，提供小程序与后台管理所需的全部接口。
+
+**Controller 模块（24 个）：**
+
+| 模块 | 接口前缀 | 功能 |
+|------|----------|------|
+| 用户 | `/user` | 微信登录、手机号登录、地址、资料、邀请码 |
+| 雅虎订单 | `/yahooOrder` | 竞拍下单、补差价、合并发货、订单查询 |
+| 煤炉订单 | `/MerOrder` | 直购下单、购物车结算、尾款、合并发货 |
+| 商品 | `/good`、`/Mercarigood` | 雅虎/煤炉商品搜索、详情、分类 |
+| 购物车 | `/MrShppingCar` | 煤炉购物车 CRUD |
+| 支付 | `/pay` | 微信支付统一下单与回调 |
+| 账户 | `/account` | 余额充值、保证金、变更记录 |
+| 管理 | `/admin` | 后台登录、员工管理 |
+| 内容 | `/image`、`/notice`、`/question`、`/setting` | CMS 内容管理 |
+| 其他 | `/rate`、`/fenlei`、`/collect`、`/phone`、`/upload` 等 | 汇率、分类、收藏、短信、上传 |
+
+> **注意：** 当前后端目录为 `demo-portal-web`（Web 层），Maven 依赖 `demo-service-logic` 模块（Service/DAO/Entity 等业务逻辑）。该模块源码不在本仓库中，需联系作者获取或自行实现。
+
 ---
 
 ## 业务流程
@@ -108,10 +130,11 @@ ddmGit/
 
 ## 技术栈
 
-| 子项目 | 框架 | UI 库 | 说明 |
-|--------|------|-------|------|
+| 子项目 | 框架 | UI 库 / 中间件 | 说明 |
+|--------|------|----------------|------|
 | 前台小程序 | uni-app + Vue 2 | uni-ui | 编译为微信小程序 |
 | 后台管理 | Vue 2 + Vue CLI 5 | Element UI 2 | Web 管理端 |
+| 后端服务 | Spring Boot + MyBatis | Druid、Redis、Swagger | REST API |
 | 出入库 APP | uni-app + Vue 2 | uni-ui | 待完善 |
 
 ---
@@ -121,6 +144,10 @@ ddmGit/
 ### 环境要求
 
 - Node.js 14+
+- JDK 8+
+- Maven 3.6+
+- MySQL 5.7+
+- Redis
 - HBuilderX（用于 uni-app 小程序开发）
 - 微信开发者工具
 
@@ -142,11 +169,28 @@ yarn build    # 生产构建
 
 开发模式下 API 请求会代理到 `https://ddm-cu.com`，部署前请修改 `vue.config.js` 和 `src/http/api.js` 中的接口地址。
 
+### 后端服务
+
+1. 配置 MySQL 数据库（库名 `yahoo`）和 Redis
+2. 修改 `后端服务/src/main/resources/application-druid.yml` 中的数据库连接
+3. 修改 `application.yml` 中的 Redis、邮件、SSL 等配置
+4. 在 `UserController.java`、`PayController.java` 中填入微信小程序 AppID/Secret 和支付密钥
+5. 确保 `demo-service-logic` 依赖模块可用（联系作者获取或自行实现）
+6. 使用 Maven 编译运行：
+
+```bash
+cd 后端服务
+mvn clean package
+java -jar target/demo-portal-web-1.0-SNAPSHOT.jar
+```
+
+默认端口 443（HTTPS），开发环境可在 `application.yml` 中改为 8080 并关闭 SSL。
+
 ---
 
 ## 后端 API 说明
 
-本仓库 **不包含后端源码**。要运行完整系统，需自行实现或对接 REST API，主要包括：
+后端 Controller 层已包含在本仓库 `后端服务/` 目录，提供以下核心能力：
 
 - 用户认证（微信 OAuth + 短信验证码）
 - 雅虎/煤炉商品数据抓取或 API 代理（需 Cookie 维护）
@@ -154,10 +198,11 @@ yarn build    # 生产构建
 - 微信支付统一下单与回调
 - 文件上传、内容管理等
 
-API 接口契约可参考：
+API 接口定义参考：
 
 - 前台小程序：`前台小程序/utils/api.js`
 - 后台管理：`后台管理/src/http/api.js`
+- 后端 Controller：`后端服务/src/main/java/com/zhwl/demo/controller/`
 
 默认 API 域名（部署时需替换）：
 
@@ -170,11 +215,11 @@ API 接口契约可参考：
 
 ## 部署注意事项
 
-1. **替换微信小程序 AppID** — `前台小程序/manifest.json`
+1. **替换微信小程序 AppID** — `前台小程序/manifest.json`、`后端服务/.../UserController.java`
 2. **替换 API 基址** — `前台小程序/utils/url.js`、`后台管理/vue.config.js`
-3. **配置微信支付** — 商户号、密钥等在后端配置
-4. **配置短信服务** — 手机号登录验证码
-5. **清理测试数据** — 部分文件含硬编码测试信息，部署前请检查
+3. **配置后端** — 数据库、Redis、微信支付、短信服务（见 `后端服务/src/main/resources/`）
+4. **补充 demo-service-logic 模块** — 后端业务逻辑层，联系作者获取
+5. **清理测试数据** — 部署前请检查硬编码信息
 
 ---
 

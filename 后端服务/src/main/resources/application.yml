@@ -1,0 +1,106 @@
+spring:
+  application:
+    name: app-portal-web
+  profiles:
+    active: druid
+  # 模板引擎
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    # 禁用缓存
+    cache: false
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/static/img,classpath:/public/,file:./file/,classpath:/resources/dist,classpath:/resources/dist/js
+  mail:
+    host: smtp.126.com
+    username: your-email@example.com
+    password: your-mail-password
+    default-encoding: UTF-8
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+  fastjson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size:  10MB
+      # 设置总上传的文件大小
+      max-request-size:  50MB
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:./file/
+  redis:
+    #数据库索引
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: your-redis-password
+    jedis:
+      pool:
+        #最大连接数
+        max-active: 8
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: -1
+        #最大空闲
+        max-idle: 8
+        #最小空闲
+        min-idle: 0
+        #连接超时时间
+    timeout: 10000
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+swagger:
+  base-package:  com.zhwl.physical.controller
+  title: 趣体检
+  description: 趣体检
+  version: 1.0
+  terms-of-service-url: http://www.1234.com
+  contact:
+    name: yxs
+    email: yangxshn@126.com
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*
+  # 匹配链接
+  urlPatterns: /common/submitFeedback,/user/updateProfile,/user/updateBrief
+
+xxl:
+  sso:
+    redis:
+      address: redis://xxl-sso:your-redis-password@127.0.0.1:6379
+      expire:
+        minite: 14400
+# 开发环境配置
+# 项目相关配置
+ruoyi:
+  # 名称
+  name: RuoYi
+  # 版本
+  version: 4.6.0
+  # 版权年份
+  copyrightYear: 2021
+  # 实例演示开关
+  demoEnabled: false
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: C:/java_web/file
+  # 获取ip地址开关
+  addressEnabled: false
+
+server:
+  #  port: 8080
+  ssl:
+    key-store: classpath:ddm-cu.com.pfx
+    key-store-type: PKCS12
+    key-store-password: your-ssl-password
+  port: 443

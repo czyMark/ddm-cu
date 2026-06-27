@@ -2,9 +2,9 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A complete **Japanese cross-border shopping / proxy buying** frontend solution for Chinese users, supporting Yahoo Auctions and Mercari. This repository includes the **user-facing WeChat mini program**, **admin dashboard**, and a warehouse app scaffold.
+A complete **Japanese cross-border shopping / proxy buying** full-stack solution for Chinese users, supporting Yahoo Auctions and Mercari. This repository includes the **WeChat mini program**, **admin dashboard**, **backend API service**, and a warehouse app scaffold.
 
-> This is a **frontend monorepo** without backend source code. A self-hosted or third-party backend API is required for full operation.
+> Backend is the Spring Boot web layer (Controllers). It depends on the `demo-service-logic` business module (contact the author or implement yourself).
 
 ---
 
@@ -35,6 +35,7 @@ A complete **Japanese cross-border shopping / proxy buying** frontend solution f
 ddmGit/
 ├── 前台小程序/              # User WeChat mini program (core)
 ├── 后台管理/                # Admin web dashboard
+├── 后端服务/                # Spring Boot backend API (Controller layer)
 ├── 代代米日淘出入库APP/      # Warehouse app scaffold (WIP)
 ├── docs/
 │   └── wechat-qrcode.png    # Author WeChat QR code
@@ -50,6 +51,7 @@ ddmGit/
 |-------------|-----------|-----|
 | Mini program | uni-app + Vue 2 | uni-ui |
 | Admin | Vue 2 + Vue CLI 5 | Element UI 2 |
+| Backend | Spring Boot + MyBatis | Druid, Redis, Swagger |
 | Warehouse app | uni-app + Vue 2 | uni-ui (WIP) |
 
 ---
@@ -76,10 +78,12 @@ yarn build
 
 ## Backend API
 
-No backend is included. You need REST APIs for auth, product proxy/scraping, orders, WeChat Pay, uploads, etc. See:
+Backend Controllers are in `后端服务/`. Requires `demo-service-logic` module (contact author).
 
+See:
 - `前台小程序/utils/api.js`
 - `后台管理/src/http/api.js`
+- `后端服务/src/main/java/com/zhwl/demo/controller/`
 
 ---
 

@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunktemplate_project"]=self["webpackChunktemplate_project"]||[]).push([[952],{8952:function(e,t,a){a.r(t),a.d(t,{default:function(){return p}});var n=function(){var e=this,t=e._self._c;return t("div",{staticClass:"page"},[e._v(" page ")])},r=[],u={data(){return{}}},c=u,l=a(1001),s=(0,l.Z)(c,n,r,!1,null,"cea6bace",null),p=s.exports}}]);
+//# sourceMappingURL=952.e7b17858.js.map
