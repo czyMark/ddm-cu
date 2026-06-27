@@ -19,3 +19,14 @@ target/
 *.p12
 *.pem
 *.key
+
+# .NET
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+packages/
+*.exe
+*.dll
+*.pdb
+*.cache

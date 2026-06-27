@@ -36,7 +36,11 @@ ddmGit/
 ├── 前台小程序/              # 用户端微信小程序（核心业务）
 ├── 后台管理/                # 运营管理 Web 后台
 ├── 后端服务/                # Spring Boot 后端 API（Controller 层）
+├── 代代米日淘出入库PC/       # PC 端仓库出入库客户端（WinForms + .NET）
 ├── 代代米日淘出入库APP/      # 仓库出入库 APP（工程骨架，待完善）
+├── database/                # 数据库初始化脚本
+│   ├── yahoo.sql              # 主业务库
+│   └── recpiptuserdb.sql      # PC 出入库本地库
 ├── docs/                    # 文档与资源
 │   └── wechat-qrcode.png    # 作者微信二维码
 ├── README.md
@@ -72,6 +76,19 @@ ddmGit/
 | 财务管理 | 用户提现、竞拍保证金审批、下级经销提成 |
 | 内容管理 | 轮播图、公告、常见问题、用户协议、收费标准 |
 | 系统设置 | 客服联系方式、汇率维护、雅虎/煤炉 Cookie 配置、商品分类 |
+
+### 代代米日淘出入库 PC
+
+面向仓库操作人员的 **Windows 桌面客户端**，基于 **.NET Framework 4.7.2 + WinForms** 开发，支持扫码枪入库/出库。
+
+**功能：**
+- 扫码入库：扫描商品条码，同步更新雅虎/煤炉订单为「已入库」
+- 扫码出库：记录包裹信息，调用后端 API 标记发货
+- 入库/出库记录查询与分页
+- 对接后端 API（admin 登录 + 订单状态更新）
+- 本地 MySQL 数据库 `recpiptuserdb` 记录扫描日志
+
+**运行：** 使用 Visual Studio 打开 `代代米日淘出入库PC/WinReceipt/WinReceipt.sln`，编译运行。
 
 ### 代代米日淘出入库 APP
 
@@ -135,6 +152,7 @@ ddmGit/
 | 前台小程序 | uni-app + Vue 2 | uni-ui | 编译为微信小程序 |
 | 后台管理 | Vue 2 + Vue CLI 5 | Element UI 2 | Web 管理端 |
 | 后端服务 | Spring Boot + MyBatis | Druid、Redis、Swagger | REST API |
+| 出入库 PC | .NET Framework 4.7.2 | WinForms | 仓库扫码入库/出库 |
 | 出入库 APP | uni-app + Vue 2 | uni-ui | 待完善 |
 
 ---
@@ -185,6 +203,21 @@ java -jar target/demo-portal-web-1.0-SNAPSHOT.jar
 ```
 
 默认端口 443（HTTPS），开发环境可在 `application.yml` 中改为 8080 并关闭 SSL。
+
+### 数据库
+
+```bash
+mysql -u root -p < database/yahoo.sql
+mysql -u root -p < database/recpiptuserdb.sql
+```
+
+详见 [database/README.md](database/README.md)。
+
+### 出入库 PC 客户端
+
+1. 导入 `database/recpiptuserdb.sql`
+2. 修改 `代代米日淘出入库PC/WinReceipt/ReceiptDAL/SqlHelper.cs` 数据库连接
+3. 使用 Visual Studio 打开 `WinReceipt.sln` 编译运行
 
 ---
 
