@@ -18,9 +18,11 @@
 
 ## 效果展示
 
-### 小程序 / Web 界面
+> 以下为产品宣传图与界面效果示意，便于快速了解业务形态。
 
-真实业务界面拼图：首页分类、新品推荐、雅虎竞拍出价等。
+### 小程序界面
+
+首页分类、雅虎竞拍详情、订单列表等核心页面。
 
 <p align="center">
   <img src="docs/screenshots/showcase-ui.jpg" alt="代代米日淘界面效果" width="920">
@@ -28,7 +30,7 @@
 
 ### 运营后台
 
-订单、用户、财务、内容与系统设置一体化运营后台（效果示意）。
+订单、用户、财务、内容与系统设置一体化运营后台。
 
 <p align="center">
   <img src="docs/screenshots/showcase-admin.jpg" alt="运营后台效果图" width="920">

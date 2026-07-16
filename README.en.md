@@ -18,9 +18,11 @@ A complete **Japanese cross-border shopping / proxy buying** full-stack solution
 
 ## Screenshots
 
-### Mini program / Web UI
+> Promotional art and UI mockups to illustrate the product.
 
-Real product UI collage: home categories, recommendations, Yahoo auction bidding, and more.
+### Mini program UI
+
+Home categories, Yahoo auction detail, and order list.
 
 <p align="center">
   <img src="docs/screenshots/showcase-ui.jpg" alt="Daidaimi UI showcase" width="920">
@@ -28,7 +30,7 @@ Real product UI collage: home categories, recommendations, Yahoo auction bidding
 
 ### Admin dashboard
 
-Orders, users, finance, content and settings in one operations console (illustrative mock).
+Orders, users, finance, content and settings in one operations console.
 
 <p align="center">
   <img src="docs/screenshots/showcase-admin.jpg" alt="Admin dashboard showcase" width="920">
@@ -36,7 +38,7 @@ Orders, users, finance, content and settings in one operations console (illustra
 
 ### Customer service console
 
-Live chat sessions, quick replies and user side panel for after-sales support.
+Chat sessions, quick replies and user side panel for after-sales support.
 
 <p align="center">
   <img src="docs/screenshots/showcase-cs.jpg" alt="Customer service console" width="920">
