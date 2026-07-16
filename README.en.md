@@ -1,39 +1,39 @@
-# Daidaimi Japan Shopping · Cross-border Mini Program
+# Japan Cross-border Shopping · WeChat Mini Program + Admin Website
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A complete **Japanese cross-border shopping / proxy buying** full-stack solution for Chinese users, supporting Yahoo Auctions and Mercari. This repository includes the **WeChat mini program**, **admin dashboard**, **backend API service**, and a warehouse app scaffold.
+A complete **Japanese overseas / proxy-buying** full-stack solution: a **WeChat mini program** for users, a **Web admin website** for operations, plus **backend API** and warehouse clients. Supports Yahoo Auctions, Mercari, and similar Japan shopping flows.
 
 > Backend is the Spring Boot web layer (Controllers). It depends on the `demo-service-logic` business module (contact the author or implement yourself).
 
 <p align="center">
-  <img src="docs/screenshots/promo-brand.jpg" alt="Daidaimi Japan Shopping" width="260">
+  <img src="docs/screenshots/promo-brand.jpg" alt="Cross-border shopping mini program" width="260">
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/promo-banner-en.jpg" alt="Daidaimi promotional banner" width="920">
+  <img src="docs/screenshots/promo-banner-en.jpg" alt="Mini program and admin website promo" width="920">
 </p>
 
 ---
 
 ## Screenshots
 
-> Promotional art and UI mockups to illustrate the product.
+> Promo art and UI mockups: WeChat mini program + admin website.
 
-### Mini program UI
+### WeChat mini program
 
 Home categories, Yahoo auction detail, and order list.
 
 <p align="center">
-  <img src="docs/screenshots/showcase-ui.jpg" alt="Daidaimi UI showcase" width="920">
+  <img src="docs/screenshots/showcase-ui.jpg" alt="Mini program UI" width="920">
 </p>
 
-### Admin dashboard
+### Admin website
 
-Orders, users, finance, content and settings in one operations console.
+Orders, users, finance, content and settings in one Web console.
 
 <p align="center">
-  <img src="docs/screenshots/showcase-admin.jpg" alt="Admin dashboard showcase" width="920">
+  <img src="docs/screenshots/showcase-admin.jpg" alt="Admin website" width="920">
 </p>
 
 ### Customer service console
@@ -48,11 +48,11 @@ Chat sessions, quick replies and user side panel for after-sales support.
 
 ## Overview
 
-**Daidaimi Japan Shopping** is a mature proxy-buying system covering the full flow: product browsing, payment, Japan warehouse inbound, consolidated shipping, and domestic delivery.
+A mature **Japan proxy-buying system** (WeChat mini program + admin website) covering the full flow: product browsing, payment, Japan warehouse inbound, consolidated shipping, and domestic delivery.
 
 **Business model:**
 
-- Users search and browse products from Japanese e-commerce platforms
+- Users search and browse products from Japanese e-commerce platforms in the mini program
 - The platform places orders or bids on behalf of users; goods go to a Japan warehouse first
 - Users can merge multiple orders, choose shipping routes, and pay international shipping before delivery to China
 - Revenue from exchange rates, service fees, auction deposits, storage/packing/international shipping fees
@@ -72,7 +72,7 @@ Chat sessions, quick replies and user side panel for after-sales support.
 ```
 ddmGit/
 ├── 前台小程序/              # User WeChat mini program (core)
-├── 后台管理/                # Admin web dashboard
+├── 后台管理/                # Admin web website
 ├── 后端服务/                # Spring Boot backend API (Controller layer)
 ├── 代代米日淘出入库APP/      # Warehouse app scaffold (WIP)
 ├── docs/
@@ -89,7 +89,7 @@ ddmGit/
 | Sub-project | Framework | UI |
 |-------------|-----------|-----|
 | Mini program | uni-app + Vue 2 | uni-ui |
-| Admin | Vue 2 + Vue CLI 5 | Element UI 2 |
+| Admin website | Vue 2 + Vue CLI 5 | Element UI 2 |
 | Backend | Spring Boot + MyBatis | Druid, Redis, Swagger |
 | Warehouse app | uni-app + Vue 2 | uni-ui (WIP) |
 
@@ -97,14 +97,14 @@ ddmGit/
 
 ## Quick Start
 
-### Mini program
+### WeChat mini program
 
 1. Open `前台小程序/` in HBuilderX
 2. Update WeChat AppID in `manifest.json`
 3. Update API base URL in `utils/url.js`
 4. Run to WeChat DevTools
 
-### Admin dashboard
+### Admin website
 
 ```bash
 cd 后台管理

@@ -1,39 +1,39 @@
-# 代代米日淘 · 日本海淘代购小程序
+# 日本海淘代购 · 微信小程序 + 运营网站
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-一套完整的 **日本海淘 / 日淘代购** 全栈解决方案，面向中国用户提供雅虎拍卖（Yahoo Auctions）与煤炉（Mercari）代购服务。本仓库包含 **用户端微信小程序**、**运营管理后台**、**后端 API 服务**，以及仓库出入库 APP 的工程骨架。
+一套完整的 **日本海淘 / 代购** 全栈方案：面向用户的 **微信小程序**，面向运营的 **Web 管理后台网站**，以及 **后端 API** 与仓库出入库客户端。支持雅虎拍卖（Yahoo Auctions）、煤炉（Mercari）等日淘场景。
 
 > 后端为 Spring Boot Web 层（Controller），依赖 `demo-service-logic` 业务模块（需自行补充或联系作者获取）。
 
 <p align="center">
-  <img src="docs/screenshots/promo-brand.jpg" alt="代代米日淘" width="260">
+  <img src="docs/screenshots/promo-brand.jpg" alt="海淘微信小程序" width="260">
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/promo-banner-zh.jpg" alt="代代米日淘宣传图" width="920">
+  <img src="docs/screenshots/promo-banner-zh.jpg" alt="海淘小程序与运营网站宣传图" width="920">
 </p>
 
 ---
 
 ## 效果展示
 
-> 以下为产品宣传图与界面效果示意，便于快速了解业务形态。
+> 宣传图与界面效果示意：微信小程序 + 运营后台网站。
 
-### 小程序界面
+### 微信小程序
 
 首页分类、雅虎竞拍详情、订单列表等核心页面。
 
 <p align="center">
-  <img src="docs/screenshots/showcase-ui.jpg" alt="代代米日淘界面效果" width="920">
+  <img src="docs/screenshots/showcase-ui.jpg" alt="海淘微信小程序界面" width="920">
 </p>
 
-### 运营后台
+### 运营后台网站
 
-订单、用户、财务、内容与系统设置一体化运营后台。
+订单、用户、财务、内容与系统设置一体化 Web 后台。
 
 <p align="center">
-  <img src="docs/screenshots/showcase-admin.jpg" alt="运营后台效果图" width="920">
+  <img src="docs/screenshots/showcase-admin.jpg" alt="运营后台网站" width="920">
 </p>
 
 ### 客服工作台
@@ -48,11 +48,11 @@
 
 ## 项目简介
 
-**代代米日淘** 是一个成熟的日淘代购业务系统，覆盖从商品浏览、下单支付、日本仓入库、合并发货到国内签收的全链路。
+本项目是一套成熟的 **日淘代购业务系统**（微信小程序 + 管理网站），覆盖从商品浏览、下单支付、日本仓入库、合并发货到国内签收的全链路。
 
 **商业模式：**
 
-- 用户在小程序中搜索、浏览日本电商平台商品
+- 用户在微信小程序中搜索、浏览日本电商平台商品
 - 平台代用户在日本下单或参与竞拍，商品先进入日本仓库
 - 用户可合并多个订单，选择邮寄路线，支付国际运费等尾款后发往国内
 - 通过中日汇率换算、代购手续费、竞拍保证金、仓储/包装/国际运费等实现盈利
@@ -72,7 +72,7 @@
 ```
 ddmGit/
 ├── 前台小程序/              # 用户端微信小程序（核心业务）
-├── 后台管理/                # 运营管理 Web 后台
+├── 后台管理/                # 运营管理 Web 后台网站
 ├── 后端服务/                # Spring Boot 后端 API（Controller 层）
 ├── 代代米日淘出入库PC/       # PC 端仓库出入库客户端（WinForms + .NET）
 ├── 代代米日淘出入库APP/      # 仓库出入库 APP（工程骨架，待完善）
@@ -86,7 +86,7 @@ ddmGit/
 └── README.en.md
 ```
 
-### 前台小程序
+### 前台小程序（微信）
 
 面向 C 端用户的微信小程序，基于 **uni-app + Vue 2** 开发，编译目标为微信小程序。
 
@@ -102,9 +102,9 @@ ddmGit/
 | 个人中心 | 登录、订单、钱包、地址、收藏、足迹、充值、保证金 |
 | 订单管理 | 竞拍订单（预约/进行中/得标/失败）、物流订单（待支付→已发货） |
 
-### 后台管理
+### 后台管理网站
 
-面向运营/客服/仓库管理人员的 Web 管理端，基于 **Vue 2 + Element UI** 开发。
+面向运营/客服/仓库管理人员的 **Web 管理端**，基于 **Vue 2 + Element UI** 开发。
 
 **核心模块：**
 
@@ -116,7 +116,7 @@ ddmGit/
 | 内容管理 | 轮播图、公告、常见问题、用户协议、收费标准 |
 | 系统设置 | 客服联系方式、汇率维护、雅虎/煤炉 Cookie 配置、商品分类 |
 
-### 代代米日淘出入库 PC
+### 出入库 PC
 
 面向仓库操作人员的 **Windows 桌面客户端**，基于 **.NET Framework 4.7.2 + WinForms** 开发，支持扫码枪入库/出库。
 
@@ -129,7 +129,7 @@ ddmGit/
 
 **运行：** 使用 Visual Studio 打开 `代代米日淘出入库PC/WinReceipt/WinReceipt.sln`，编译运行。
 
-### 代代米日淘出入库 APP
+### 出入库 APP
 
 基于 uni-app 的仓库端 APP 工程骨架，**目前尚未实现完整业务**。当前仓库操作通过后台管理的订单列表完成（标记入库、计算费用、发货等）。
 
