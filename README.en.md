@@ -93,7 +93,8 @@ This project is open source. For **custom development, private deployment, techn
 
 | Contact | Info |
 |---------|------|
-| **Phone** | +86 185151626295 |
+| **Phone** | +86 18515262695 |
+| **Website** | https://www.jsdata.website/ |
 | **WeChat** | Scan QR code below |
 
 <p align="center">
