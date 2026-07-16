@@ -6,6 +6,42 @@
 
 > 后端为 Spring Boot Web 层（Controller），依赖 `demo-service-logic` 业务模块（需自行补充或联系作者获取）。
 
+<p align="center">
+  <img src="docs/screenshots/promo-brand.jpg" alt="代代米日淘" width="260">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/promo-banner-zh.jpg" alt="代代米日淘宣传图" width="920">
+</p>
+
+---
+
+## 效果展示
+
+### 小程序 / Web 界面
+
+真实业务界面拼图：首页分类、新品推荐、雅虎竞拍出价等。
+
+<p align="center">
+  <img src="docs/screenshots/showcase-ui.jpg" alt="代代米日淘界面效果" width="920">
+</p>
+
+### 运营后台
+
+订单、用户、财务、内容与系统设置一体化运营后台（效果示意）。
+
+<p align="center">
+  <img src="docs/screenshots/showcase-admin.jpg" alt="运营后台效果图" width="920">
+</p>
+
+### 客服工作台
+
+接入会话、快捷回复与用户信息侧栏，支撑代购售后沟通。
+
+<p align="center">
+  <img src="docs/screenshots/showcase-cs.jpg" alt="客服工作台" width="920">
+</p>
+
 ---
 
 ## 项目简介
@@ -42,7 +78,8 @@ ddmGit/
 │   ├── yahoo.sql              # 主业务库
 │   └── recpiptuserdb.sql      # PC 出入库本地库
 ├── docs/                    # 文档与资源
-│   └── wechat-qrcode.png    # 作者微信二维码
+│   ├── wechat-qrcode.png    # 作者微信二维码
+│   └── screenshots/         # 宣传图与效果图
 ├── README.md
 └── README.en.md
 ```

@@ -6,6 +6,42 @@ A complete **Japanese cross-border shopping / proxy buying** full-stack solution
 
 > Backend is the Spring Boot web layer (Controllers). It depends on the `demo-service-logic` business module (contact the author or implement yourself).
 
+<p align="center">
+  <img src="docs/screenshots/promo-brand.jpg" alt="Daidaimi Japan Shopping" width="260">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/promo-banner-en.jpg" alt="Daidaimi promotional banner" width="920">
+</p>
+
+---
+
+## Screenshots
+
+### Mini program / Web UI
+
+Real product UI collage: home categories, recommendations, Yahoo auction bidding, and more.
+
+<p align="center">
+  <img src="docs/screenshots/showcase-ui.jpg" alt="Daidaimi UI showcase" width="920">
+</p>
+
+### Admin dashboard
+
+Orders, users, finance, content and settings in one operations console (illustrative mock).
+
+<p align="center">
+  <img src="docs/screenshots/showcase-admin.jpg" alt="Admin dashboard showcase" width="920">
+</p>
+
+### Customer service console
+
+Live chat sessions, quick replies and user side panel for after-sales support.
+
+<p align="center">
+  <img src="docs/screenshots/showcase-cs.jpg" alt="Customer service console" width="920">
+</p>
+
 ---
 
 ## Overview
@@ -38,7 +74,8 @@ ddmGit/
 ├── 后端服务/                # Spring Boot backend API (Controller layer)
 ├── 代代米日淘出入库APP/      # Warehouse app scaffold (WIP)
 ├── docs/
-│   └── wechat-qrcode.png    # Author WeChat QR code
+│   ├── wechat-qrcode.png    # Author WeChat QR code
+│   └── screenshots/         # Promo & UI screenshots
 ├── README.md
 └── README.en.md
 ```
